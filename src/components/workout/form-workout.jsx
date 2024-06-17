@@ -21,23 +21,26 @@ const FormWorkout = () => {
   // Gérer la soumission du formulaire
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // Appeler la fonction postData pour envoyer les données et les fichiers image
-    const response = await postData('/workouts', workout);
-    console.log(response);
-    // Afficher un message de succès et rediriger l'utilisateur
-    // ...
-  
-};
+    console.log('Données du formulaire avant envoi:', workout);
+    try {
+      const response = await postData('/workouts', workout);
+      console.log('Réponse de l\'API:', response);
+    } catch (error) {
+      console.error("Erreur lors de la création de la séance :", error);
+    }
+  };
 
   // Gérer les changements dans les champs du formulaire
   const handleChange = (event) => {
     const { name, value } = event.target;
+    console.log(`Changement détecté - ${name}: ${value}`);
     setWorkout({ ...workout, [name]: value });
   };
 
   // Gérer l'ajout d'images et la prévisualisation
   const handleImageChange = (event) => {
     const files = Array.from(event.target.files);
+    console.log('Fichiers sélectionnés pour l\'upload:', files);
     setWorkout({ ...workout, images: [...workout.images, ...files] });
   };
 
@@ -60,6 +63,7 @@ const renderImagesPreview = () => {
   // Gérer la suppression d'une image
 const handleRemoveImage = (index) => {
     const updatedImages = workout.images.filter((_, i) => i !== index);
+    console.log(`Image à l'index ${index} supprimée`);
     setWorkout({ ...workout, images: updatedImages });
   };
 
