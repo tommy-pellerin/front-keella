@@ -13,24 +13,29 @@ export async function getData(objectUrl) {
   }
 }
 
-// Fonction pour envoyer les donnees
-export async function postData(objectUrl, body) {
+// Fonction pour envoyer les données
+export async function postData(objectUrl, workout) {
   const formData = new FormData();
-  for (const key in body) {
-    if (body.hasOwnProperty(key)) {
-      formData.append(`workout[${key}]`, body[key]);
+  for (const key in workout) {
+    if (workout.hasOwnProperty(key) && key !== 'images') {
+      formData.append(`workout[${key}]`, workout[key]);
     }
   }
+  // Ajouter les images au formData
+  if (workout.images) {
+    workout.images.forEach((imageFile) => {
+      formData.append('workout[images][]', imageFile);
+    });
+  }
+
   try {
-    const response = await ky
-      .post(BASE_URL + objectUrl, {
-        headers: getHeaders(),
-        body: formData,
-      })
-      .json();
+    const response = await ky.post(BASE_URL + objectUrl, {
+      headers: getHeaders(),
+      body: formData,
+    }).json();
     return response;
   } catch (error) {
-    console.error("Erreur lors de la recuperations des donnees :", error);
+    console.error("Erreur lors de la récupération des données :", error);
   }
 }
 

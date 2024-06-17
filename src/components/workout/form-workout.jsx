@@ -1,25 +1,33 @@
 import { useState } from 'react';
 import { UsersIcon, CurrencyDollarIcon, CalendarIcon, ClockIcon, RocketLaunchIcon, MapPinIcon, MapIcon, IdentificationIcon, PencilSquareIcon } from '@heroicons/react/24/solid';
+import { postData } from '../../services/data-fetch';
 
 const FormWorkout = () => {
-  const [workout, setWorkout] = useState({
-    title: '',
-    start_date: '',
-    duration: '',
-    price: '',
-    participant_count: '',
-    city: '',
-    postal_code: '',
-    user_limit: '',
-    category: '',
-    images: []
-  });
+    const [workout, setWorkout] = useState({
+        title: '',
+        description: '',
+        start_date: '',
+        duration: 0.0, 
+        city: '',
+        zip_code: '',
+        price: 0.0, 
+        
+        max_participants: 0,
+        
+        images: [] // Si vous gérez l'upload d'images
+      });
+    
 
   // Gérer la soumission du formulaire
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Envoyer les données à l'API Rails
-  };
+    // Appeler la fonction postData pour envoyer les données et les fichiers image
+    const response = await postData('/workouts', workout);
+    console.log(response);
+    // Afficher un message de succès et rediriger l'utilisateur
+    // ...
+  
+};
 
   // Gérer les changements dans les champs du formulaire
   const handleChange = (event) => {
@@ -30,11 +38,7 @@ const FormWorkout = () => {
   // Gérer l'ajout d'images et la prévisualisation
   const handleImageChange = (event) => {
     const files = Array.from(event.target.files);
-    const newImagesPreview = files.map(file => {
-      return URL.createObjectURL(file);
-    });
-
-    setWorkout({ ...workout, images: [...workout.images, ...newImagesPreview] });
+    setWorkout({ ...workout, images: [...workout.images, ...files] });
   };
 
   // Afficher les images sélectionnées avec un style de carte
@@ -111,9 +115,9 @@ const renderEmptySlots = () => {
         <div className="mb-6">
       <div className="flex items-center mb-4">
         <UsersIcon className="h-6 text-blue-500 mr-2" />
-        <input type="number" name="participant_count" placeholder="Nombre de participants" onChange={handleChange} required className="w-full" />
+        <input type="number" name="max_participants" placeholder="Nombre de participants" onChange={handleChange} required className="w-full" />
       </div>
-      <div className="flex items-center mb-4">
+      {/* <div className="flex items-center mb-4">
       <RocketLaunchIcon className="h-6 text-blue-500 mr-2" />
         <select name="category" onChange={handleChange} required className="w-full">
           <option value="">Sélectionnez une catégorie</option>
@@ -121,10 +125,10 @@ const renderEmptySlots = () => {
           <option value="yoga">Yoga</option>
           <option value="running">Running</option>
         </select>
-      </div>
+      </div> */}
       <div className="flex items-center mb-4">
       <MapPinIcon className="h-6 text-blue-500 mr-2" />
-        <input type="text" name="postal_code" placeholder="Code postal" onChange={handleChange} required className="w-full" />
+        <input type="text" name="zip_code" placeholder="Code postal" onChange={handleChange} required className="w-full" />
       </div>
       <div className="flex items-center mb-4">
       <MapIcon className="h-6 text-blue-500 mr-2" />
@@ -136,7 +140,7 @@ const renderEmptySlots = () => {
             <div className="mb-6">
                 <div className="flex items-center mb-4">
             <IdentificationIcon className="h-6 text-blue-500 mr-2" />
-            <input type="text" name="titre" placeholder="Titre" onChange={handleChange} required className="w-full" />
+            <input type="text" name="title" placeholder="Titre" onChange={handleChange} required className="w-full" />
                 </div>
 
                 <div className="flex items-center mb-4">
@@ -156,7 +160,26 @@ const renderEmptySlots = () => {
             <CalendarIcon className="h-6 text-blue-500 mb-2" />
             <input type="datetime-local" name="start_date" placeholder="Date et heure de début" onChange={handleChange} required className="w-full mb-4" />
             <ClockIcon className="h-6 text-blue-500 mb-2" />
-            <input type="number" name="duration" placeholder="Durée (en heures, par tranche de 1/2h)" min="0.5" step="0.5" onChange={handleChange} required className="w-full mb-4" />
+            <select name="duration" onChange={handleChange} required className="w-full mb-4">
+                <option value="">Sélectionnez une durée</option>
+                <option value="30">30 min</option>
+                <option value="60">1h</option>
+                <option value="90">1h 30 min</option>
+                <option value="120">2h</option>
+                <option value="150">2h 30 min</option>
+                <option value="180">3h</option>
+                <option value="210">3h 30 min</option>
+                <option value="240">4h</option>
+                <option value="270">4h 30 min</option>
+                <option value="300">5h</option>
+                <option value="330">5h 30 min</option>
+                <option value="360">6h</option>
+                <option value="390">6h 30 min</option>
+                <option value="420">7h</option>
+                <option value="450">7h 30 min</option>
+                <option value="480">8h</option>
+            {/* Ajoutez d'autres options selon vos besoins */}
+            </select>
           </div>
         </div>
           
