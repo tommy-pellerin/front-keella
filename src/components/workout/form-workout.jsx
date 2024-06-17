@@ -2,25 +2,28 @@ import { useState } from 'react';
 import { UsersIcon, CurrencyDollarIcon, CalendarIcon, ClockIcon, RocketLaunchIcon, MapPinIcon, MapIcon, IdentificationIcon, PencilSquareIcon } from '@heroicons/react/24/solid';
 import { postData } from '../../services/data-fetch';
 
+
 const FormWorkout = () => {
+   
     const [workout, setWorkout] = useState({
         title: '',
         description: '',
         start_date: '',
-        duration: 0.0, 
+        duration: '', 
         city: '',
         zip_code: '',
-        price: 0.0, 
+        price: '', 
         
-        max_participants: 0,
+        max_participants: '',
         
-        images: [] // Si vous gérez l'upload d'images
+        images: []
       });
     
 
   // Gérer la soumission du formulaire
   const handleSubmit = async (event) => {
     event.preventDefault();
+  
     console.log('Données du formulaire avant envoi:', workout);
     try {
       const response = await postData('/workouts', workout);
