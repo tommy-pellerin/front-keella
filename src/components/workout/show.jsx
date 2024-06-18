@@ -32,7 +32,7 @@ const WorkoutShow = () => {
       }
     };
     getWorkouts();
-  }, [workout_id]);
+  }, [workout_id, showAlert]);
 
   const increaseQuantity = () => {
     if(quantity >= workout.available_places){
@@ -141,12 +141,12 @@ const WorkoutShow = () => {
                 <button className="py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700" onClick={increaseQuantity} disabled={quantity >= workout.available_places}>+</button>
               </div>
             </div>
-            {/* {quantity > workout.available_places ?
+            {quantity > workout.available_places ?
             <button className="py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700" disabled={quantity > workout.available_places}>Il n&apos;y a plus de place</button>
             :
             <button className="py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700" onClick={handleReservation} disabled={quantity > workout.available_places}>Envoyer une demande de réservation</button>
-            } */}
-            <button className="py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700" onClick={handleReservation}>Envoyer une demande de réservation</button>
+            }
+            {/* <button className="py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700" onClick={handleReservation}>Envoyer une demande de réservation</button> */}
 
           </div>
         </div>
