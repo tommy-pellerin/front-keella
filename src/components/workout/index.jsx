@@ -1,13 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import WorkoutList from './workoutList';
 import SearchWorkout from './searchWorkout';
 function WorkoutIndex() {
-
+    const [searchResults, setSearchResults] = useState(null);
+    console.log(searchResults)
   return (
     <>
-    <SearchWorkout/>
     <div className='max-w-screen-lg mx-auto p-4'>
-        <WorkoutList/>
+        <SearchWorkout onSearch={setSearchResults} />
+        <WorkoutList searchResults={searchResults} />
     </div>
     </>
   )

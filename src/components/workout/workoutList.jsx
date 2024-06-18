@@ -1,11 +1,12 @@
 import React,{useState,useEffect} from 'react'
 import { getData } from '../../services/data-fetch'
 
-function WorkoutList() {
+function WorkoutList({ searchResults }) {
     const [workouts, setWorkouts] = useState([]);
     const [visibleCount, setVisibleCount] = useState(6);
 
     useEffect(() => {
+      if(!searchResults){
         const getWorkouts = async () => {
           try {
             const data = await getData(`/workouts`);
@@ -17,7 +18,13 @@ function WorkoutList() {
           }
         };
         getWorkouts();
-      }, []);
+        };
+        if(searchResults){
+          const sortedData = searchResults.sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
+          setWorkouts(sortedData);
+          };
+          
+      }, [searchResults]);
 
       const loadMore = () => {
         setVisibleCount((prevCount) => prevCount + 3);
