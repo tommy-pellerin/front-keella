@@ -1,6 +1,7 @@
 import ky from "ky";
 import { BASE_URL, getHeaders } from "./config-fetch";
 
+
 // Fonction pour recuperer les donnees
 export async function getData(objectUrl) {
   try {
@@ -13,24 +14,39 @@ export async function getData(objectUrl) {
   }
 }
 
-// Fonction pour envoyer les donnees
+// Fonction pour envoyer les données
 export async function postData(objectUrl, body) {
-  const formData = new FormData();
-  for (const key in body) {
-    if (body.hasOwnProperty(key)) {
-      formData.append(`workout[${key}]`, body[key]);
+  let formData;
+  console.log(body);
+  if(body.price) {
+    formData = new FormData();
+    for (const key in body) {
+      if (body.hasOwnProperty(key) && key !== 'images') {
+        console.log(`Ajout de ${key}:`, body[key]);
+        formData.append(`workout[${key}]`, body[key]);
+      }
+    }
+    body.images.forEach((imageFile, index) => {
+      console.log(`Ajout de l'image à l'index ${index}:`, imageFile);
+      // Utilisez imageFile ici au lieu de fileToUpload
+      formData.append('workout[images][]', imageFile);
+    });
+  } else if(body.reservation) {
+    formData = new FormData();
+    for (const key in body.reservation) {
+        formData.append(`reservation[${key}]`, body.reservation[key]);
     }
   }
+  
   try {
-    const response = await ky
-      .post(BASE_URL + objectUrl, {
-        headers: getHeaders(),
-        body: formData,
-      })
-      .json();
+    const response = await ky.post(BASE_URL + objectUrl, {
+      headers: getHeaders(),
+      body: formData,
+    }).json();
+    console.log('Réponse reçue de l\'API:', response);
     return response;
   } catch (error) {
-    console.error("Erreur lors de la recuperations des donnees :", error);
+    console.error("Erreur lors de la récupération des données :", error);
   }
 }
 

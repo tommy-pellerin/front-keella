@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
-//atoms
-import { useAtomValue } from "jotai";
-import { userAtom } from "../../store/user";
+//Atoms
+import { useAtom } from "jotai";
+import { userAtom } from '../../store/user'
 
 //Styles
 import logoKeella from '../../assets/images/logokeella.webp';
@@ -16,12 +16,12 @@ import {
   MenuItems,
   Transition,
 } from '@headlessui/react'
-// import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 const navigation = [
-  { name: 'Dashboard', href: '#', current: true },
-  { name: 'Team', href: '#', current: false },
-  { name: 'Projects', href: '#', current: false },
-  { name: 'Calendar', href: '#', current: false },
+  // { name: 'Dashboard', href: '#', current: true },
+  // { name: 'Team', href: '#', current: false },
+  // { name: 'Projects', href: '#', current: false },
+  { name: 'Trouver une séance', href: '/workouts', current: false },
 ]
 
 function classNames(...classes) {
@@ -30,7 +30,7 @@ function classNames(...classes) {
 
 export default function Navbar() {
 
-  const user = useAtomValue(userAtom)
+  const [user] = useAtom(userAtom);
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -44,28 +44,26 @@ export default function Navbar() {
                   <span className="absolute -inset-0.5" />
                   <span className="sr-only">Open main menu</span>
                   {open ? (
-                    // <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
-                    <div className="block h-6 w-6" aria-hidden="true">XMarkIcon</div>
+                    <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
                   ) : (
-                    // <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
-                    <div className="block h-6 w-6" aria-hidden="true">Bar3Icon</div>
+                    <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
                   )}
                 </DisclosureButton>
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex flex-shrink-0 items-center">
+                <Link to="/" className="flex flex-shrink-0 items-center">
                   <img
                     className="h-8 w-auto"
                     src={logoKeella}
                     alt="Your Company"
                   />
-                </div>
+                </Link>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
-                        href={item.href}
+                        to={item.href}
                         className={classNames(
                           item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                           'rounded-md px-3 py-2 text-sm font-medium',
@@ -73,7 +71,7 @@ export default function Navbar() {
                         aria-current={item.current ? 'page' : undefined}
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -86,8 +84,7 @@ export default function Navbar() {
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">View notifications</span>
                   
-                  {/* <BellIcon className="h-6 w-6" aria-hidden="true" /> */}
-                  <div className="h-6 w-6" aria-hidden="true">BellIcon</div>
+                  <BellIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
 
                 {/* Profile dropdown */}
@@ -96,11 +93,19 @@ export default function Navbar() {
                     <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="absolute -inset-1.5" />
                       <span className="sr-only">Open user menu</span>
-                      <img
-                        className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
-                      />
+                      {user.isLogged ?
+                        <img
+                          className="h-8 w-8 rounded-full"
+                          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                          alt=""
+                        />
+                        :
+                        <div className="h-8 w-8 border rounded-full flex justify-center items-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="size-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                          </svg>
+                        </div>
+                      }
                     </MenuButton>
                   </div>
                   <Transition
@@ -112,36 +117,33 @@ export default function Navbar() {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    {!user.isLogged ?
+                    <>
                       <MenuItem>
                         {({ focus }) => (
-                          <a
-                            href="#"
-                            className={classNames(focus ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                          >
-                            Your Profile
-                          </a>
+                          <Link to="/sign-in" className={classNames(focus ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}>Log In</Link>
                         )}
                       </MenuItem>
                       <MenuItem>
                         {({ focus }) => (
-                          <a
-                            href="#"
-                            className={classNames(focus ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                          >
-                            Settings
-                          </a>
+                          <Link to="/sign-up" className={classNames(focus ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}>Sign Up</Link>
+                        )}
+                      </MenuItem>
+                    </> 
+                    : 
+                    <>
+                      <MenuItem>
+                        {({ focus }) => (
+                          <Link to="/profile/me" className={classNames(focus ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}>Your Profile</Link>
                         )}
                       </MenuItem>
                       <MenuItem>
                         {({ focus }) => (
-                          <a
-                            href="#"
-                            className={classNames(focus ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                          >
-                            Sign out
-                          </a>
+                          <Link to="/sign-out" className={classNames(focus ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}>Log Out</Link>
                         )}
                       </MenuItem>
+                    </>
+                    }
                     </MenuItems>
                   </Transition>
                 </Menu>
