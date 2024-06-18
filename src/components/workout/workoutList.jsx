@@ -22,6 +22,14 @@ function WorkoutList() {
       const loadMore = () => {
         setVisibleCount((prevCount) => prevCount + 3);
     };
+    function formatDate(dateString) {
+      const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+      return new Date(dateString).toLocaleDateString('fr-FR', options);
+    }
+    function formatTime(dateString) {
+      const options = { hour: '2-digit', minute: '2-digit' };
+      return new Date(dateString).toLocaleTimeString('fr-FR', options);
+    }
 
   return (
     <div className='max-w-screen-lg mx-auto p-4'>
@@ -39,9 +47,9 @@ function WorkoutList() {
         </p>
         <ul>
             <li className="mt-1 text-gray-500 ">Prix : {workout.price}</li>
-            <li className="mt-1 text-gray-500 ">Durée : {workout.duration}</li>
+            <li className="mt-1 text-gray-500 ">Durée : {formatTime(workout.duration)}</li>
             <li className="mt-1 text-gray-500 ">Nombre de place : {workout.max_participants}</li>
-            <li className="mt-1 text-gray-500 ">Date : {workout.start_date}</li>
+            <li className="mt-1 text-gray-500 ">Date :{formatDate(workout.start_date)}</li>
 
         </ul>
             <a className="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-purple-600 text-white hover:bg-purple-700 disabled:opacity-50 disabled:pointer-events-none" href="#">
