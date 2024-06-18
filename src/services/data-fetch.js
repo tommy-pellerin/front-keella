@@ -25,6 +25,7 @@ export async function postData(objectUrl, workout) {
   }
   workout.images.forEach((imageFile, index) => {
     console.log(`Ajout de l'image à l'index ${index}:`, imageFile);
+    // Utilisez imageFile ici au lieu de fileToUpload
     formData.append('workout[images][]', imageFile);
   });
   

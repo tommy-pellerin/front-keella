@@ -4,7 +4,8 @@ import { postData } from '../../services/data-fetch';
 
 
 const FormWorkout = () => {
-   
+    const [previewImages, setPreviewImages] = useState([]);
+    const [filesToUpload, setFilesToUpload] = useState([]);   
     const [workout, setWorkout] = useState({
         title: '',
         description: '',
@@ -26,7 +27,7 @@ const FormWorkout = () => {
   
     console.log('Données du formulaire avant envoi:', workout);
     try {
-      const response = await postData('/workouts', workout);
+    const response = await postData('/workouts', workout, filesToUpload);
       console.log('Réponse de l\'API:', response);
     } catch (error) {
       console.error("Erreur lors de la création de la séance :", error);
@@ -40,16 +41,19 @@ const FormWorkout = () => {
     setWorkout({ ...workout, [name]: value });
   };
 
-  // Gérer l'ajout d'images et la prévisualisation
-  const handleImageChange = (event) => {
+ // Fonction pour gérer le changement d'image et la prévisualisation
+ const handleImageChange = (event) => {
     const files = Array.from(event.target.files);
-    console.log('Fichiers sélectionnés pour l\'upload:', files);
-    setWorkout({ ...workout, images: [...workout.images, ...files] });
+    const newPreviewImages = files.map(file => URL.createObjectURL(file));
+    const newFilesToUpload = files.map(file => file);
+  
+    // Mettre à jour l'état pour la prévisualisation et les fichiers à envoyer
+    setPreviewImages([...previewImages, ...newPreviewImages]);
+    setFilesToUpload([...filesToUpload, ...newFilesToUpload]);
   };
-
   // Afficher les images sélectionnées avec un style de carte
 const renderImagesPreview = () => {
-    return workout.images.map((image, index) => (
+    return previewImages.map((image, index) => (
       <div key={index} className="border border-gray-300 shadow-lg p-2 relative">
         <img src={image} alt={`Aperçu ${index}`} className="max-w-xs" />
         {/* Bouton pour supprimer l'image */}
@@ -63,11 +67,13 @@ const renderImagesPreview = () => {
     ));
   };
 
-  // Gérer la suppression d'une image
+ // Gérer la suppression d'une image
 const handleRemoveImage = (index) => {
-    const updatedImages = workout.images.filter((_, i) => i !== index);
+    const updatedPreviewImages = previewImages.filter((_, i) => i !== index);
+    const updatedFilesToUpload = filesToUpload.filter((_, i) => i !== index);
     console.log(`Image à l'index ${index} supprimée`);
-    setWorkout({ ...workout, images: updatedImages });
+    setPreviewImages(updatedPreviewImages);
+    setFilesToUpload(updatedFilesToUpload);
   };
 
 
