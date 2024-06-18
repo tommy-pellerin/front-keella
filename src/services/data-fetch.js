@@ -47,6 +47,12 @@ export async function postData(objectUrl, body) {
     return response;
   } catch (error) {
     console.error("Erreur lors de la récupération des données :", error);
+    //To get personalized message form the server
+    if (error.response) {
+      error.response.json().then((body) => {
+        console.error('Erreur du serveur:', body.error);
+      });
+    }
   }
 }
 
