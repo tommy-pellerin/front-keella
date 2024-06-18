@@ -3,6 +3,7 @@ import SignIn from "../auth/sign-in";
 import SignUp from "../auth/sign-up";
 import SignOut from "../auth/sign-out";
 import WorkoutIndex from "../workout/index";
+import WorkoutShow from "../workout/show";
 
 export default function AppRoutes() {
   return (
@@ -11,6 +12,8 @@ export default function AppRoutes() {
       <Route path="/sign-up" element={<SignUp />} />
       <Route path="/sign-out" element={<SignOut />} />
       <Route path="/workouts" element={<WorkoutIndex />} />
+      <Route path="/workouts/:workout_id" element={<WorkoutShow />} />
+
     </Routes>
   );
 }
