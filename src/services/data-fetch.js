@@ -27,7 +27,6 @@ export async function postData(objectUrl, workout) {
     console.log(`Ajout de l'image à l'index ${index}:`, imageFile);
     formData.append('workout[images][]', imageFile);
   });
-
   
     try {
     const response = await ky.post(BASE_URL + objectUrl, {

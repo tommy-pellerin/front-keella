@@ -113,6 +113,11 @@ const renderEmptySlots = () => {
         {renderImagesPreview()}
         {renderEmptySlots()}
       </div>
+            {/* Zone de texte pour la description */}
+      <div className="w-full max-w-4xl mb-8">
+        <PencilSquareIcon className="h-6 text-blue-500 mr-2" />
+        <textarea name="description" placeholder="Description" onChange={handleChange} required className="w-full h-32" />
+      </div>
 
         {/* Formulaire */}
         <form onSubmit={handleSubmit} className="w-full max-w-4xl mb-8">
@@ -151,15 +156,10 @@ const renderEmptySlots = () => {
                 </div>
 
                 <div className="flex items-center mb-4">
-            <CurrencyDollarIcon className="h-6 text-blue-500 mr-2" />
-            <input type="number" name="price" placeholder="Prix" onChange={handleChange} required className="w-full" />
-                </div>
-                
-                    <div className="flex-1">
-                    <PencilSquareIcon className="h-6 text-blue-500 mr-2" />
-                        <textarea name="description" placeholder="Description" onChange={handleChange} required className="w-full h-32" />
-                    </div>
-             </div>   
+                    <CurrencyDollarIcon className="h-6 text-blue-500 mr-2" />
+                    <input type="number" name="price" placeholder="Prix" onChange={handleChange} required className="w-full" />
+                        </div>
+                </div>   
             
             
             {/* Troisième colonne */}
