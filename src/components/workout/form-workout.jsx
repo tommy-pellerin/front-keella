@@ -255,7 +255,7 @@ const handleRemoveImage = (index) => {
           
           {/* Bouton de soumission */}
         <div className="flex justify-center">
-        <button type="submit" className="bg-blue-500 text-white py-3 px-6 rounded">
+        <button type="submit" className="bg-purple-600 text-white py-3 px-6 rounded">
                 {workoutId ? 'Éditer Workout' : 'Créer Workout'}
         </button>
         </div>
