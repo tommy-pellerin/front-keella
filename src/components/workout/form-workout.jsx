@@ -4,6 +4,7 @@ import { postData } from '../../services/data-fetch';
 
 
 const FormWorkout = () => {
+    const [category_id, setCategoryId] = useState('');
     const [previewImages, setPreviewImages] = useState([]);
     const [filesToUpload, setFilesToUpload] = useState([]);   
     const [workout, setWorkout] = useState({
@@ -14,20 +15,18 @@ const FormWorkout = () => {
         city: '',
         zip_code: '',
         price: '', 
-        
-        max_participants: '',
-        
-        images: []
+        max_participants: '',        
+        workout_images: []
       });
     
 
   // Gérer la soumission du formulaire
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
-    console.log('Données du formulaire avant envoi:', workout);
+    const workoutData = { ...workout, category_id }; 
+    console.log('Données du formulaire avant envoi:', workoutData);
     try {
-    const response = await postData('/workouts', workout, filesToUpload);
+      const response = await postData('/workouts', workoutData, filesToUpload); // Passez filesToUpload ici
       console.log('Réponse de l\'API:', response);
     } catch (error) {
       console.error("Erreur lors de la création de la séance :", error);
@@ -37,20 +36,30 @@ const FormWorkout = () => {
   // Gérer les changements dans les champs du formulaire
   const handleChange = (event) => {
     const { name, value } = event.target;
-    console.log(`Changement détecté - ${name}: ${value}`);
-    setWorkout({ ...workout, [name]: value });
+    if (name === 'category_id') {
+      setCategoryId(value);
+    } else {
+      setWorkout({ ...workout, [name]: value });
+    }
   };
 
  // Fonction pour gérer le changement d'image et la prévisualisation
- const handleImageChange = (event) => {
-    const files = Array.from(event.target.files);
-    const newPreviewImages = files.map(file => URL.createObjectURL(file));
-    const newFilesToUpload = files.map(file => file);
+const handleImageChange = (event) => {
+    if (filesToUpload.length < 3) {
+      const file = event.target.files[0];
+      if (file) {
+        const newPreviewImage = URL.createObjectURL(file);
+        const newFilesToUpload = [...filesToUpload, file];
   
-    // Mettre à jour l'état pour la prévisualisation et les fichiers à envoyer
-    setPreviewImages([...previewImages, ...newPreviewImages]);
-    setFilesToUpload([...filesToUpload, ...newFilesToUpload]);
+        // Mettre à jour l'état pour la prévisualisation et les fichiers à envoyer
+        setPreviewImages([...previewImages, newPreviewImage]);
+        setFilesToUpload(newFilesToUpload);
+      }
+    } else {
+      console.log("Vous ne pouvez pas ajouter plus de 3 images.");
+    }
   };
+  
   // Afficher les images sélectionnées avec un style de carte
 const renderImagesPreview = () => {
     return previewImages.map((image, index) => (
@@ -78,31 +87,31 @@ const handleRemoveImage = (index) => {
 
 
   // Dans le cas où il n'y a pas d'images, afficher un emplacement vide avec un bouton '+'
-const renderEmptySlots = () => {
-  const emptySlots = [];
-  for (let i = workout.images.length; i < 3; i++) {
-    emptySlots.push(
-      <div key={i} className="border border-gray-300 shadow-lg p-2 h-32 flex justify-center items-center relative">
-        <span className="text-gray-500">Ajouter une image</span>
-        {/* Bouton pour ajouter une image */}
-        <button
-          onClick={() => document.getElementById(`imageUpload${i}`).click()}
-          className="absolute bottom-0 right-0 bg-blue-500 text-white p-2 rounded-full"
-        >
-          +
-        </button>
-        {/* Input caché pour l'upload d'image */}
-        <input
-          type="file"
-          id={`imageUpload${i}`}
-          style={{ display: 'none' }}
-          onChange={handleImageChange}
-        />
-      </div>
-    );
-  }
-  return emptySlots;
-};
+  const renderEmptySlots = () => {
+    const emptySlots = [];
+    for (let i = previewImages.length; i < 3; i++) {
+      emptySlots.push(
+        <div key={i} className="border border-gray-300 shadow-lg p-2 h-32 flex justify-center items-center relative">
+          <span className="text-gray-500">Ajouter une image</span>
+          {/* Bouton pour ajouter une image */}
+          <button
+            onClick={() => document.getElementById(`imageUpload${i}`).click()}
+            className="absolute bottom-0 right-0 bg-blue-500 text-white p-2 rounded-full"
+          >
+            +
+          </button>
+          {/* Input caché pour l'upload d'image */}
+          <input
+            type="file"
+            id={`imageUpload${i}`}
+            style={{ display: 'none' }}
+            onChange={handleImageChange}
+          />
+        </div>
+      );
+    }
+    return emptySlots;
+  };
 
   return (
     <>
@@ -135,15 +144,7 @@ const renderEmptySlots = () => {
         <UsersIcon className="h-6 text-blue-500 mr-2" />
         <input type="number" name="max_participants" placeholder="Nombre de participants" onChange={handleChange} required className="w-full" />
       </div>
-      {/* <div className="flex items-center mb-4">
-      <RocketLaunchIcon className="h-6 text-blue-500 mr-2" />
-        <select name="category" onChange={handleChange} required className="w-full">
-          <option value="">Sélectionnez une catégorie</option>
-          <option value="fitness">Fitness</option>
-          <option value="yoga">Yoga</option>
-          <option value="running">Running</option>
-        </select>
-      </div> */}
+      
       <div className="flex items-center mb-4">
       <MapPinIcon className="h-6 text-blue-500 mr-2" />
         <input type="text" name="zip_code" placeholder="Code postal" onChange={handleChange} required className="w-full" />
@@ -164,8 +165,36 @@ const renderEmptySlots = () => {
                 <div className="flex items-center mb-4">
                     <CurrencyDollarIcon className="h-6 text-blue-500 mr-2" />
                     <input type="number" name="price" placeholder="Prix" onChange={handleChange} required className="w-full" />
-                        </div>
-                </div>   
+                </div>
+                  
+
+                <div className="flex items-center mb-4">
+                <RocketLaunchIcon className="h-6 text-blue-500 mr-2" />
+                <select name="category_id" onChange={handleChange} required className="w-full">
+                <option value="">Sélectionner la Catégorie</option>
+                <option value="1">Yoga</option>
+                <option value="2">Crossfit</option>
+                <option value="3">Boxing</option>
+                <option value="4">Course</option>
+                <option value="5">Dance</option>
+                <option value="6">Meditation</option>
+                <option value="7">Pilates</option>
+                <option value="8">Velos</option>
+                <option value="9">Escalade</option>
+                <option value="10">Gymnastique</option>
+                <option value="11">Randonnees</option>
+                <option value="12">Natation</option>
+                <option value="13">Tennis</option>
+                <option value="14">Football</option>
+                <option value="15">Basketball</option>
+                <option value="16">Volleyball</option>
+                <option value="17">Handball</option>
+                <option value="18">Rugby</option>
+                <option value="19">Golf</option>
+                <option value="20">Equitation</option>
+                </select>
+            </div>
+            </div> 
             
             
             {/* Troisième colonne */}

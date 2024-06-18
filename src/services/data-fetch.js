@@ -15,21 +15,20 @@ export async function getData(objectUrl) {
 }
 
 // Fonction pour envoyer les données
-export async function postData(objectUrl, workout) {
+export async function postData(objectUrl, workoutData, filesToUpload) {
   const formData = new FormData();
-  for (const key in workout) {
-    if (workout.hasOwnProperty(key) && key !== 'images') {
-      console.log(`Ajout de ${key}:`, workout[key]);
-      formData.append(`workout[${key}]`, workout[key]);
+  for (const key in workoutData) {
+    if (workoutData.hasOwnProperty(key) && key !== 'workout_images') {
+      console.log(`Ajout de ${key}:`, workoutData[key]);
+      formData.append(`workout[${key}]`, workoutData[key]);
     }
   }
-  workout.images.forEach((imageFile, index) => {
+  filesToUpload.forEach((imageFile, index) => {
     console.log(`Ajout de l'image à l'index ${index}:`, imageFile);
-    // Utilisez imageFile ici au lieu de fileToUpload
-    formData.append('workout[images][]', imageFile);
+    formData.append('workout[workout_images][]', imageFile); // Utilisez la clé 'workout[workout_images][]'
   });
   
-    try {
+  try {
     const response = await ky.post(BASE_URL + objectUrl, {
       headers: getHeaders(),
       body: formData,
