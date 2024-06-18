@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { UsersIcon, CurrencyDollarIcon, CalendarIcon, ClockIcon, RocketLaunchIcon, MapPinIcon, MapIcon, IdentificationIcon, PencilSquareIcon } from '@heroicons/react/24/solid';
-import { postData, getData } from '../../services/data-fetch';
+import { postData, getData, updateData } from '../../services/data-fetch';
 
 
 const FormWorkout = () => {
+    const { workoutId } = useParams();
+    const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
     const [category_id, setCategoryId] = useState('')
     const [previewImages, setPreviewImages] = useState([]);
@@ -21,25 +24,57 @@ const FormWorkout = () => {
       });
     
       useEffect(() => {
-        // Fonction pour charger les catégories au montage du composant
         const loadCategories = async () => {
-          const data = await getData('/categories'); // Utilisez l'URL appropriée pour votre API
-          setCategories(data); // Mettez à jour l'état categories ici
+          const data = await getData('/categories');
+          setCategories(data);
         };
     
-        loadCategories();
-      }, []);
+        const loadWorkoutData = async () => {
+            try {
+              const workoutData = await getData(`/workouts/${workoutId}`);
+              if (workoutData) {
+                setWorkout({
+                  title: workoutData.title || '',
+                  description: workoutData.description || '',
+                  start_date: workoutData.start_date || '',
+                  duration: workoutData.duration.toString() || '',
+                  city: workoutData.city || '',
+                  zip_code: workoutData.zip_code || '',
+                  price: workoutData.price.toString() || '',
+                  max_participants: workoutData.max_participants.toString() || '',
+                  // ... autres champs si nécessaire ...
+                });
+                setPreviewImages(workoutData.image_urls || []);
+              }
+            } catch (error) {
+              console.error("Erreur lors du chargement des données du workout :", error);
+            }
+          };
+      
+          if (workoutId) {
+            loadWorkoutData();
+          }
+          loadCategories();
+        }, [workoutId]);
 
   // Gérer la soumission du formulaire
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const workoutData = { ...workout, category_id }; 
+    const workoutData = { ...workout, category_id };
     console.log('Données du formulaire avant envoi:', workoutData);
+  
     try {
-      const response = await postData('/workouts', workoutData, filesToUpload); // Passez filesToUpload ici
+      let response;
+      if (workoutId) {
+        // Assurez-vous que filesToUpload est un tableau avant de l'envoyer à updateData
+        response = await updateData(`/workouts/${workoutId}`, workoutData, filesToUpload);
+      } else {
+        response = await postData('/workouts', workoutData, filesToUpload);
+      }
       console.log('Réponse de l\'API:', response);
+      navigate('/'); // Redirigez l'utilisateur
     } catch (error) {
-      console.error("Erreur lors de la création de la séance :", error);
+      console.error("Erreur lors de la soumission du formulaire :", error);
     }
   };
 
@@ -71,10 +106,10 @@ const handleImageChange = (event) => {
   };
   
   // Afficher les images sélectionnées avec un style de carte
-const renderImagesPreview = () => {
-    return previewImages.map((image, index) => (
+  const renderImagesPreview = () => {
+    return previewImages.map((imageUrl, index) => (
       <div key={index} className="border border-gray-300 shadow-lg p-2 relative">
-        <img src={image} alt={`Aperçu ${index}`} className="max-w-xs" />
+        <img src={imageUrl} alt={`Aperçu ${index}`} className="max-w-xs" />
         {/* Bouton pour supprimer l'image */}
         <button
           onClick={() => handleRemoveImage(index)}
@@ -141,7 +176,7 @@ const handleRemoveImage = (index) => {
             {/* Zone de texte pour la description */}
       <div className="w-full max-w-4xl mb-8">
         <PencilSquareIcon className="h-6 text-blue-500 mr-2" />
-        <textarea name="description" placeholder="Description" onChange={handleChange} required className="w-full h-32" />
+        <textarea name="description" placeholder="Description" value={workout.description} onChange={handleChange} required className="w-full h-32" />
       </div>
 
         {/* Formulaire */}
@@ -152,16 +187,16 @@ const handleRemoveImage = (index) => {
         <div className="mb-6">
       <div className="flex items-center mb-4">
         <UsersIcon className="h-6 text-blue-500 mr-2" />
-        <input type="number" name="max_participants" placeholder="Nombre de participants" onChange={handleChange} required className="w-full" />
+        <input type="number" name="max_participants" value={workout.max_participants}placeholder="Nombre de participants" onChange={handleChange} required className="w-full" />
       </div>
       
       <div className="flex items-center mb-4">
       <MapPinIcon className="h-6 text-blue-500 mr-2" />
-        <input type="text" name="zip_code" placeholder="Code postal" onChange={handleChange} required className="w-full" />
+        <input type="text" name="zip_code" placeholder="Code postal" value={workout.zip_code} onChange={handleChange} required className="w-full" />
       </div>
       <div className="flex items-center mb-4">
       <MapIcon className="h-6 text-blue-500 mr-2" />
-        <input type="text" name="city" placeholder="Ville" onChange={handleChange} required className="w-full" />
+        <input type="text" name="city" placeholder="Ville" value={workout.city} onChange={handleChange} required className="w-full" />
       </div>
     </div>
             
@@ -169,12 +204,12 @@ const handleRemoveImage = (index) => {
             <div className="mb-6">
                 <div className="flex items-center mb-4">
             <IdentificationIcon className="h-6 text-blue-500 mr-2" />
-            <input type="text" name="title" placeholder="Titre" onChange={handleChange} required className="w-full" />
+            <input type="text" name="title" placeholder="Titre" value={workout.title} onChange={handleChange} required className="w-full" />
                 </div>
 
                 <div className="flex items-center mb-4">
                     <CurrencyDollarIcon className="h-6 text-blue-500 mr-2" />
-                    <input type="number" name="price" placeholder="Prix" onChange={handleChange} required className="w-full" />
+                    <input type="number" name="price" placeholder="Prix" value={workout.price} onChange={handleChange} required className="w-full" />
                 </div>
                   
 
@@ -193,9 +228,9 @@ const handleRemoveImage = (index) => {
             {/* Troisième colonne */}
             <div className="mb-6">
             <CalendarIcon className="h-6 text-blue-500 mb-2" />
-            <input type="datetime-local" name="start_date" placeholder="Date et heure de début" onChange={handleChange} required className="w-full mb-4" />
+            <input type="datetime-local" name="start_date" value={workout.start_date} placeholder="Date et heure de début" onChange={handleChange} required className="w-full mb-4" />
             <ClockIcon className="h-6 text-blue-500 mb-2" />
-            <select name="duration" onChange={handleChange} required className="w-full mb-4">
+            <select name="duration" onChange={handleChange}  value={workout.duration}required className="w-full mb-4">
                 <option value="">Sélectionnez une durée</option>
                 <option value="30">30 min</option>
                 <option value="60">1h</option>
@@ -220,7 +255,9 @@ const handleRemoveImage = (index) => {
           
           {/* Bouton de soumission */}
         <div className="flex justify-center">
-            <button type="submit" className="bg-blue-500 text-white py-3 px-6 rounded">Créer Workout</button>
+        <button type="submit" className="bg-blue-500 text-white py-3 px-6 rounded">
+                {workoutId ? 'Éditer Workout' : 'Créer Workout'}
+        </button>
         </div>
         </form>
       </div>

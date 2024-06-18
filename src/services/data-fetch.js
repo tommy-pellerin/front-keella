@@ -53,26 +53,27 @@ export async function deleteData(objectUrl) {
 }
 
 // Fonction pour update les donnees
-export async function updateData(objectUrl, body, filesToUpload) {
+export async function updateData(objectUrl, workoutData, filesToUpload) {
   const formData = new FormData();
-  for (const key in body) {
-    if (body.hasOwnProperty(key)) {
-      formData.append(`workout[${key}]`, body[key]);
+  for (const key in workoutData) {
+    if (workoutData.hasOwnProperty(key)) {
+      formData.append(`workout[${key}]`, workoutData[key]);
     }
   }
-  filesToUpload.forEach((imageFile, index) => {
-    console.log(`Ajout de l'image à l'index ${index}:`, imageFile);
-    formData.append('workout[workout_images][]', imageFile); // Utilisez la clé 'workout[workout_images][]'
-  });
+  // Vérifiez que filesToUpload est défini et est un tableau avant d'utiliser forEach
+  if (Array.isArray(filesToUpload)) {
+    filesToUpload.forEach((file, index) => {
+      formData.append('workout[workout_images][]', file);
+    });
+  }
+  
   try {
-    const response = await ky
-      .patch(BASE_URL + objectUrl, {
-        headers: getHeaders(),
-        body: formData,
-      })
-      .json();
+    const response = await ky.patch(BASE_URL + objectUrl, {
+      headers: getHeaders(),
+      body: formData,
+    }).json();
     return response;
   } catch (error) {
-    console.error("Erreur lors de la recuperations des donnees :", error);
+    console.error("Erreur lors de la mise à jour des données :", error);
   }
 }

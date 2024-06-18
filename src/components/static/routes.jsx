@@ -15,7 +15,7 @@ export default function AppRoutes() {
       <Route path="/sign-out" element={<SignOut />} />
       <Route path="/workouts" element={<WorkoutIndex />} />
       <Route path="/create-workout" element={<FormWorkout />} />
-      <Route path="/edit-workout" element={<FormWorkout />} />
+      <Route path="/edit-workout/:workoutId" element={<FormWorkout />} />
     </Routes>
   );
 }
