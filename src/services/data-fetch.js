@@ -53,13 +53,17 @@ export async function deleteData(objectUrl) {
 }
 
 // Fonction pour update les donnees
-export async function updateData(objectUrl, body) {
+export async function updateData(objectUrl, body, filesToUpload) {
   const formData = new FormData();
   for (const key in body) {
     if (body.hasOwnProperty(key)) {
       formData.append(`workout[${key}]`, body[key]);
     }
   }
+  filesToUpload.forEach((imageFile, index) => {
+    console.log(`Ajout de l'image à l'index ${index}:`, imageFile);
+    formData.append('workout[workout_images][]', imageFile); // Utilisez la clé 'workout[workout_images][]'
+  });
   try {
     const response = await ky
       .patch(BASE_URL + objectUrl, {
