@@ -1,4 +1,5 @@
 import React,{ useState } from "react";
+import { getData } from '../../services/data-fetch'
 
 function SearchWorkout({ onSearch }) {
     const [city, setCity] = useState('');
@@ -17,9 +18,8 @@ function SearchWorkout({ onSearch }) {
     }).toString();
     try {
         console.log(queryParams);
-        const response = await fetch(`/workouts?${queryParams}`);
-        const data = await response.json();
-        onSearch(data);
+        const response = await getData(`/workouts/search?${queryParams}`);
+        onSearch(response);
       } catch (error) {
         console.error('Error fetching workouts:', error);
       }
@@ -33,7 +33,7 @@ function SearchWorkout({ onSearch }) {
           <input 
           type="search" 
           id="city-search" 
-          className="block w-1/2 p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-purple-500 focus:border-purple-500"
+          className="block w-1/2 p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50"
           placeholder="City" 
           value={city}
           onChange={(e)=> setCity(e.target.value)}
@@ -41,7 +41,7 @@ function SearchWorkout({ onSearch }) {
           <input 
           type="search" 
           id="date-search" 
-          className="block w-1/4 p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-purple-500 focus:border-purple-500" 
+          className="block w-1/4 p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50" 
           placeholder="Date"
           value={date}
           onChange={(e)=> setDate(e.target.value)}
@@ -49,7 +49,7 @@ function SearchWorkout({ onSearch }) {
           <input 
           type="search" 
           id="tags-search" 
-          className="block w-1/4 p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-purple-500 focus:border-purple-500" 
+          className="block w-1/4 p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50" 
           placeholder="Tags"
           value={tags}
           onChange={(e)=> setTags(e.target.value)}
@@ -57,7 +57,7 @@ function SearchWorkout({ onSearch }) {
           <input 
           type="search" 
           id="participants-search" 
-          className="block w-1/2 p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-purple-500 focus:border-purple-500" 
+          className="block w-1/2 p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50" 
           placeholder="Participants"
           value={participants}
           onChange={(e)=> setParticipants(e.target.value)}
