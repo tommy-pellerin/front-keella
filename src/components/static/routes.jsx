@@ -4,6 +4,7 @@ import SignUp from "../auth/sign-up";
 import SignOut from "../auth/sign-out";
 import Home from "../home/Home";
 import WorkoutIndex from "../workout/index";
+import WorkoutShow from "../workout/show";
 import FormWorkout from "../workout/form-workout";
 
 export default function AppRoutes() {
@@ -14,6 +15,8 @@ export default function AppRoutes() {
       <Route path="/sign-up" element={<SignUp />} />
       <Route path="/sign-out" element={<SignOut />} />
       <Route path="/workouts" element={<WorkoutIndex />} />
+      <Route path="/workouts/:workout_id" element={<WorkoutShow />} />
+
       <Route path="/create-workout" element={<FormWorkout />} />
       <Route path="/edit-workout/:workoutId" element={<FormWorkout />} />
     </Routes>

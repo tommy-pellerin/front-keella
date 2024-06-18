@@ -9,6 +9,6 @@ export function getHeaders() {
   if (token) {
     headers.Authorization = `${token}`;
   }
-  console.log('En-têtes de requête:', headers);
+  // console.log('En-têtes de requête:', headers);
   return headers;
 }

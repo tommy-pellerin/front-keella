@@ -15,18 +15,27 @@ export async function getData(objectUrl) {
 }
 
 // Fonction pour envoyer les données
-export async function postData(objectUrl, workoutData, filesToUpload) {
-  const formData = new FormData();
-  for (const key in workoutData) {
-    if (workoutData.hasOwnProperty(key) && key !== 'workout_images') {
-      console.log(`Ajout de ${key}:`, workoutData[key]);
-      formData.append(`workout[${key}]`, workoutData[key]);
+export async function postData(objectUrl, body, filesToUpload) {
+  let formData;
+  console.log(body);
+  if(body.price) {
+    formData = new FormData();
+    for (const key in body) {
+      if (body.hasOwnProperty(key) && key !== 'workout_images') {
+        console.log(`Ajout de ${key}:`, body[key]);
+        formData.append(`workout[${key}]`, body[key]);
+      }
+    }
+    filesToUpload.forEach((imageFile, index) => {
+      console.log(`Ajout de l'image à l'index ${index}:`, imageFile);
+      formData.append('workout[workout_images][]', imageFile); // Utilisez la clé 'workout[workout_images][]'
+    });
+  } else if(body.reservation) {
+    formData = new FormData();
+    for (const key in body.reservation) {
+        formData.append(`reservation[${key}]`, body.reservation[key]);
     }
   }
-  filesToUpload.forEach((imageFile, index) => {
-    console.log(`Ajout de l'image à l'index ${index}:`, imageFile);
-    formData.append('workout[workout_images][]', imageFile); // Utilisez la clé 'workout[workout_images][]'
-  });
   
   try {
     const response = await ky.post(BASE_URL + objectUrl, {
@@ -37,6 +46,12 @@ export async function postData(objectUrl, workoutData, filesToUpload) {
     return response;
   } catch (error) {
     console.error("Erreur lors de la récupération des données :", error);
+    //To get personalized message form the server
+    if (error.response) {
+      error.response.json().then((body) => {
+        console.error('Erreur du serveur:', body.error);
+      });
+    }
   }
 }
 
