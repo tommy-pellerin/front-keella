@@ -16,7 +16,7 @@ import {
   MenuItems,
   Transition,
 } from '@headlessui/react'
-// import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 const navigation = [
   // { name: 'Dashboard', href: '#', current: true },
   // { name: 'Team', href: '#', current: false },
@@ -44,11 +44,9 @@ export default function Navbar() {
                   <span className="absolute -inset-0.5" />
                   <span className="sr-only">Open main menu</span>
                   {open ? (
-                    // <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
-                    <div className="block h-6 w-6" aria-hidden="true">XMarkIcon</div>
+                    <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
                   ) : (
-                    // <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
-                    <div className="block h-6 w-6" aria-hidden="true">Bar3Icon</div>
+                    <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
                   )}
                 </DisclosureButton>
               </div>
@@ -86,8 +84,7 @@ export default function Navbar() {
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">View notifications</span>
                   
-                  {/* <BellIcon className="h-6 w-6" aria-hidden="true" /> */}
-                  <div className="h-6 w-6" aria-hidden="true">BellIcon</div>
+                  <BellIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
 
                 {/* Profile dropdown */}
