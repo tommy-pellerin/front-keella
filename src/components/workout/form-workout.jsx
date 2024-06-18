@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { UsersIcon, CurrencyDollarIcon, CalendarIcon, ClockIcon, RocketLaunchIcon, MapPinIcon, MapIcon, IdentificationIcon, PencilSquareIcon } from '@heroicons/react/24/solid';
-import { postData } from '../../services/data-fetch';
+import { postData, getData } from '../../services/data-fetch';
 
 
 const FormWorkout = () => {
-    const [category_id, setCategoryId] = useState('');
+    const [categories, setCategories] = useState([]);
+    const [category_id, setCategoryId] = useState('')
     const [previewImages, setPreviewImages] = useState([]);
     const [filesToUpload, setFilesToUpload] = useState([]);   
     const [workout, setWorkout] = useState({
@@ -19,6 +20,15 @@ const FormWorkout = () => {
         workout_images: []
       });
     
+      useEffect(() => {
+        // Fonction pour charger les catégories au montage du composant
+        const loadCategories = async () => {
+          const data = await getData('/categories'); // Utilisez l'URL appropriée pour votre API
+          setCategories(data); // Mettez à jour l'état categories ici
+        };
+    
+        loadCategories();
+      }, []);
 
   // Gérer la soumission du formulaire
   const handleSubmit = async (event) => {
@@ -169,31 +179,14 @@ const handleRemoveImage = (index) => {
                   
 
                 <div className="flex items-center mb-4">
-                <RocketLaunchIcon className="h-6 text-blue-500 mr-2" />
-                <select name="category_id" onChange={handleChange} required className="w-full">
-                <option value="">Sélectionner la Catégorie</option>
-                <option value="1">Yoga</option>
-                <option value="2">Crossfit</option>
-                <option value="3">Boxing</option>
-                <option value="4">Course</option>
-                <option value="5">Dance</option>
-                <option value="6">Meditation</option>
-                <option value="7">Pilates</option>
-                <option value="8">Velos</option>
-                <option value="9">Escalade</option>
-                <option value="10">Gymnastique</option>
-                <option value="11">Randonnees</option>
-                <option value="12">Natation</option>
-                <option value="13">Tennis</option>
-                <option value="14">Football</option>
-                <option value="15">Basketball</option>
-                <option value="16">Volleyball</option>
-                <option value="17">Handball</option>
-                <option value="18">Rugby</option>
-                <option value="19">Golf</option>
-                <option value="20">Equitation</option>
-                </select>
-            </div>
+                    <RocketLaunchIcon className="h-6 text-blue-500 mr-2" />
+                    <select name="category_id" onChange={handleChange} required className="w-full">
+                    <option value="">Sélectionner la Catégorie</option>
+                    {categories.map((category) => (
+                        <option key={category.id} value={category.id}>{category.name}</option>
+                    ))}
+                    </select>
+                </div>
             </div> 
             
             
