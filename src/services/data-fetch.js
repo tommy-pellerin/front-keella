@@ -15,21 +15,20 @@ export async function getData(objectUrl) {
 }
 
 // Fonction pour envoyer les données
-export async function postData(objectUrl, body) {
+export async function postData(objectUrl, body, filesToUpload) {
   let formData;
   console.log(body);
   if(body.price) {
     formData = new FormData();
     for (const key in body) {
-      if (body.hasOwnProperty(key) && key !== 'images') {
+      if (body.hasOwnProperty(key) && key !== 'workout_images') {
         console.log(`Ajout de ${key}:`, body[key]);
         formData.append(`workout[${key}]`, body[key]);
       }
     }
-    body.images.forEach((imageFile, index) => {
+    filesToUpload.forEach((imageFile, index) => {
       console.log(`Ajout de l'image à l'index ${index}:`, imageFile);
-      // Utilisez imageFile ici au lieu de fileToUpload
-      formData.append('workout[images][]', imageFile);
+      formData.append('workout[workout_images][]', imageFile); // Utilisez la clé 'workout[workout_images][]'
     });
   } else if(body.reservation) {
     formData = new FormData();
