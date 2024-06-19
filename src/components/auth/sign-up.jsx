@@ -6,12 +6,12 @@ import AuthForm from "./auth-form";
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const [setUser] = useAtom(userAtom);
+  const [,setUser] = useAtom(userAtom);
 
-  const handleLogin = async ({ email, password }) => {
+  const handleSignup = async ({ username, email, password }) => {
     try {
       const user = await authSignInUp("/users", {
-        user: { email, password },
+        user: { username, email, password },
       });
       setUser({
         email: user.user.email,
@@ -26,7 +26,7 @@ export default function SignIn() {
   return (
   <div className="text-center my-5">
     <h1>Inscription</h1>
-    <AuthForm onSubmit={handleLogin} buttonText="Sign Up" />
+    <AuthForm onSubmit={handleSignup} buttonText="Sign Up" />
   </div>
   )
 }
