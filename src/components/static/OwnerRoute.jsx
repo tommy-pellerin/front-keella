@@ -7,6 +7,7 @@ import { useEffect } from "react";
 
 function checkOwner(currentUser, objectToCompare) {
   console.log("object à comparer:",objectToCompare);
+  //flash
   return currentUser.id === objectToCompare.id;
 }
 
@@ -38,6 +39,7 @@ const OwnerRoute = ({ children }) => {
         try {
           const data = await getData(`/users/${user_id}`);
           console.log(data);
+          isOwner = checkOwner(currentUser, data);
         } catch (error) {
           console.error(error);
         }
@@ -50,6 +52,7 @@ const OwnerRoute = ({ children }) => {
         try {
           const data = await getData(`/reservations/${reservation_id}`);
           console.log(data);
+          isOwner = checkOwner(currentUser, data.user);
         } catch (error) {
           console.error(error);
         }
