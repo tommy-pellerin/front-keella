@@ -6,6 +6,7 @@ import WorkoutIndex from "../workout/index";
 import WorkoutShow from "../workout/show";
 import FormWorkout from "../workout/form-workout";
 import KitUI from "../KitUI/KitUI";
+import UserProfile from "../user/profile";
 
 export default function AppRoutes() {
   return (
@@ -15,6 +16,7 @@ export default function AppRoutes() {
       <Route path="/sign-up" element={<SignUp />} />
       <Route path="/workouts" element={<WorkoutIndex />} />
       <Route path="/workouts/:workout_id" element={<WorkoutShow />} />
+      <Route path="/profile/:urlprofile" element={<UserProfile />} />
 
       <Route path="/form-workout" element={<FormWorkout />} />
 
