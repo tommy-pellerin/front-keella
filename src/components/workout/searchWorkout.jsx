@@ -4,8 +4,9 @@ import { getData } from '../../services/data-fetch'
 function SearchWorkout({ onSearch }) {
     const [city, setCity] = useState('');
     const [date, setDate] = useState('');
-    const [tags, setTags] = useState('');
-    const [participants, setParticipants] = useState('')
+    const [time,setTime] = useState('');
+    const [categorie, setCategorie] = useState('');
+    const [participants, setParticipants] = useState('');
 
     const handleSubmit = async(e) => {
         e.preventDefault();
@@ -13,7 +14,8 @@ function SearchWorkout({ onSearch }) {
     const queryParams = new URLSearchParams({
       city,
       date,
-      tags,
+      time,
+      categorie,
       participants
     }).toString();
     try {
@@ -39,26 +41,35 @@ function SearchWorkout({ onSearch }) {
           onChange={(e)=> setCity(e.target.value)}
         />
           <input 
-          type="search" 
+          type="date" 
           id="date-search" 
-          className="block w-1/4 p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50" 
+          className="block w-1/2 p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50" 
           placeholder="Date"
           value={date}
           onChange={(e)=> setDate(e.target.value)}
+        />
+        <input 
+          type="time"
+          step="1800" 
+          id="time-search" 
+          className="block w-1/2 p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50" 
+          placeholder="Time"
+          value={time}
+          onChange={(e)=> setTime(e.target.value)}
         />
           <input 
           type="search" 
           id="tags-search" 
           className="block w-1/4 p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50" 
           placeholder="Tags"
-          value={tags}
-          onChange={(e)=> setTags(e.target.value)}
+          value={categorie}
+          onChange={(e)=> setCategorie(e.target.value)}
         />
           <input 
           type="search" 
           id="participants-search" 
-          className="block w-1/2 p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50" 
-          placeholder="Participants"
+          className="block w-1/4 p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50" 
+          placeholder="Places"
           value={participants}
           onChange={(e)=> setParticipants(e.target.value)}
         />

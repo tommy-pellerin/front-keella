@@ -3,7 +3,6 @@ import WorkoutList from './workoutList';
 import SearchWorkout from './searchWorkout';
 function WorkoutIndex() {
     const [searchResults, setSearchResults] = useState(null);
-    console.log(searchResults)
   return (
     <>
     <div className='max-w-screen-lg mx-auto p-4'>
