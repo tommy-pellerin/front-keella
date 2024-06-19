@@ -27,7 +27,7 @@ export async function authSignInUp(objectUrl, body) {
 }
 
 // Fonction pour changer le mot de passe
-export async function resetPassword(objectUrl, body) {
+export async function authPatch(objectUrl, body) {
   // console.log(body);
   const response = await ky.patch(BASE_URL + objectUrl, {
     headers: getHeaders(),

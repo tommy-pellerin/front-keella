@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 // import { updateData } from "../../services/data-fetch.js";
-import { resetPassword } from "../../services/auth-fetch.js";
+import { authPatch } from "../../services/auth-fetch.js";
 import Alert from "../../styles/Alert.jsx";
 
 export default function ResetPassword() {
@@ -18,7 +18,7 @@ export default function ResetPassword() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const data = await resetPassword("/users/password", {
+      const data = await authPatch("/users/password", {
         user: {
           reset_password_token: resetPasswordToken,
           password: password,
@@ -41,7 +41,7 @@ export default function ResetPassword() {
     <>
     <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={alertType === 'success' ? "Votre mot de passe a été changé" : "Erreur dans le changement de mot de passe. Veuillez recommencer"} type={alertType} />
     <div className="text-center my-5">
-      <h1>Mot de pass oublié ?</h1>
+      <h1>Changement de mot de passe</h1>
       <div className="container bg-gray-200 mx-auto lg:w-3/5 my-5 border border-gray rounded-lg">
         <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-5 my-5">
           <div className="sm:w-full lg:w-3/5">

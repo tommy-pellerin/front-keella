@@ -29,7 +29,7 @@ export default function ForgetPassword() {
     <>
     <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={alertType === 'success' ? "Vous allez recevoir un email avec un lien pour changer votre mot de pass" : "Une erreur est survenue. Veuillez recommencer"} type={alertType} />
     <div className="text-center my-5">
-      <h1>Mot de pass oublié ?</h1>
+      <h1>Mot de passe oublié ?</h1>
       <div className="container bg-gray-200 mx-auto lg:w-3/5 my-5 border border-gray rounded-lg">
         <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-5 my-5">
           <div className="sm:w-full lg:w-3/5">
