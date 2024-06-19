@@ -1,13 +1,18 @@
 import { useState, useEffect } from "react"
 import { getData, postData } from "../../services/data-fetch";
 import { useParams, Link } from "react-router-dom";
+import Alert from "../../styles/Alert";
+
+
 const WorkoutShow = () => {
   const [quantity,setQuantity] = useState(1)
   const [workout, setWorkout] = useState([]);
   const { workout_id } = useParams();
   const [workout_images,setWorkout_images] = useState("")
-  //use tailwind alert
+
+  //use alert component
   const [showAlert, setShowAlert] = useState(false);
+  const [alertType, setAlertType] = useState('');
 
   function formatDate(dateString) {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
@@ -65,9 +70,12 @@ const WorkoutShow = () => {
           console.log(data);
           if(data){
             setShowAlert(true);
+            setAlertType('success'); // Set alert type to 'success'
           }
         } catch (error) {
           console.error(error);
+          setShowAlert(true);
+          setAlertType('error');
         }
       }
     };
@@ -76,22 +84,8 @@ const WorkoutShow = () => {
 
   return(
     <>
-      {showAlert && (
-        <div className="text-white px-6 py-4 border-0 rounded relative mb-4 bg-green-500">
-          <span className="text-xl inline-block mr-5 align-middle">
-            <i className="fas fa-bell" />
-          </span>
-          <span className="inline-block align-middle mr-8">
-            Votre demande de réservation a été envoyé
-          </span>
-          <button
-            className="absolute bg-transparent text-2xl font-semibold leading-none right-0 top-0 mt-4 mr-6 outline-none focus:outline-none"
-            onClick={() => setShowAlert(false)}
-          >
-            <span>×</span>
-          </button>
-        </div>
-      )}
+      
+      <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={alertType === 'success' ? "Votre demande de réservation a été envoyé" : "Erreur lors de l'envoi de la demande de réservation"} type={alertType} />
 
       <div className="border border-black my-5">
         {workout_images ? workout_images : "Pas d'images"}
@@ -137,14 +131,14 @@ const WorkoutShow = () => {
               <p>Nombre de place : {quantity}</p>
               <div className="flex justify-around">
                 {/* Buttons are disabled when on conditions */}
-                <button className="py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700" onClick={decreaseQuantity} disabled={quantity <= 1}>-</button>
-                <button className="py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700" onClick={increaseQuantity} disabled={quantity >= workout.available_places}>+</button>
+                <button className="button-red-small" onClick={decreaseQuantity} disabled={quantity <= 1}>-</button>
+                <button className="button-green-small" onClick={increaseQuantity} disabled={quantity >= workout.available_places}>+</button>
               </div>
             </div>
             {quantity > workout.available_places ?
-            <button className="py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700" disabled={quantity > workout.available_places}>Il n&apos;y a plus de place</button>
+            <button className="button-primary-large" disabled={quantity > workout.available_places}>Il n&apos;y a plus de place</button>
             :
-            <button className="py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700" onClick={handleReservation} disabled={quantity > workout.available_places}>Envoyer une demande de réservation</button>
+            <button className="button-primary-large" onClick={handleReservation} disabled={quantity > workout.available_places}>Envoyer une demande de réservation</button>
             }
             {/* <button className="py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700" onClick={handleReservation}>Envoyer une demande de réservation</button> */}
 

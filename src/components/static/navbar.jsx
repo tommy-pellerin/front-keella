@@ -21,6 +21,7 @@ const navigation = [
   // { name: 'Dashboard', href: '#', current: true },
   // { name: 'Team', href: '#', current: false },
   // { name: 'Projects', href: '#', current: false },
+  { name: 'Kit UI', href: '/kit-ui', current: false },
   { name: 'Trouver une séance', href: '/workouts', current: false },
 ]
 
