@@ -16,7 +16,8 @@ export default function AppRoutes() {
       <Route path="/workouts" element={<WorkoutIndex />} />
       <Route path="/workouts/:workout_id" element={<WorkoutShow />} />
 
-      <Route path="/form-workout" element={<FormWorkout />} />
+      <Route path="/create-workout" element={<FormWorkout />} />
+      <Route path="/edit-workout/:workoutId" element={<FormWorkout />} />
 
       <Route path="/kit-ui" element={<KitUI/>} />
     </Routes>
