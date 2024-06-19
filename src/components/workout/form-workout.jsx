@@ -29,6 +29,7 @@ const FormWorkout = () => {
       });
     
       useEffect(() => {
+        console.log(workoutId);
         const loadCategories = async () => {
           const data = await getData('/categories');
           setCategories(data);
