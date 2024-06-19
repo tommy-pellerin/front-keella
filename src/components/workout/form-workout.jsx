@@ -254,9 +254,11 @@ const handleRemoveImage = (index) => {
         
         
       {/* Bandeau bleu avec un titre */}
-      <div className="bg-blue-500 text-white text-center py-10 mb-8">
-        <h1 className="text-4xl">Propose ta séance</h1>
-      </div>
+        <div className="bg-blue-500 text-white text-center py-10 mb-8">
+        <h1 className="text-4xl">
+            {workoutId ? 'Éditer votre séance' : 'Proposer une nouvelle séance'}
+        </h1>
+        </div>
   
       {/* Conteneur principal */}
       <div className="flex flex-col items-center mt-8 mb-16">
@@ -350,7 +352,7 @@ const handleRemoveImage = (index) => {
           
           {/* Bouton de soumission */}
         <div className="flex justify-center">
-        <button type="submit" className="bg-purple-600 text-white py-3 px-6 rounded">
+        <button type="submit" className="button-primary-small text-white py-3 px-6 rounded">
                 {workoutId ? 'Éditer Workout' : 'Créer Workout'}
         </button>
         </div>
