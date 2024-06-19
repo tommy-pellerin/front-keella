@@ -15,7 +15,7 @@ export default function AppRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/sign-in" element={<SignIn />} />
       <Route path="/sign-up" element={<SignUp />} />
-      <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/users/password/edit" element={<ResetPassword />} />
       <Route path="/forget-password" element={<ForgetPassword />} />
       <Route path="/workouts" element={<WorkoutIndex />} />
       <Route path="/workouts/:workout_id" element={<WorkoutShow />} />

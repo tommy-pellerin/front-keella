@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { updateData } from "../../services/data-fetch.js";
+// import { updateData } from "../../services/data-fetch.js";
+import { resetPassword } from "../../services/auth-fetch.js";
+import Alert from "../../styles/Alert.jsx";
 
 export default function ResetPassword() {
   const navigate = useNavigate();
@@ -10,23 +12,34 @@ export default function ResetPassword() {
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertType, setAlertType] = useState('success');
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await updateData("users/password", {
+      const data = await resetPassword("/users/password", {
         user: {
           reset_password_token: resetPasswordToken,
           password: password,
           password_confirmation: passwordConfirmation,
         },
       });
+      if(data){
+        setShowAlert(true);
+        setAlertType('success'); // Set alert type to 'success'
+      }
       navigate("/sign-in");
     } catch (error) {
       console.error("Error:", error);
+      setShowAlert(true);
+      setAlertType('error'); // Set alert type to 'error'
     }
   };
 
   return (
+    <>
+    <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={alertType === 'success' ? "Votre mot de passe a été changé" : "Erreur dans le changement de mot de passe. Veuillez recommencer"} type={alertType} />
     <div className="text-center my-5">
       <h1>Mot de pass oublié ?</h1>
       <div className="container bg-gray-200 mx-auto lg:w-3/5 my-5 border border-gray rounded-lg">
@@ -61,5 +74,6 @@ export default function ResetPassword() {
         </form>
       </div>
     </div>
+    </>
   );
 }
