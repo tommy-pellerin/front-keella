@@ -162,13 +162,14 @@ const handleImageChange = (event) => {
     }
   };
   
+ 
   // Afficher les images sélectionnées avec un style de carte
-  // Afficher les images sélectionnées avec un style de carte
-const renderImagesPreview = () => {
-    console.log(previewImages);
+  const renderImagesPreview = () => {
     return previewImages.map((imageUrl, index) => {
-      // Concaténez BASE_URL avec imageUrl pour créer l'URL complète
-      const fullImageUrl = BASE_URL + imageUrl;
+      // Vérifiez si l'URL est une URL de blob ou une URL complète
+      const isBlobUrl = imageUrl.startsWith('blob:');
+      const fullImageUrl = isBlobUrl ? imageUrl : BASE_URL + imageUrl;
+  
       return (
         <div key={index} className="border border-gray-300 shadow-lg p-2 relative">
           <img src={fullImageUrl} alt={`Aperçu ${index}`} className="max-w-xs" />
