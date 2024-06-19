@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import SignOut from "../auth/sign-out";
 
 //Atoms
 import { useAtom } from "jotai";
@@ -17,10 +18,12 @@ import {
   Transition,
 } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+
 const navigation = [
   // { name: 'Dashboard', href: '#', current: true },
   // { name: 'Team', href: '#', current: false },
   // { name: 'Projects', href: '#', current: false },
+  { name: 'Kit UI', href: '/kit-ui', current: false },
   { name: 'Trouver une séance', href: '/workouts', current: false },
 ]
 
@@ -121,12 +124,12 @@ export default function Navbar() {
                     <>
                       <MenuItem>
                         {({ focus }) => (
-                          <Link to="/sign-in" className={classNames(focus ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}>Log In</Link>
+                          <Link to="/sign-in" className={classNames(focus ? 'bg-gray-100' : '', 'block text-center px-4 py-2 text-sm text-gray-700')}>Log In</Link>
                         )}
                       </MenuItem>
                       <MenuItem>
                         {({ focus }) => (
-                          <Link to="/sign-up" className={classNames(focus ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}>Sign Up</Link>
+                          <Link to="/sign-up" className={classNames(focus ? 'bg-gray-100' : '', 'block text-center px-4 py-2 text-sm text-gray-700')}>Sign Up</Link>
                         )}
                       </MenuItem>
                     </> 
@@ -134,12 +137,14 @@ export default function Navbar() {
                     <>
                       <MenuItem>
                         {({ focus }) => (
-                          <Link to="/profile/me" className={classNames(focus ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}>Your Profile</Link>
+                          <Link to="/profile/me" className={classNames(focus ? 'bg-gray-100' : '', 'block text-center px-4 py-2 text-sm text-gray-700')}>Your Profile</Link>
                         )}
                       </MenuItem>
                       <MenuItem>
                         {({ focus }) => (
-                          <Link to="/sign-out" className={classNames(focus ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}>Log Out</Link>
+                          <button className={classNames(focus ? 'bg-gray-100' : '', 'block w-full px-4 py-2 text-sm text-gray-700')}>
+                            <SignOut />
+                          </button>
                         )}
                       </MenuItem>
                     </>
