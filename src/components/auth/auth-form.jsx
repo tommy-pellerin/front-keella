@@ -18,7 +18,7 @@ export default function AuthForm({ onSubmit, buttonText }) {
     <div className="container bg-gray-200 mx-auto lg:w-3/5 my-5 border border-gray rounded-lg">
       <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-5 my-5">
         {isSigningUp &&
-        <div className="w-3/5">
+        <div className="sm:w-full lg:w-3/5">
           <label>User name</label>
           <br />
           <input
