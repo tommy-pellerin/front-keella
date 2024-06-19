@@ -23,5 +23,10 @@ export default function SignIn() {
     }
   };
 
-  return <AuthForm onSubmit={handleLogin} buttonText="Login" />;
+  return (
+  <div className="text-center my-5">
+    <h1>Inscription</h1>
+    <AuthForm onSubmit={handleLogin} buttonText="Sign Up" />
+  </div>
+  )
 }
