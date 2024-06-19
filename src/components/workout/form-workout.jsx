@@ -6,6 +6,7 @@ import { BASE_URL} from '../../services/config-fetch';
 import Alert from '../../styles/Alert';
 
 const FormWorkout = () => {
+    const [successMessage, setSuccessMessage] = useState('');
     const { workoutId } = useParams();
     // const navigate = useNavigate();
     const [showAlert, setShowAlert] = useState(false); 
@@ -107,33 +108,41 @@ const FormWorkout = () => {
             }
         }
 
-    try {
-      let response;
-      if (workoutId) {
-        // Assurez-vous que filesToUpload est un tableau avant de l'envoyer à updateData
-        response = await updateData(`/workouts/${workoutId}`, workoutData, filesToUpload);
-      } else {
-        response = await postData('/workouts', workoutData, filesToUpload);
-      }
-       // Gérer la réponse ici
-       if (response && response.id) {
-        setValidationErrors([]); // Réinitialisez les erreurs de validation
-        setShowAlert(true);
-        setAlertType('success');
-        // navigate('/'); 
-      } else {
-        setShowAlert(true);
-        setAlertType('error');
-      }
-      console.log('Réponse de l\'API:', response);
-     
-    } catch (error) {
-        // Gérez les erreurs ici
-        setShowAlert(true);
-        setAlertType('error');
-        console.error("Erreur lors de la soumission du formulaire :", error);
-      }
-    };
+        try {
+            let response;
+            if (workoutId) {
+              // Logique pour l'édition d'un workout existant
+              response = await updateData(`/workouts/${workoutId}`, workoutData, filesToUpload);
+              if (response && response.id) {
+                setSuccessMessage('Le workout a été mis à jour avec succès !'); // Message personnalisé pour l'édition
+              }
+            } else {
+              // Logique pour la création d'un nouveau workout
+              response = await postData('/workouts', workoutData, filesToUpload);
+              if (response && response.id) {
+                setSuccessMessage('Le workout a été créé avec succès !'); // Message personnalisé pour la création
+              }
+            }
+      
+            // Gérer la réponse ici
+            if (response && response.id) {
+              setValidationErrors([]); // Réinitialisez les erreurs de validation
+              setShowAlert(true);
+              setAlertType('success');
+              // navigate('/'); 
+            } else {
+              setShowAlert(true);
+              setAlertType('error');
+              setValidationErrors(['Une erreur est survenue lors de la soumission des données.']);
+            }
+          } catch (error) {
+            // Gérez les erreurs ici
+            setShowAlert(true);
+            setAlertType('error');
+            setValidationErrors(['Une erreur est survenue lors de la soumission des données.']);
+            console.error("Erreur lors de la soumission du formulaire :", error);
+          }
+        };
 
   // Gérer les changements dans les champs du formulaire
   const handleChange = (event) => {
@@ -225,23 +234,23 @@ const handleRemoveImage = (index) => {
     <>
         
         <Alert 
-  showAlert={showAlert} 
-  setShowAlert={setShowAlert} 
-  message={
-    <div>
-      {alertType === 'success' ? 
-        "Votre création de workout a été effectuée !" : 
-        validationErrors.map((error, index) => (
-          <React.Fragment key={index}>
-            {error}
-            <br />
-          </React.Fragment>
-        ))
-      }
-    </div>
-  } 
-  type={alertType} 
-/>
+        showAlert={showAlert} 
+        setShowAlert={setShowAlert} 
+        message={
+          <div>
+            {alertType === 'success' ? 
+              successMessage : 
+              validationErrors.map((error, index) => (
+                <React.Fragment key={index}>
+                  {error}
+                  <br />
+                </React.Fragment>
+              ))
+            }
+          </div>
+        } 
+        type={alertType} 
+      />
         
         
       {/* Bandeau bleu avec un titre */}
