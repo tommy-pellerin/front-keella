@@ -16,5 +16,5 @@ export default function SignOut() {
       console.error(error);
     }
   };
-  return <button onClick={handleSignOut}>Sign out</button>;
+  return <div onClick={handleSignOut}>Sign out</div>;
 }

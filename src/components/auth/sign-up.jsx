@@ -2,16 +2,21 @@ import { authSignInUp } from "../../services/auth-fetch";
 import { useAtom } from "jotai";
 import { userAtom } from "../../store/user";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import AuthForm from "./auth-form";
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const [setUser] = useAtom(userAtom);
+  const [,setUser] = useAtom(userAtom);
 
-  const handleLogin = async ({ email, password }) => {
+  useEffect(() => {
+    document.title = "Keella | Inscription";
+  }, []);
+
+  const handleSignup = async ({ username, email, password }) => {
     try {
       const user = await authSignInUp("/users", {
-        user: { email, password },
+        user: { username, email, password },
       });
       setUser({
         email: user.user.email,
@@ -23,5 +28,10 @@ export default function SignIn() {
     }
   };
 
-  return <AuthForm onSubmit={handleLogin} buttonText="Login" />;
+  return (
+  <div className="text-center my-5">
+    <h1>Inscription</h1>
+    <AuthForm onSubmit={handleSignup} buttonText="Sign Up" />
+  </div>
+  )
 }
