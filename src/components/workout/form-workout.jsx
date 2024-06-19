@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { UsersIcon, CurrencyDollarIcon, CalendarIcon, ClockIcon, RocketLaunchIcon, MapPinIcon, MapIcon, IdentificationIcon, PencilSquareIcon } from '@heroicons/react/24/solid';
 import { postData, getData, updateData } from '../../services/data-fetch';
-
+import Alert from '../../styles/Alert';
 
 const FormWorkout = () => {
     const { workoutId } = useParams();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
+    const [showAlert, setShowAlert] = useState(false); 
+    const [alertType, setAlertType] = useState('success');
     const [categories, setCategories] = useState([]);
     const [category_id, setCategoryId] = useState('')
     const [previewImages, setPreviewImages] = useState([]);
@@ -71,12 +73,24 @@ const FormWorkout = () => {
       } else {
         response = await postData('/workouts', workoutData, filesToUpload);
       }
+       // Gérer la réponse ici
+       if (response && response.id) {
+        setShowAlert(true);
+        setAlertType('success');
+        // navigate('/'); 
+      } else {
+        setShowAlert(true);
+        setAlertType('error');
+      }
       console.log('Réponse de l\'API:', response);
-      navigate('/'); // Redirigez l'utilisateur
+     
     } catch (error) {
-      console.error("Erreur lors de la soumission du formulaire :", error);
-    }
-  };
+        // Gérez les erreurs ici
+        setShowAlert(true);
+        setAlertType('error');
+        console.error("Erreur lors de la soumission du formulaire :", error);
+      }
+    };
 
   // Gérer les changements dans les champs du formulaire
   const handleChange = (event) => {
@@ -160,6 +174,7 @@ const handleRemoveImage = (index) => {
 
   return (
     <>
+    <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={alertType === 'success' ? "Votre création de workout à été effectué !" : "Vérifier les champs du formulaires"} type={alertType} />
       {/* Bandeau bleu avec un titre */}
       <div className="bg-blue-500 text-white text-center py-10 mb-8">
         <h1 className="text-4xl">Propose ta séance</h1>
