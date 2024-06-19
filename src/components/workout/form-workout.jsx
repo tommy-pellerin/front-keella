@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { UsersIcon, CurrencyDollarIcon, CalendarIcon, ClockIcon, RocketLaunchIcon, MapPinIcon, MapIcon, IdentificationIcon, PencilSquareIcon } from '@heroicons/react/24/solid';
 import { postData, getData, updateData } from '../../services/data-fetch';
+import { BASE_URL} from '../../services/config-fetch';
 import Alert from '../../styles/Alert';
 
 const FormWorkout = () => {
     const { workoutId } = useParams();
     // const navigate = useNavigate();
     const [showAlert, setShowAlert] = useState(false); 
+    const [validationErrors, setValidationErrors] = useState([]);
     const [alertType, setAlertType] = useState('success');
     const [categories, setCategories] = useState([]);
     const [category_id, setCategoryId] = useState('')
@@ -47,6 +49,7 @@ const FormWorkout = () => {
                   // ... autres champs si nécessaire ...
                 });
                 setPreviewImages(workoutData.image_urls || []);
+                console.log(workoutData.image_urls);
               }
             } catch (error) {
               console.error("Erreur lors du chargement des données du workout :", error);
@@ -63,8 +66,47 @@ const FormWorkout = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const workoutData = { ...workout, category_id };
-    console.log('Données du formulaire avant envoi:', workoutData);
-  
+    // console.log('Données du formulaire avant envoi:', workoutData);
+    let errors = [];
+
+    // Vérifiez chaque champ ici selon les règles de validation de l'API
+    // if (!workout.title) errors.push('Le titre est requis.');
+    if (!workout.description) errors.push('La description est requise.');
+    // if (!workout.city) errors.push('La ville est requise.');
+    if (!workout.zip_code) errors.push('Le code postal est requis.');
+    // Validation du prix
+    const price = parseFloat(workout.price);
+    if (isNaN(price) || price < 0 || price > 100) {
+        errors.push('Le prix doit être compris entre 0 et 100€.');
+    }
+    // Validation de la date de début
+        const startDate = new Date(workout.start_date);
+        const now = new Date();
+        const fourHoursLater = new Date(now.getTime() + 4 * 60 * 60 * 1000); // 4 heures plus tard
+        if (startDate < fourHoursLater) {
+            errors.push('La date de début doit être supérieure à 4h avant le début du workout.');
+        }
+    // if (!workout.duration) errors.push('La durée est requise');
+    // if (!workout.max_participants) errors.push('Le nombre de participants est requis.');
+    
+
+    // Si des erreurs de validation sont trouvées
+    if (errors.length > 0) {
+        setValidationErrors(errors);
+        setShowAlert(true);
+        setAlertType('error');
+        return; 
+      }
+    
+      // Vérifiez s'il y a des images ajoutées
+        if (filesToUpload.length === 0) {
+            const confirmNoImages = window.confirm("Êtes-vous sûr de vouloir créer le workout sans images ?");
+            if (!confirmNoImages) {
+            // L'utilisateur a choisi de ne pas créer le workout sans images
+            return;
+            }
+        }
+
     try {
       let response;
       if (workoutId) {
@@ -75,6 +117,7 @@ const FormWorkout = () => {
       }
        // Gérer la réponse ici
        if (response && response.id) {
+        setValidationErrors([]); // Réinitialisez les erreurs de validation
         setShowAlert(true);
         setAlertType('success');
         // navigate('/'); 
@@ -120,21 +163,26 @@ const handleImageChange = (event) => {
   };
   
   // Afficher les images sélectionnées avec un style de carte
-  const renderImagesPreview = () => {
-    return previewImages.map((imageUrl, index) => (
-      <div key={index} className="border border-gray-300 shadow-lg p-2 relative">
-        <img src={imageUrl} alt={`Aperçu ${index}`} className="max-w-xs" />
-        {/* Bouton pour supprimer l'image */}
-        <button
-          onClick={() => handleRemoveImage(index)}
-          className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full"
-        >
-          &times;
-        </button>
-      </div>
-    ));
+  // Afficher les images sélectionnées avec un style de carte
+const renderImagesPreview = () => {
+    console.log(previewImages);
+    return previewImages.map((imageUrl, index) => {
+      // Concaténez BASE_URL avec imageUrl pour créer l'URL complète
+      const fullImageUrl = BASE_URL + imageUrl;
+      return (
+        <div key={index} className="border border-gray-300 shadow-lg p-2 relative">
+          <img src={fullImageUrl} alt={`Aperçu ${index}`} className="max-w-xs" />
+          {/* Bouton pour supprimer l'image */}
+          <button
+            onClick={() => handleRemoveImage(index)}
+            className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full"
+          >
+            &times;
+          </button>
+        </div>
+      );
+    });
   };
-
  // Gérer la suppression d'une image
 const handleRemoveImage = (index) => {
     const updatedPreviewImages = previewImages.filter((_, i) => i !== index);
@@ -174,7 +222,27 @@ const handleRemoveImage = (index) => {
 
   return (
     <>
-    <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={alertType === 'success' ? "Votre création de workout à été effectué !" : "Vérifier les champs du formulaires"} type={alertType} />
+        
+        <Alert 
+  showAlert={showAlert} 
+  setShowAlert={setShowAlert} 
+  message={
+    <div>
+      {alertType === 'success' ? 
+        "Votre création de workout a été effectuée !" : 
+        validationErrors.map((error, index) => (
+          <React.Fragment key={index}>
+            {error}
+            <br />
+          </React.Fragment>
+        ))
+      }
+    </div>
+  } 
+  type={alertType} 
+/>
+        
+        
       {/* Bandeau bleu avec un titre */}
       <div className="bg-blue-500 text-white text-center py-10 mb-8">
         <h1 className="text-4xl">Propose ta séance</h1>
@@ -195,7 +263,7 @@ const handleRemoveImage = (index) => {
       </div>
 
         {/* Formulaire */}
-        <form onSubmit={handleSubmit} className="w-full max-w-4xl mb-8">
+        <form onSubmit={handleSubmit} className="w-full max-w-4xl mb-8" >
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
 
         {/* Première colonne */}
@@ -219,12 +287,14 @@ const handleRemoveImage = (index) => {
             <div className="mb-6">
                 <div className="flex items-center mb-4">
             <IdentificationIcon className="h-6 text-blue-500 mr-2" />
-            <input type="text" name="title" placeholder="Titre" value={workout.title} onChange={handleChange} required className="w-full" />
+            <input type="text" name="title" placeholder="Titre " value={workout.title} onChange={handleChange} required className="w-full" />
+            
                 </div>
 
                 <div className="flex items-center mb-4">
                     <CurrencyDollarIcon className="h-6 text-blue-500 mr-2" />
                     <input type="number" name="price" placeholder="Prix" value={workout.price} onChange={handleChange} required className="w-full" />
+                    
                 </div>
                   
 
