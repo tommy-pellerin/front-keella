@@ -12,28 +12,36 @@ https://front-keella-361lwbkwb-tommy-pellerins-projects.vercel.app/
 
 ## How to use alert component :
 in your component :
-
-import Alert from './Alert';
+import { useAtom } from "jotai";
+import { alertAtom } from "../../store/alert";
 
 // ...
 
-const [showAlert, setShowAlert] = useState(false);
-const [alertType, setAlertType] = useState('success');
+const [,setAlert] = useAtom(alertAtom);
 // ...
 
 in the fetch method exemple:
 try {
-  const data = await postData(`/reservations`,body);
-  console.log(data);
-  if(data){
-    setShowAlert(true);
-    setAlertType('success'); // Set alert type to 'success'
-  }
-} catch (error) {
-  console.error(error);
-  setShowAlert(true);
-  setAlertType('error'); // Set alert type to 'error'
-}
-
-
-<Alert showAlert={showAlert} setShowAlert={setShowAlert} message={alertType === 'success' ? "Votre demande de réservation a été envoyé" : "Erreur lors de l'envoi de la demande de réservation"} type={alertType} />
+      const user = await authSignInUp("/users/sign_in", {
+        user: { email, password },
+      });
+      if(user){
+        setAlert({
+          showAlert:true,
+          message:"Bonjour, nous somme ravis de vous revoir !",
+          alertType:"success"
+        })
+      }
+      setUser({
+        email: user.user.email,
+        isLogged: true,
+      });
+      navigate("/");
+    } catch (error) {
+      console.error(error); 
+      setAlert({
+        showAlert:true,
+        message:"Une erreur est survenue. Veuillez vérifier votre email et mot de passe",
+        alertType:"error"
+      })
+    }
