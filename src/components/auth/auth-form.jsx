@@ -63,7 +63,7 @@ export default function AuthForm({ onSubmit, buttonText }) {
           <div>
             <Link to="/sign-up" className="underline hover:no-underline">S&apos;inscrire</Link>
             <br />
-            <Link to="/forget-password" className="underline hover:no-underline">Mot de passe oublié ?</Link>
+            <Link to="/users/forget-password" className="underline hover:no-underline">Mot de passe oublié ?</Link>
           </div>
         }
       </form>

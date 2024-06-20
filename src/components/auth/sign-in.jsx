@@ -26,6 +26,7 @@ export default function SignIn() {
         setAlertType('success'); // Set alert type to 'success'
       }
       setUser({
+        id: user.user.id,
         email: user.user.email,
         isLogged: true,
       });
