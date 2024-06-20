@@ -10,27 +10,32 @@ function HostedWorkoutHistory() {
     const [user] = useAtom(userAtom);
     const { user_id } = useParams();
 
-  useEffect(() => {
-    const fetchHostedWorkouts = async () => {
-      try {
-        const data = await getData(`/users/${user_id}`);
-        if (data && data.hosted_workouts) {
-          // Pour chaque workout, récupérez les participants
-          const workoutsWithParticipants = await Promise.all(data.hosted_workouts.map(async (workout) => {
-            const workoutData = await getData(`/workouts/${workout.id}`);
-            return { ...workout, participants: workoutData.participants };
-          }));
-          setHostedWorkouts(workoutsWithParticipants);
+    useEffect(() => {
+        const fetchHostedWorkouts = async () => {
+          try {
+            const data = await getData(`/users/${user_id}`);
+            if (data && data.hosted_workouts) {
+              
+              const workoutsWithReservations = await Promise.all(data.hosted_workouts.map(async (workout) => {
+                const workoutData = await getData(`/workouts/${workout.id}`);
+                
+                const reservationsWithUserID = workoutData.reservations.map(reservation => ({
+                  ...reservation.user,
+                  status: reservation.status
+                }));
+                return { ...workout, reservations: reservationsWithUserID };
+              }));
+              setHostedWorkouts(workoutsWithReservations);
+            }
+          } catch (error) {
+            console.error('Erreur lors de la récupération des données:', error);
+          }
+        };
+      
+        if (user.isLogged) {
+          fetchHostedWorkouts();
         }
-      } catch (error) {
-        console.error('Erreur lors de la récupération des données:', error);
-      }
-    };
-
-    if (user.isLogged) {
-      fetchHostedWorkouts();
-    }
-  }, [user, user_id]);
+      }, [user, user_id]);
 
   const toggleAccordion = (id) => {
     setOpenWorkoutId(openWorkoutId === id ? null : id); // Toggle l'accordéon ouvert/fermé
@@ -56,10 +61,12 @@ function HostedWorkoutHistory() {
                 <p className="text-gray-600 mb-4">Date et heure: {new Date(workout.start_date).toLocaleString()}</p>
                 <p className="text-gray-600 mb-4">Prix: {parseFloat(workout.price).toFixed(2)}€</p>
                 <ul className="mb-4">
-                  {workout.participants && workout.participants.map(participant => (
-                    <li key={participant.id} className="flex justify-between items-center mb-2">
-                      <span>{participant.username}</span>
-                      <Link to={`/profile/${participant.id}`} className="text-blue-600 hover:text-blue-800 ml-2">Profil</Link>
+  {workout.reservations && workout.reservations.map(reservation => (
+    <li key={reservation.id} className="flex justify-between items-center mb-2">
+      <span>{reservation.username}</span>
+      <span>UserID: {reservation.id}</span> {/* Affichez l'userID ici */}
+      <span>Statut: {reservation.status}</span> {/* Affichez le statut ici */}
+                        <Link to={`/profile/${reservation.id}`} className="text-blue-600 hover:text-blue-800 ml-2">Profil</Link>
                       <div>
                         <button className="text-white bg-green-500 hover:bg-green-700 font-medium rounded-lg text-sm px-3 py-1 mr-2">Accepter</button>
                         <button className="text-white bg-red-500 hover:bg-red-700 font-medium rounded-lg text-sm px-3 py-1 mr-2">Refuser</button>
