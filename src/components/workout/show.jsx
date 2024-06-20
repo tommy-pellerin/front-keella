@@ -28,7 +28,7 @@ const WorkoutShow = () => {
     const getWorkouts = async () => {
       try {
         const data = await getData(`/workouts/${workout_id}`);
-        // console.log(data);
+        console.log(data);
         setWorkout(data);
         if(data.image_urls){
           setWorkout_images(data.image_urls)
@@ -105,6 +105,7 @@ const WorkoutShow = () => {
             <div className="flex justify-between my-3 border-b-2">
               <div className="">
                 <h1>{workout.title}</h1>
+                <p>Category : <strong>{workout.category.name}</strong></p>
                 <p>Notes :</p>
               </div>
               <div>
