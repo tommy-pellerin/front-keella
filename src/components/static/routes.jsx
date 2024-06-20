@@ -43,7 +43,8 @@ export default function AppRoutes() {
       <Route path="/sign-up" element={<SignUp />} />
       <Route path="/users/password/edit" element={<ResetPassword />} />
       <Route path="/users/forget-password" element={<ForgetPassword />} />
-      <Route path="/profile/:user_id" element={<PrivateRoute><OwnerRoute><Profile/></OwnerRoute></PrivateRoute>} />
+      <Route path="/profile/:user_id" element={<PrivateRoute><Profile/></PrivateRoute>} />
+      <Route path="/profile/:user_id/edit" element={<PrivateRoute><OwnerRoute><Profile/></OwnerRoute></PrivateRoute>} />
       <Route path="/my-account" element={<MyAccount />} />
       
       <Route path="/workouts" element={<WorkoutIndex />} />

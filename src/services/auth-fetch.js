@@ -58,9 +58,13 @@ export async function authPatch(objectUrl, body) {
 
 // Fonction pour se SignOut
 export async function authSignOut(objectUrl) {
+  const local = localStorage.getItem("user")
+  Cookies.remove("keellauth");
+  if(local){
+    localStorage.clear("user")
+  }
   const response = await ky.delete(BASE_URL + objectUrl, {
     headers: getHeaders(),
   });
-  Cookies.remove("keellauth");
   return response.json();
 }
