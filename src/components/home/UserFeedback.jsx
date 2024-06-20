@@ -27,9 +27,9 @@ const UserFeedback = () => {
 
   return (
     <div className='relative flex flex-col items-center'>
-      <h2 className='text-3xl font-bold text-gray-800 my-6'>
+      <h2 className='text-3xl text-center font-bold text-gray-800 my-6'>
         Ce que nos utilisateurs pensent de nous
-      </h2>
+        </h2>
       <div className='flex justify-center items-center'>
         <ChevronLeftIcon className='h-12 w-12 absolute top-1/2 left-10 text-gray-800 cursor-pointer' onClick={prevSlide} />
         <ChevronRightIcon className='h-12 w-12 absolute top-1/2 right-10 text-gray-800 cursor-pointer' onClick={nextSlide} />

@@ -13,15 +13,15 @@ const Home = () => {
      
       <ExplanatoryBanner />
     
-    <div className="my-40">
+    
       <MultiCard />
-    </div>
+    
     
       <UserFeedback />
     
-    <div className="my-8">
+    
       <Faq />
-    </div>
+    
   </>
   );
 };

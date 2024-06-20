@@ -159,3 +159,7 @@ p {
 .bg-primary-color{
   background-color: rgb(107, 70, 193)
 }
+
+.text-description {
+  word-wrap: break-word;
+}

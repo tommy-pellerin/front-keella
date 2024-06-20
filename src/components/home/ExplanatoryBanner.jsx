@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
-import banner from '../../assets/images/banner.png'
+import banner from '../../assets/images/banner.png';
 import { Link } from 'react-router-dom';
-
 
 const ExplanatoryBanner = () => {
   const [isEquipmentOpen, setIsEquipmentOpen] = useState(false);
   const [isUsageOpen, setIsUsageOpen] = useState(false);
 
   return (
-    <div className="flex justify-between items-center p-4 h-32">
-      {/* Image à gauche */}
-      <img src={banner} alt="activity" className="w-1/2" />
+    <div className="flex flex-col md:flex-row justify-between items-center p-4">
+      {/* Image responsive */}
+      <img src={banner} alt="activity" className="w-full md:w-1/2 mb-4 md:mb-0" />
 
-      {/* Cartes à droite */}
-      <div className="w-1/2 space-y-4">
+      {/* Cartes responsives */}
+      <div className="w-full md:w-1/2 space-y-4">
         {/* Carte pour les sportifs */}
         <div className="border rounded-lg p-4">
           <button

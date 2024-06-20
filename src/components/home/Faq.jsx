@@ -12,7 +12,7 @@ const Faq = () => {
 
   return (
     <div className='w-full px-4'>
-      <div className='mx-auto w-full max-w-md'>
+      <div className='mx-auto w-full max-w-md md:max-w-3xl'>
         <h2 className='text-2xl font-bold text-center mb-8'>FAQs</h2>
         {[
           {
@@ -34,7 +34,7 @@ const Faq = () => {
               onClick={() => toggle(index)}
             >
               {faq.title}
-              <span>{open === index ? '-' : '+'}</span>
+              <span className='text-xl'>{open === index ? '-' : '+'}</span>
             </button>
             <div className={`${open === index ? 'block' : 'hidden'} p-4 bg-white rounded-lg`}>
               <p>{faq.content}</p>
