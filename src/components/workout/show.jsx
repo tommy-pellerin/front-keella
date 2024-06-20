@@ -7,9 +7,9 @@ import { alertAtom } from "../../store/alert";
 
 const WorkoutShow = () => {
   const [quantity,setQuantity] = useState(1)
-  const [workout, setWorkout] = useState([]);
+  const [workout, setWorkout] = useState({});
   const { workout_id } = useParams();
-  const [workout_images,setWorkout_images] = useState("")
+  const [workout_images,setWorkout_images] = useState([])
 
   //use alert component
   const [,setAlert] = useAtom(alertAtom);
@@ -29,8 +29,8 @@ const WorkoutShow = () => {
         const data = await getData(`/workouts/${workout_id}`);
         console.log(data);
         setWorkout(data);
-        if(data.workout_images){
-          setWorkout_images(data.workout_images)
+        if(data.image_urls){
+          setWorkout_images(data.image_urls)
         }
       } catch (error) {
         console.error(error);
@@ -90,8 +90,14 @@ const WorkoutShow = () => {
 
   return(
     <>
-      <div className="border border-black my-5">
-        {workout_images ? workout_images : "Pas d'images"}
+      <div className="border border-black my-5 h-2/5">
+      {workout_images && workout_images.length > 0 ? 
+        workout_images.map((image,index) => {
+          console.log(image);
+          return <img src={image} key={index} alt="workout-image"/>
+        })
+      : 
+      "Pas d'images"}
       </div>
 
       <div className="container mx-auto">
