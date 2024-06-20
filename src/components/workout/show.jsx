@@ -76,6 +76,10 @@ const WorkoutShow = () => {
               message:"Votre demande a bien été envoyée !",
               alertType:"success"
             })
+            setWorkout(prevWorkout => ({
+              ...prevWorkout,
+              available_places: prevWorkout.available_places - quantity
+            }));
           }
         } catch (error) {
           console.error('Error caught in calling function:', error);
