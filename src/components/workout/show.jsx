@@ -1,13 +1,19 @@
 import { useState, useEffect } from "react"
 import { getData, postData } from "../../services/data-fetch";
 import { useParams, Link } from "react-router-dom";
+
+import { useAtom } from "jotai";
+import { alertAtom } from "../../store/alert";
+import ImageCarrousel from "./ImageCarrousel";
+
 const WorkoutShow = () => {
   const [quantity,setQuantity] = useState(1)
-  const [workout, setWorkout] = useState([]);
+  const [workout, setWorkout] = useState({});
   const { workout_id } = useParams();
-  const [workout_images,setWorkout_images] = useState("")
-  //use tailwind alert
-  const [showAlert, setShowAlert] = useState(false);
+  const [workout_images,setWorkout_images] = useState([])
+
+  //use alert component
+  const [,setAlert] = useAtom(alertAtom);
 
   function formatDate(dateString) {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
@@ -24,15 +30,15 @@ const WorkoutShow = () => {
         const data = await getData(`/workouts/${workout_id}`);
         console.log(data);
         setWorkout(data);
-        if(data.workout_images){
-          setWorkout_images(data.workout_images)
+        if(data.image_urls){
+          setWorkout_images(data.image_urls)
         }
       } catch (error) {
         console.error(error);
       }
     };
     getWorkouts();
-  }, [workout_id, showAlert]);
+  }, [workout_id]);
 
   const increaseQuantity = () => {
     if(quantity >= workout.available_places){
@@ -64,10 +70,19 @@ const WorkoutShow = () => {
           const data = await postData(`/reservations`,body);
           console.log(data);
           if(data){
-            setShowAlert(true);
+            setAlert({
+              showAlert:true,
+              message:"Votre demande a bien été envoyée !",
+              alertType:"success"
+            })
           }
         } catch (error) {
           console.error(error);
+          setAlert({
+            showAlert:true,
+            message:"Une erreur est survenue. Veuillez réessayer",
+            alertType:"error"
+          })
         }
       }
     };
@@ -76,34 +91,27 @@ const WorkoutShow = () => {
 
   return(
     <>
-      {showAlert && (
-        <div className="text-white px-6 py-4 border-0 rounded relative mb-4 bg-green-500">
-          <span className="text-xl inline-block mr-5 align-middle">
-            <i className="fas fa-bell" />
-          </span>
-          <span className="inline-block align-middle mr-8">
-            Votre demande de réservation a été envoyé
-          </span>
-          <button
-            className="absolute bg-transparent text-2xl font-semibold leading-none right-0 top-0 mt-4 mr-6 outline-none focus:outline-none"
-            onClick={() => setShowAlert(false)}
-          >
-            <span>×</span>
-          </button>
-        </div>
-      )}
-
-      <div className="border border-black my-5">
-        {workout_images ? workout_images : "Pas d'images"}
+      <div className="border-y border-purple-900 bg-gray-300 my-10 h-2/5">
+      {workout_images && workout_images.length > 0 ? 
+        <ImageCarrousel images={workout_images}/>
+        : 
+        "Category image"
+        // <ImageCarrousel images={[workout.category.image]}/>
+        }
       </div>
 
       <div className="container mx-auto">
-        <div className="grid grid-cols-3 gap-4 my-5">
+        <div className="grid sm:grid-cols-1 lg:grid-cols-3 gap-4 my-5">
 
-          <div className="col-span-2">
+          <div className="lg:col-span-2 px-5">
             <div className="flex justify-between my-3 border-b-2">
-              <div className="">
+              <div>
                 <h1>{workout.title}</h1>
+                {workout.category ?
+                <p>Category : <strong>{workout.category.name}</strong></p>
+                :
+                "Loading..."
+                }
                 <p>Notes :</p>
               </div>
               <div>
@@ -126,7 +134,7 @@ const WorkoutShow = () => {
             </div>
           </div>
 
-          <div className="col-span-1 flex flex-col bg-slate border shadow-lg rounded-xl p-4 md:p-5">
+          <div className="lg:col-span-1 flex flex-col bg-slate border shadow-lg rounded-xl p-4 md:p-5">
             <h2>Prix : {workout.price}</h2>
             <p>Début de la séance : {formatDate(workout.start_date)} à {formatTime(workout.start_date)}</p>
             <p>Fin de la séance : {formatDate(workout.end_date)} à {formatTime(workout.end_date)}</p>
@@ -137,14 +145,14 @@ const WorkoutShow = () => {
               <p>Nombre de place : {quantity}</p>
               <div className="flex justify-around">
                 {/* Buttons are disabled when on conditions */}
-                <button className="py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700" onClick={decreaseQuantity} disabled={quantity <= 1}>-</button>
-                <button className="py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700" onClick={increaseQuantity} disabled={quantity >= workout.available_places}>+</button>
+                <button className="button-red-small" onClick={decreaseQuantity} disabled={quantity <= 1}>-</button>
+                <button className="button-green-small" onClick={increaseQuantity} disabled={quantity >= workout.available_places}>+</button>
               </div>
             </div>
             {quantity > workout.available_places ?
-            <button className="py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700" disabled={quantity > workout.available_places}>Il n&apos;y a plus de place</button>
+            <button className="button-primary-large" disabled={quantity > workout.available_places}>Il n&apos;y a plus de place</button>
             :
-            <button className="py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700" onClick={handleReservation} disabled={quantity > workout.available_places}>Envoyer une demande de réservation</button>
+            <button className="button-primary-large" onClick={handleReservation} disabled={quantity > workout.available_places}>Envoyer une demande de réservation</button>
             }
             {/* <button className="py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700" onClick={handleReservation}>Envoyer une demande de réservation</button> */}
 
