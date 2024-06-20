@@ -55,13 +55,14 @@ const WorkoutShow = () => {
 
   const handleReservation = (e) => {
     e.preventDefault();
+    console.log(workout);
     const body = 
     {
       "reservation":{
         "workout_id": workout.id,
         "quantity": quantity,
-        "total": (quantity*workout.price),
-        "status": "pending",
+        // "total": (quantity*workout.price),
+        // "status": "pending",
       }
     };
     const bookPlaces = async () => {
@@ -77,12 +78,19 @@ const WorkoutShow = () => {
             })
           }
         } catch (error) {
-          console.error(error);
-          setAlert({
-            showAlert:true,
-            message:"Une erreur est survenue. Veuillez réessayer",
-            alertType:"error"
-          })
+          console.error('Error caught in calling function:', error);
+          if (error.response) {
+            console.log(error.response);
+            error.response.json().then((body) => {
+              console.error('Erreur du serveur:', body.error);
+              setAlert({
+                showAlert:true,
+                message: `${body.error}`,
+                alertType:"error"
+              })
+            });
+          }
+          
         }
       }
     };

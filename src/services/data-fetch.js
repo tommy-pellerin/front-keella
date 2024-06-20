@@ -37,22 +37,23 @@ export async function postData(objectUrl, body, filesToUpload) {
     }
   }
   
-  try {
+  // try {
     const response = await ky.post(BASE_URL + objectUrl, {
       headers: getHeaders(),
       body: formData,
     }).json();
     console.log('Réponse reçue de l\'API:', response);
     return response;
-  } catch (error) {
-    console.error("Erreur lors de la récupération des données :", error);
-    //To get personalized message form the server
-    if (error.response) {
-      error.response.json().then((body) => {
-        console.error('Erreur du serveur:', body.error);
-      });
-    }
-  }
+  // } catch (error) {
+  //   console.error("Erreur lors de la récupération des données :", error);
+  //   //To get personalized message form the server
+  //   if (error.response) {
+  //     error.response.json().then((body) => {
+  //       console.error('Erreur du serveur:', body.error);
+  //     });
+  //   }
+  //   throw error; // Propagate the error to the calling function
+  // }
 }
 
 // Fonction pour supprimer les donnees
