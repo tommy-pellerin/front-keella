@@ -35,7 +35,7 @@ function WorkoutList() {
         <h3 className="text-lg font-bold text-gray-800">
             {workout.title}
         </h3>
-        <p className="mt-1 text-gray-500">
+        <p className="mt-1 text-gray-500 text-description">
             {workout.description}            
         </p>
         <ul>
