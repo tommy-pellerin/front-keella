@@ -17,7 +17,7 @@ const Faq = () => {
         {[
           {
             title: 'Concept',
-            content: 'Keella est une plateforme innovante qui permet aux utilisateurs de trouver et de réserver des espaces sportifs privés ou des séances d\'entraînement organisées par des particuliers, tout comme Airbnb permet de trouver des logements temporaires. Cette approche démocratise l\'accès aux installations sportives et favorise une communauté active et engagée.'
+            content: 'Keella est une plateforme innovante qui permet aux utilisateurs de trouver et de réserver des espaces sportifs privés ou des séances d\'entraînement organisées par des particuliers, tout comme une célèbre plateforme permet de trouver des logements temporaires. Cette approche démocratise l\'accès aux installations sportives et favorise une communauté active et engagée.'
           },
           {
             title: 'Utilisation',
