@@ -7,12 +7,12 @@ import Home from "../home/Home";
 import WorkoutIndex from "../workout/index";
 import WorkoutShow from "../workout/show";
 import FormWorkout from "../workout/form-workout";
-import Profile from "../user/profile";
+import UserProfile from "../user/profile";
 import OwnerRoute from "./OwnerRoute";
 
 //Style
 import KitUI from "../KitUI/KitUI";
-import UserProfile from "../user/profile";
+import MyAccount from "../user/my-account";
 
 //Atom
 import { useAtomValue } from 'jotai';
@@ -43,15 +43,16 @@ export default function AppRoutes() {
       <Route path="/sign-up" element={<SignUp />} />
       <Route path="/users/password/edit" element={<ResetPassword />} />
       <Route path="/users/forget-password" element={<ForgetPassword />} />
-      <Route path="/profile/:user_id" element={<PrivateRoute><OwnerRoute><UserProfile/></OwnerRoute></PrivateRoute>} />
-
+      <Route path="/profile/:user_id" element={<PrivateRoute><UserProfile/></PrivateRoute>} />
+      <Route path="/my-account" element={<MyAccount />} />
+      
       <Route path="/workouts" element={<WorkoutIndex />} />
       <Route path="/workouts/:workout_id" element={<WorkoutShow />} />
 
       <Route path="/form-workout" element={<FormWorkout />} />
       <Route path="/workouts/create" element={<PrivateRoute><FormWorkout /></PrivateRoute>} />
       <Route path="/workouts/:workout_id/edit" element={<PrivateRoute><OwnerRoute><FormWorkout /></OwnerRoute></PrivateRoute>}/>
-
+      
       <Route path="/kit-ui" element={<KitUI/>} />
     </Routes>
   );

@@ -6,7 +6,7 @@ import { userAtom } from "../../store/user";
 import { useEffect } from "react";
 
 function checkOwner(currentUser, objectToCompare) {
-  console.log("object à comparer:",objectToCompare);
+  console.log("object à comparer:",objectToCompare, currentUser);
   //flash
   return currentUser.id === objectToCompare.id;
 }
