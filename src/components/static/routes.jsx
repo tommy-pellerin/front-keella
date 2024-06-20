@@ -12,6 +12,7 @@ import OwnerRoute from "./OwnerRoute";
 
 //Style
 import KitUI from "../KitUI/KitUI";
+import MyAccount from "../user/my-account";
 
 //Atom
 import { useAtomValue } from 'jotai';
@@ -43,12 +44,13 @@ export default function AppRoutes() {
       <Route path="/users/password/edit" element={<ResetPassword />} />
       <Route path="/users/forget-password" element={<ForgetPassword />} />
       <Route path="/profile/:user_id" element={<PrivateRoute><OwnerRoute><Profile/></OwnerRoute></PrivateRoute>} />
-
+      <Route path="/my-account" element={<MyAccount />} />
+      
       <Route path="/workouts" element={<WorkoutIndex />} />
       <Route path="/workouts/:workout_id" element={<WorkoutShow />} />
       <Route path="/workouts/create" element={<PrivateRoute><FormWorkout /></PrivateRoute>} />
       <Route path="/workouts/:workout_id/edit" element={<PrivateRoute><OwnerRoute><FormWorkout /></OwnerRoute></PrivateRoute>}/>
-
+      
       <Route path="/kit-ui" element={<KitUI/>} />
     </Routes>
   );
