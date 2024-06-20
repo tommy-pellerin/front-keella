@@ -4,8 +4,8 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 
 const feedbacks = [
   // Ajoutez ici les commentaires et les notes des utilisateurs
-  { id: 1, text: "Commentaire 1", rating: 5 },
-  { id: 2, text: "Commentaire 2", rating: 4 },
+  { id: 1, text: "Une journée inoubliable ! Quelle journée fantastique ! Entre les conseils d’experts et l’ambiance conviviale, je n’aurais pas pu rêver mieux. C’est certain, je reviendrai très bientôt !", rating: 5 },
+  { id: 2, text: "Incroyable expérience ! J’ai été totalement bluffé par la qualité du service. Les équipements étaient top-notch et l’accueil chaleureux m’a fait sentir comme un VIP. Je recommande vivement !", rating: 4 },
   // ...
 ];
 
@@ -37,12 +37,25 @@ const UserFeedback = () => {
           return (
             <div className={index === current ? 'slide active' : 'slide'} key={feedback.id}>
               {index === current && (
-                <div className='p-4 max-w-md mx-auto bg-white rounded-xl shadow-md space-x-4'>
-                  <div className='text-xl font-medium text-black'>{feedback.text}</div>
-                  <div className='text-gray-500'>Note: {feedback.rating}/5</div>
-                </div>
-              )}
+              <div className='p-8 max-w-3xl mx-auto bg-white rounded-xl shadow-md space-x-4'>
+              {/* Avatar de l'utilisateur */}
+              <div className='flex items-center space-x-4'>
+                <img
+                  className="h-8 w-8 rounded-full"
+                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                  alt=""
+                />
+                <div className=' font-medium text-black'>{feedback.text}</div>
+              </div>
+              {/* Étoiles pour la note */}
+              <div className='text-yellow-400 text-lg'>
+                {'★'.repeat(feedback.rating)}
+                {'☆'.repeat(5 - feedback.rating)}
+              </div>
+              
             </div>
+          )}
+        </div>
           );
         })}
       </div>

@@ -28,8 +28,8 @@ const ExplanatoryBanner = () => {
                 En tant que sportif, profitez de la flexibilité de louer l'équipement sportif dont vous avez besoin, 
                 où que vous soyez. Parfait pour essayer de nouveaux sports ou pour des séances de sport lors de vos voyages.
               </p>
-              <Link to="/create-workout" className="button-primary-large text-white font-bold py-2 px-4 rounded block mt-4">
-                Créer un Workout
+              <Link to="/workouts" className="button-primary-large text-white font-bold py-2 px-4 rounded block mt-4">
+                Voir les Workouts
               </Link>
             </div>
           )}
@@ -49,8 +49,9 @@ const ExplanatoryBanner = () => {
                 En tant que hôte, créez des activités uniques ou proposez votre matériel à la location. 
                 C'est une excellente manière de gagner un revenu supplémentaire tout en aidant les autres à découvrir de nouveaux sports.
               </p>
-              <Link to="/workouts" className="button-primary-large text-white font-bold py-2 px-4 rounded block mt-4">
-                Voir les Workouts
+              
+              <Link to="/workouts/create" className="button-primary-large text-white font-bold py-2 px-4 rounded block mt-4">
+                Créer un Workout
               </Link>
             </div>
           )}
