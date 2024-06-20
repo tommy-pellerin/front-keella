@@ -179,7 +179,7 @@ const handleImageChange = (event) => {
       // Vérifiez si l'URL est une URL de blob ou une URL complète
       // const isBlobUrl = imageUrl.startsWith('blob:');
       // const fullImageUrl = isBlobUrl ? imageUrl : BASE_URL + imageUrl;
-  
+
       return (
         <div key={index} className="border border-gray-300 shadow-lg p-2 relative">
           <img src={imageUrl} alt={`Aperçu ${index}`} className="max-w-xs" />

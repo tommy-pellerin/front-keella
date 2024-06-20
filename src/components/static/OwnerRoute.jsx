@@ -3,7 +3,7 @@ import { getData } from "../../services/data-fetch";
 //Atom
 import { useAtomValue } from 'jotai';
 import { userAtom } from "../../store/user";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function checkOwner(currentUser, objectToCompare) {
   console.log("object à comparer:",objectToCompare);
@@ -17,7 +17,7 @@ const OwnerRoute = ({ children }) => {
   const { user_id } = useParams();
   const { reservation_id } = useParams();
   const location = useLocation();
-  let isOwner;
+  const [isOwner, setIsOwner] = useState(null);
 
   useEffect(() => {
     //check if currentUser is the owner of the workout
@@ -26,7 +26,7 @@ const OwnerRoute = ({ children }) => {
         try {
           const data = await getData(`/workouts/${workout_id}`);
           console.log(data);
-          isOwner = checkOwner(currentUser, data.host);
+          setIsOwner(checkOwner(currentUser, data.host));
         } catch (error) {
           console.error(error);
         }
@@ -39,7 +39,7 @@ const OwnerRoute = ({ children }) => {
         try {
           const data = await getData(`/users/${user_id}`);
           console.log(data);
-          isOwner = checkOwner(currentUser, data);
+          setIsOwner(checkOwner(currentUser, data));
         } catch (error) {
           console.error(error);
         }
@@ -52,7 +52,7 @@ const OwnerRoute = ({ children }) => {
         try {
           const data = await getData(`/reservations/${reservation_id}`);
           console.log(data);
-          isOwner = checkOwner(currentUser, data.user);
+          setIsOwner(checkOwner(currentUser, data.user));
         } catch (error) {
           console.error(error);
         }
@@ -62,7 +62,25 @@ const OwnerRoute = ({ children }) => {
     
   }, [reservation_id, user_id, workout_id]);
   
-  return isOwner ? children : <Navigate to="/workouts"/>;
+  if (isOwner === null) {
+    return <div>Loading...</div>; // Or your loading spinner
+  }
+  
+  return (
+    <>
+      {isOwner ? (
+        <>
+          {console.log("you are owner")}
+          {children}
+        </>
+      ) : (
+        <>
+          {console.log("you are not owner")}
+          <Navigate to="/"/>
+        </>
+      )}
+    </>
+  )
   
 }
 
