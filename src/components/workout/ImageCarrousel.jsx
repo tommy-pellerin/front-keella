@@ -12,6 +12,7 @@ const ImageCarrousel = ({images}) => {
   };
   return(
     <div id="default-carousel" className={`relative duration-700 ease-in-out`}>
+      
       {images.map((image, index) => (
         <div key={index} className={`overflow-hidden relative h-56 rounded-lg sm:h-64 xl:h-80 2xl:h-96 ${index === currentImageIndex ? '' : 'hidden'}`}>
           <div className="duration-700 ease-in-out">
@@ -24,6 +25,7 @@ const ImageCarrousel = ({images}) => {
           </div>
         </div>
       ))}
+      <p className="absolute right-0 bottom-0 m-2 text-white bg-black bg-opacity-50 rounded px-2">{currentImageIndex + 1} / {images.length}</p>
       <div className="flex absolute bottom-5 left-1/2 z-30 space-x-3 -translate-x-1/2">
         {images.map((_, index) => (
           <button key={index} type="button" className="w-3 h-3 rounded-full" aria-current="false" aria-label={`Slide ${index + 1}`} onClick={() => setCurrentImageIndex(index)}></button>
