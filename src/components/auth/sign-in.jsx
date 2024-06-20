@@ -1,17 +1,18 @@
 import { authSignInUp } from "../../services/auth-fetch";
-import { useAtom } from "jotai";
-import { userAtom } from "../../store/user";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AuthForm from "./auth-form";
-import Alert from "../../styles/Alert.jsx";
+
+//atom
+import { useAtom } from "jotai";
+import { userAtom } from "../../store/user";
+import { alertAtom } from "../../store/alert";
 
 export default function SignIn() {
   const navigate = useNavigate();
   const [, setUser] = useAtom(userAtom);
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertType, setAlertType] = useState('success');
-  
+  const [,setAlert] = useAtom(alertAtom);
+
   useEffect(() => {
     document.title = "Keella | Connection";
   }, []);
@@ -22,8 +23,11 @@ export default function SignIn() {
         user: { email, password },
       });
       if(user){
-        setShowAlert(true);
-        setAlertType('success'); // Set alert type to 'success'
+        setAlert({
+          showAlert:true,
+          message:"Bonjour, nous somme ravis de vous revoir !",
+          alertType:"success"
+        })
       }
       setUser({
         id: user.user.id,
@@ -32,20 +36,20 @@ export default function SignIn() {
       });
       navigate("/");
     } catch (error) {
-      console.error(error);
-      setShowAlert(true);
-      setAlertType('error'); // Set alert type to 'error'
+      console.error(error); 
+      setAlert({
+        showAlert:true,
+        message:"Une erreur est survenue. Veuillez vérifier votre email et mot de passe",
+        alertType:"error"
+      })
     }
   };
 
   return (
-    <>
-    <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={alertType === 'success' ? `Bonjour, nous somme ravis de vous revoir !` : "Une erreur est survenue. Veuillez vérifier votre email et mot de passe"} type={alertType} />
+    
     <div className="text-center my-5">
       <h1>Connection</h1>
       <AuthForm onSubmit={handleLogin} buttonText="Login" />
-      
     </div>
-    </>
     )
 }

@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react"
 import { getData, postData } from "../../services/data-fetch";
 import { useParams, Link } from "react-router-dom";
-import Alert from "../../styles/Alert";
 
+import { useAtom } from "jotai";
+import { alertAtom } from "../../store/alert";
 
 const WorkoutShow = () => {
   const [quantity,setQuantity] = useState(1)
@@ -11,8 +12,7 @@ const WorkoutShow = () => {
   const [workout_images,setWorkout_images] = useState("")
 
   //use alert component
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertType, setAlertType] = useState('');
+  const [,setAlert] = useAtom(alertAtom);
 
   function formatDate(dateString) {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
@@ -37,7 +37,7 @@ const WorkoutShow = () => {
       }
     };
     getWorkouts();
-  }, [workout_id, showAlert]);
+  }, [workout_id]);
 
   const increaseQuantity = () => {
     if(quantity >= workout.available_places){
@@ -69,13 +69,19 @@ const WorkoutShow = () => {
           const data = await postData(`/reservations`,body);
           console.log(data);
           if(data){
-            setShowAlert(true);
-            setAlertType('success'); // Set alert type to 'success'
+            setAlert({
+              showAlert:true,
+              message:"Votre demande a bien été envoyée !",
+              alertType:"success"
+            })
           }
         } catch (error) {
           console.error(error);
-          setShowAlert(true);
-          setAlertType('error');
+          setAlert({
+            showAlert:true,
+            message:"Une erreur est survenue. Veuillez réessayer",
+            alertType:"error"
+          })
         }
       }
     };
@@ -84,9 +90,6 @@ const WorkoutShow = () => {
 
   return(
     <>
-      
-      <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={alertType === 'success' ? "Votre demande de réservation a été envoyé" : "Erreur lors de l'envoi de la demande de réservation"} type={alertType} />
-
       <div className="border border-black my-5">
         {workout_images ? workout_images : "Pas d'images"}
       </div>
