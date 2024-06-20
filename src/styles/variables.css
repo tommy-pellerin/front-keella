@@ -156,3 +156,6 @@ p {
   pointer-events: none; /* disabled:pointer-events-none */
 }
 
+.bg-primary-color{
+  background-color: rgb(107, 70, 193)
+}

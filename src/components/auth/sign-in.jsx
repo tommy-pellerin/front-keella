@@ -30,6 +30,7 @@ export default function SignIn() {
         })
       }
       setUser({
+        id: user.user.id,
         email: user.user.email,
         isLogged: true,
       });
