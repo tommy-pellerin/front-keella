@@ -142,7 +142,7 @@ export default function Navbar() {
                       </MenuItem>
                       <MenuItem>
                         {({ focus }) => (
-                          <Link to="/profile/me" className={classNames(focus ? 'bg-gray-100' : '', 'block text-center px-4 py-2 text-sm text-gray-700')}>Mon profile</Link>
+                          <Link to="/profile/me" className={classNames(focus ? 'bg-gray-100' : '', 'block text-center px-4 py-2 text-sm text-gray-700')}>Mon profil</Link>
                         )}
                       </MenuItem>
                       <MenuItem>
@@ -152,6 +152,12 @@ export default function Navbar() {
                           </button>
                         )}
                       </MenuItem>
+                      <MenuItem>
+                        {({ focus }) => (
+                          <Link to="/workouts/create" className={classNames(focus ? 'bg-gray-100' : '', 'block text-center px-4 py-2 text-sm text-gray-700')}>Créer une annonce</Link>
+                        )}
+                      </MenuItem>
+                      
                     </>
                     }
                     </MenuItems>

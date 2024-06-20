@@ -7,7 +7,7 @@ import Alert from '../../styles/Alert';
 
 const FormWorkout = () => {
     const [successMessage, setSuccessMessage] = useState('');
-    const { workoutId } = useParams();
+    const { workout_id } = useParams();
     // const navigate = useNavigate();
     const [showAlert, setShowAlert] = useState(false); 
     const [validationErrors, setValidationErrors] = useState([]);
@@ -29,6 +29,7 @@ const FormWorkout = () => {
       });
     
       useEffect(() => {
+        console.log(workout_id);
         const loadCategories = async () => {
           const data = await getData('/categories');
           setCategories(data);
@@ -36,7 +37,7 @@ const FormWorkout = () => {
     
         const loadWorkoutData = async () => {
             try {
-              const workoutData = await getData(`/workouts/${workoutId}`);
+              const workoutData = await getData(`/workouts/${workout_id}`);
               if (workoutData) {
                 setWorkout({
                   title: workoutData.title || '',
@@ -57,11 +58,11 @@ const FormWorkout = () => {
             }
           };
       
-          if (workoutId) {
+          if (workout_id) {
             loadWorkoutData();
           }
           loadCategories();
-        }, [workoutId]);
+        }, [workout_id]);
 
   // Gérer la soumission du formulaire
   const handleSubmit = async (event) => {
@@ -110,9 +111,9 @@ const FormWorkout = () => {
 
         try {
             let response;
-            if (workoutId) {
+            if (workout_id) {
               // Logique pour l'édition d'un workout existant
-              response = await updateData(`/workouts/${workoutId}`, workoutData, filesToUpload);
+              response = await updateData(`/workouts/${workout_id}`, workoutData, filesToUpload);
               if (response && response.id) {
                 setSuccessMessage('Le workout a été mis à jour avec succès !'); // Message personnalisé pour l'édition
               }
@@ -256,7 +257,7 @@ const handleRemoveImage = (index) => {
       {/* Bandeau bleu avec un titre */}
         <div className="bg-blue-500 text-white text-center py-10 mb-8">
         <h1 className="text-4xl">
-            {workoutId ? 'Éditer votre séance' : 'Proposer une nouvelle séance'}
+            {workout_id ? 'Éditer votre séance' : 'Proposer une nouvelle séance'}
         </h1>
         </div>
   
@@ -353,7 +354,7 @@ const handleRemoveImage = (index) => {
           {/* Bouton de soumission */}
         <div className="flex justify-center">
         <button type="submit" className="button-primary-small text-white py-3 px-6 rounded">
-                {workoutId ? 'Éditer Workout' : 'Créer Workout'}
+                {workout_id ? 'Éditer Workout' : 'Créer Workout'}
         </button>
         </div>
         </form>

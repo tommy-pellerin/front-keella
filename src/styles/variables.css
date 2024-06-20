@@ -169,3 +169,8 @@ p {
   border: none; /* border border-transparent */
   color: white; /* text-white */
 }
+
+/*bandeau bleu*/
+.bg-primary-color{
+  background-color: rgb(107, 70, 193)
+}
