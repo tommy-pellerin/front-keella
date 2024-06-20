@@ -4,12 +4,13 @@ import { useParams, Link } from "react-router-dom";
 
 import { useAtom } from "jotai";
 import { alertAtom } from "../../store/alert";
+import ImageCarrousel from "./ImageCarrousel";
 
 const WorkoutShow = () => {
   const [quantity,setQuantity] = useState(1)
-  const [workout, setWorkout] = useState([]);
+  const [workout, setWorkout] = useState({});
   const { workout_id } = useParams();
-  const [workout_images,setWorkout_images] = useState("")
+  const [workout_images,setWorkout_images] = useState([])
 
   //use alert component
   const [,setAlert] = useAtom(alertAtom);
@@ -29,8 +30,8 @@ const WorkoutShow = () => {
         const data = await getData(`/workouts/${workout_id}`);
         console.log(data);
         setWorkout(data);
-        if(data.workout_images){
-          setWorkout_images(data.workout_images)
+        if(data.image_urls){
+          setWorkout_images(data.image_urls)
         }
       } catch (error) {
         console.error(error);
@@ -90,17 +91,27 @@ const WorkoutShow = () => {
 
   return(
     <>
-      <div className="border border-black my-5">
-        {workout_images ? workout_images : "Pas d'images"}
+      <div className="border-y border-purple-900 bg-gray-300 my-10 h-2/5">
+      {workout_images && workout_images.length > 0 ? 
+        <ImageCarrousel images={workout_images}/>
+        : 
+        "Category image"
+        // <ImageCarrousel images={[workout.category.image]}/>
+        }
       </div>
 
       <div className="container mx-auto">
-        <div className="grid grid-cols-3 gap-4 my-5">
+        <div className="grid sm:grid-cols-1 lg:grid-cols-3 gap-4 my-5">
 
-          <div className="col-span-2">
+          <div className="lg:col-span-2 px-5">
             <div className="flex justify-between my-3 border-b-2">
-              <div className="">
+              <div>
                 <h1>{workout.title}</h1>
+                {workout.category ?
+                <p>Category : <strong>{workout.category.name}</strong></p>
+                :
+                "Loading..."
+                }
                 <p>Notes :</p>
               </div>
               <div>
@@ -123,7 +134,7 @@ const WorkoutShow = () => {
             </div>
           </div>
 
-          <div className="col-span-1 flex flex-col bg-slate border shadow-lg rounded-xl p-4 md:p-5">
+          <div className="lg:col-span-1 flex flex-col bg-slate border shadow-lg rounded-xl p-4 md:p-5">
             <h2>Prix : {workout.price}</h2>
             <p>Début de la séance : {formatDate(workout.start_date)} à {formatTime(workout.start_date)}</p>
             <p>Fin de la séance : {formatDate(workout.end_date)} à {formatTime(workout.end_date)}</p>
