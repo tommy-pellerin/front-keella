@@ -6,6 +6,8 @@ import { useAtom } from "jotai";
 import { alertAtom } from "../../store/alert";
 import ImageCarrousel from "./ImageCarrousel";
 
+import noImage from "../../assets/images/no_image.png"
+
 const WorkoutShow = () => {
   const [quantity,setQuantity] = useState(1)
   const [workout, setWorkout] = useState({});
@@ -95,7 +97,8 @@ const WorkoutShow = () => {
       {workout_images && workout_images.length > 0 ? 
         <ImageCarrousel images={workout_images}/>
         : 
-        "Pas d'images"}
+        <ImageCarrousel images={[noImage]}/>
+        }
       </div>
 
       <div className="container mx-auto">
@@ -105,7 +108,11 @@ const WorkoutShow = () => {
             <div className="flex justify-between my-3 border-b-2">
               <div className="">
                 <h1>{workout.title}</h1>
+                {workout.category ?
                 <p>Category : <strong>{workout.category.name}</strong></p>
+                :
+                "Loading..."
+                }
                 <p>Notes :</p>
               </div>
               <div>
