@@ -8,6 +8,7 @@ import WorkoutIndex from "../workout/index";
 import WorkoutShow from "../workout/show";
 import FormWorkout from "../workout/form-workout";
 import KitUI from "../KitUI/KitUI";
+import MyAccount from "../user/my-account";
 
 export default function AppRoutes() {
   return (
@@ -22,7 +23,7 @@ export default function AppRoutes() {
 
       <Route path="/create-workout" element={<FormWorkout />} />
       <Route path="/edit-workout/:workoutId" element={<FormWorkout />} />
-
+      <Route path="/my-account" element={<MyAccount />} />
       <Route path="/kit-ui" element={<KitUI/>} />
     </Routes>
   );
