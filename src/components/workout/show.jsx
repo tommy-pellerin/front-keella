@@ -6,8 +6,6 @@ import { useAtom } from "jotai";
 import { alertAtom } from "../../store/alert";
 import ImageCarrousel from "./ImageCarrousel";
 
-import noImage from "../../assets/images/no_image.png"
-
 const WorkoutShow = () => {
   const [quantity,setQuantity] = useState(1)
   const [workout, setWorkout] = useState({});
@@ -97,16 +95,17 @@ const WorkoutShow = () => {
       {workout_images && workout_images.length > 0 ? 
         <ImageCarrousel images={workout_images}/>
         : 
-        <ImageCarrousel images={[noImage]}/>
+        "Category image"
+        // <ImageCarrousel images={[workout.category.image]}/>
         }
       </div>
 
       <div className="container mx-auto">
-        <div className="grid grid-cols-3 gap-4 my-5">
+        <div className="grid sm:grid-cols-1 lg:grid-cols-3 gap-4 my-5">
 
-          <div className="col-span-2">
+          <div className="lg:col-span-2 px-5">
             <div className="flex justify-between my-3 border-b-2">
-              <div className="">
+              <div>
                 <h1>{workout.title}</h1>
                 {workout.category ?
                 <p>Category : <strong>{workout.category.name}</strong></p>
@@ -135,7 +134,7 @@ const WorkoutShow = () => {
             </div>
           </div>
 
-          <div className="col-span-1 flex flex-col bg-slate border shadow-lg rounded-xl p-4 md:p-5">
+          <div className="lg:col-span-1 flex flex-col bg-slate border shadow-lg rounded-xl p-4 md:p-5">
             <h2>Prix : {workout.price}</h2>
             <p>Début de la séance : {formatDate(workout.start_date)} à {formatTime(workout.start_date)}</p>
             <p>Fin de la séance : {formatDate(workout.end_date)} à {formatTime(workout.end_date)}</p>
