@@ -57,12 +57,13 @@ export default function AuthForm({ onSubmit, buttonText }) {
         {isSigningUp ?
           <div>
             <Link to="/sign-in" className="underline hover:no-underline">Connection</Link>
-            <br />
-            <Link to="/" className="underline hover:no-underline">Mot de passe oublié ?</Link>
+            
           </div>
           :
           <div>
             <Link to="/sign-up" className="underline hover:no-underline">S&apos;inscrire</Link>
+            <br />
+            <Link to="/users/forget-password" className="underline hover:no-underline">Mot de passe oublié ?</Link>
           </div>
         }
       </form>
