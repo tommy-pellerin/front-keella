@@ -29,7 +29,7 @@ const MyAccount = () => {
               <h3>Retrouver l&apos;historique de vos réservations.</h3>
           </Link>
 
-          <Link to="#" className="border border-red-700 rounded-lg bg-red-500 hover:bg-red-800 px-3 py-3 w-3/5 sm:h-52 lg:h-44">
+          <Link to="/my-account/:user_id/hosted_workouts" className="border border-red-700 rounded-lg bg-red-500 hover:bg-red-800 px-3 py-3 w-3/5 sm:h-52 lg:h-44">
               <div>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-10">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5m.75-9 3-3 2.148 2.148A12.061 12.061 0 0 1 16.5 7.605" />
