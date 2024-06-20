@@ -34,33 +34,18 @@ function UserProfile() {
                 <div className="md:col-span-1 bg-white rounded-lg shadow-lg p-6">
                     <h1 className="text-2xl font-bold mb-4">Compte de {profile.username}</h1>
                     <p>Inscrit depuis : {profile.created_at}</p>
-                    <p>Inscrit depuis : {profile.participated_workouts}</p>
+                    <p>Nombre de réservations : {profile.reservations?.length}</p>
+                    <p>Nombre de Scéances proposé : {profile.hosted_workout?.length}</p>
                     {user.email === profile.email ?
                     <>
                         <a className='button-green-large'>Éditer le profil</a>
                     </>
                     :
-                    <>non</>
+                    <></>
                     }
                 </div>
 
-                {/* Reservations List */}
-                <div className="md:col-span-2 bg-white rounded-lg shadow-lg p-6">
-                    <h2 className="text-xl font-bold mb-4">Réservations</h2>
-                    {profile.reservations?.length > 0 ? (
-                        <div className="space-y-4">
-                            {profile.reservations.map(reservation => (
-                                <div key={reservation.id} className="border p-4 rounded-lg">
-                                    <p>{reservation.workout.title}<br />{reservation.workout.description}</p>
-                                    <p>Place Réservé : {reservation.quantity}</p>
-                                    <p>Prix Total : {reservation.total} €</p>
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <p>No reservations found.</p>
-                    )}
-                </div>
+
             </div>
         </div>
     );
