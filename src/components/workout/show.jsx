@@ -11,7 +11,8 @@ const WorkoutShow = () => {
   const [workout, setWorkout] = useState({});
   const { workout_id } = useParams();
   const [workout_images,setWorkout_images] = useState([])
-
+  const [workoutCategory,setWorkoutCategory] = useState(null)
+  const [workoutCategoryLoading,setWorkoutCategoryLoading] = useState(false)
   //use alert component
   const [,setAlert] = useAtom(alertAtom);
 
@@ -25,6 +26,7 @@ const WorkoutShow = () => {
   }
 
   useEffect(() => {
+    // setWorkoutCategoryLoading(true)
     const getWorkouts = async () => {
       try {
         const data = await getData(`/workouts/${workout_id}`);
@@ -32,6 +34,10 @@ const WorkoutShow = () => {
         setWorkout(data);
         if(data.image_urls){
           setWorkout_images(data.image_urls)
+        }
+        if(data.category.category_image){
+          setWorkoutCategory(workout.category)
+          // setWorkoutCategoryLoading(false)
         }
       } catch (error) {
         console.error(error);
@@ -118,9 +124,16 @@ const WorkoutShow = () => {
       {workout_images && workout_images.length > 0 ? 
         <ImageCarrousel images={workout_images}/>
         : 
-        "Category image"
-        // <ImageCarrousel images={[workout.category.image]}/>
-        }
+        (workoutCategoryLoading ?
+          <div>is loading...</div>
+          :
+          (workout.category&& workout.category.category_image ?
+            <ImageCarrousel images={[workout.category.category_image]}/>
+            : 
+            "No image attached and no category image"
+          )
+        )
+      }
       </div>
 
       <div className="container mx-auto">

@@ -7,12 +7,12 @@ export default function checkTokenExpiration() {
   if (token) {
     token = token.replace("Bearer ", ""); // remove "Bearer " from the token
     try {
-      console.log(token);
+      // console.log(token);
       const decodedToken = jwtDecode(token);
-      console.log(decodedToken);
+      // console.log(decodedToken);
       const dateNow = new Date();
-      const expirationDate = new Date(decodedToken.exp * 1000); // convert to milliseconds
-      console.log(`Token expiration date: ${expirationDate.toLocaleString()}`);
+      // const expirationDate = new Date(decodedToken.exp * 1000); // convert to milliseconds
+      // console.log(`Token expiration date: ${expirationDate.toLocaleString()}`);
 
       if (decodedToken.exp < dateNow.getTime() / 1000) {
         console.log("token expired");
