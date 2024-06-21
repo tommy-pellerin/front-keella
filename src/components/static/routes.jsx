@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { Routes, Route} from "react-router-dom";
 import SignIn from "../auth/sign-in";
 import SignUp from "../auth/sign-up";
 import ResetPassword from "../auth/reset-password";
@@ -8,18 +8,20 @@ import WorkoutIndex from "../workout/index";
 import WorkoutShow from "../workout/show";
 import FormWorkout from "../workout/form-workout";
 import Profile from "../user/profile";
+
+//protection
+import PrivateRoute from "../../services/privateRoute";
 import MyAccount from "../user/my-account";
 import HostedWorkoutHistory from "../user/HostedWorkoutHistory";
 // import OwnerRoute from "./OwnerRoute";
 
 //Style
 import KitUI from "../KitUI/KitUI";
-
+import MyAccount from "../user/my-account";
 
 //Atom
 import { useAtomValue } from 'jotai';
 import { userAtom } from "../../store/user";
-
 
 
 
@@ -49,7 +51,7 @@ export default function AppRoutes() {
       <Route path="/profile/:user_id" element={<PrivateRoute><Profile/></PrivateRoute>} />
       <Route path="/profile/:user_id/edit" element={<PrivateRoute><Profile/></PrivateRoute>} />
       <Route path="/my-account/:user_id/hosted_workouts" element={<PrivateRoute><HostedWorkoutHistory/></PrivateRoute>} />
-      <Route path="/my-account" element={<MyAccount />} />
+      <Route path="/my-account" element={<PrivateRoute><MyAccount /></PrivateRoute>} />
 
       
       <Route path="/workouts" element={<WorkoutIndex />} />

@@ -3,6 +3,7 @@ import { useAtom } from "jotai";
 import { userAtom } from "../../store/user";
 import { authSignOut } from "../../services/auth-fetch";
 import { alertAtom } from "../../store/alert";
+
 export default function SignOut() {
   const navigate = useNavigate();
   const [, setUser] = useAtom(userAtom);
@@ -20,12 +21,18 @@ export default function SignOut() {
       navigate("/sign-in");
     } catch (error) {
       console.error(error);
-      setAlert({
-        showAlert:true,
-        message:"Une erreur est survenue. Veuillez réessayer",
-        alertType:"error"
-      })
+      if (error.response) {
+        console.log(error.response);
+        error.response.json().then((body) => {
+          console.error('Erreur du serveur:', body.error);
+          setAlert({
+            showAlert:true,
+            message: `${body.error}`,
+            alertType:"error"
+          })
+        });
+      }
     }
   };
-  return <div onClick={handleSignOut}>Sign out</div>;
+  return (<div onClick={handleSignOut}>Sign out</div>);
 }
