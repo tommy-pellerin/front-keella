@@ -7,11 +7,18 @@ import { getData } from '../../services/data-fetch';
 function HostedWorkoutHistory() {
     const [user] = useAtom(userAtom);
     const { user_id } = useParams();
-    const [hostedWorkouts, setHostedWorkouts] = useState([]);
+    
     const [openWorkoutId, setOpenWorkoutId] = useState(null);
     const [workoutData, setWorkoutData] = useState([]); // État pour stocker les données des workouts
   
     useEffect(() => {
+        const updateWorkout = async (workoutId) => {
+            // Logique pour la mise à jour d'une séance
+          };
+          
+          const deleteWorkout = async (workoutId) => {
+            // Logique pour la suppression d'une séance
+          };
       const fetchHostedWorkouts = async () => {
         try {
           const data = await getData(`/users/${user_id}`);
@@ -66,6 +73,10 @@ function HostedWorkoutHistory() {
               <button onClick={() => toggleAccordion(workout.id)} className="text-xl font-semibold mb-2 w-full text-left">
                 {workout.title}
               </button>
+              <div>
+                <button onClick={() => updateWorkout(workout.id)} className="text-white bg-yellow-500 hover:bg-yellow-700 font-medium rounded-lg text-sm px-3 py-1 mr-2">Modifier votre séance</button>
+                <button onClick={() => deleteWorkout(workout.id)} className="text-white bg-red-500 hover:bg-red-700 font-medium rounded-lg text-sm px-3 py-1">Supprimer</button>
+              </div>
               {openWorkoutId === workout.id && (
                 <>
 
@@ -84,20 +95,20 @@ function HostedWorkoutHistory() {
                 
                 
                 <ul className="mb-4">
-  {workout.reservations && workout.reservations.map(reservation => (
-    <li key={reservation.id} className="flex justify-between items-center mb-2">
-      <span>{reservation.username}</span>
-      <span>UserID: {reservation.id}</span>
-      <span>Statut: {reservation.status}</span>
-      <Link to={`/profile/${reservation.id}`} className="text-blue-600 hover:text-blue-800 ml-2">Profil</Link>
-      <div>
-        <button className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${['pending', 'relaunched'].includes(reservation.status) ? 'bg-green-500 hover:bg-green-700' : 'bg-gray-500 cursor-not-allowed'}`} disabled={!['pending', 'relaunched'].includes(reservation.status)}>Accepter</button>
-        <button className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${['pending', 'relaunched'].includes(reservation.status) ? 'bg-red-500 hover:bg-red-700' : 'bg-gray-500 cursor-not-allowed'}`} disabled={!['pending', 'relaunched'].includes(reservation.status)}>Refuser</button>
-        <button className={`text-white font-medium rounded-lg text-sm px-3 py-1 ${['closed', 'host_cancelled', 'user_cancelled'].includes(reservation.status) ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-700'}`} disabled={['closed', 'host_cancelled', 'user_cancelled'].includes(reservation.status)}>Contacter client</button>
-      </div>
-    </li>
-  ))}
-</ul>
+                    {workout.reservations && workout.reservations.map(reservation => (
+                        <li key={reservation.id} className="flex justify-between items-center mb-2">
+                        <span>{reservation.username}</span>
+                        <span>UserID: {reservation.id}</span>
+                        <span>Statut: {reservation.status}</span>
+                        <Link to={`/profile/${reservation.id}`} className="text-blue-600 hover:text-blue-800 ml-2">Profil</Link>
+                        <div>
+                            <button className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${['pending', 'relaunched'].includes(reservation.status) ? 'bg-green-500 hover:bg-green-700' : 'bg-gray-500 cursor-not-allowed'}`} disabled={!['pending', 'relaunched'].includes(reservation.status)}>Accepter</button>
+                            <button className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${['pending', 'relaunched'].includes(reservation.status) ? 'bg-red-500 hover:bg-red-700' : 'bg-gray-500 cursor-not-allowed'}`} disabled={!['pending', 'relaunched'].includes(reservation.status)}>Refuser</button>
+                            <button className={`text-white font-medium rounded-lg text-sm px-3 py-1 ${['closed', 'host_cancelled', 'user_cancelled'].includes(reservation.status) ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-700'}`} disabled={['closed', 'host_cancelled', 'user_cancelled'].includes(reservation.status)}>Contacter client</button>
+                        </div>
+                        </li>
+                    ))}
+                    </ul>
               </>
             )}
           </div>
