@@ -117,16 +117,16 @@ function HostedWorkoutHistory() {
                   <div>
                     <Link to={`/workouts/${workout.id}/edit`}>
                       <button 
-                        className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${workout.reservations.some(r => ['pending', 'relaunched'].includes(r.status)) ? 'bg-yellow-500 hover:bg-yellow-700' : 'bg-gray-500 cursor-not-allowed'}`}
-                        disabled={!workout.reservations.some(r => ['pending', 'relaunched'].includes(r.status))}
+                        className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${workout.reservations.every(r => ['pending', 'relaunched'].includes(r.status)) ? 'bg-yellow-500 hover:bg-yellow-700' : 'bg-gray-500 cursor-not-allowed'}`}
+                        disabled={!workout.reservations.every(r => ['pending', 'relaunched'].includes(r.status))}
                       >
                         Modifier votre séance
                       </button>
                     </Link>
                     <button 
                       onClick={() => deleteWorkout(workout.id)}
-                      className={`text-white font-medium rounded-lg text-sm px-3 py-1 ${workout.reservations.some(r => ['pending', 'relaunched'].includes(r.status)) ? 'bg-red-500 hover:bg-red-700' : 'bg-gray-500 cursor-not-allowed'}`}
-                      disabled={!workout.reservations.some(r => ['pending', 'relaunched'].includes(r.status))}
+                      className={`text-white font-medium rounded-lg text-sm px-3 py-1 ${workout.reservations.every(r => ['pending', 'relaunched'].includes(r.status)) ? 'bg-red-500 hover:bg-red-700' : 'bg-gray-500 cursor-not-allowed'}`}
+                      disabled={!workout.reservations.every(r => ['pending', 'relaunched'].includes(r.status))}
                     >
                       Supprimer
                     </button>
