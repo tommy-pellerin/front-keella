@@ -8,7 +8,7 @@ import { useAtom } from "jotai";
 import { alertAtom } from "../../store/alert";
 
 function checkOwner(currentUser, objectToCompare) {
-  console.log("object à comparer:",objectToCompare);
+  console.log("object à comparer:",objectToCompare, currentUser);
   //flash
   return currentUser.id === objectToCompare.id;
 }

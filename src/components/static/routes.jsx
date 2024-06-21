@@ -12,6 +12,7 @@ import Profile from "../user/profile";
 //protection
 import PrivateRoute from "../../services/privateRoute";
 import OwnerRoute from "./OwnerRoute";
+import ProfileReservation from '../user/profileReservation'
 import Category from "../category/category";
 
 //Style
@@ -29,10 +30,14 @@ export default function AppRoutes() {
       <Route path="/users/forget-password" element={<ForgetPassword />} />
       <Route path="/profile/:user_id" element={<PrivateRoute><Profile/></PrivateRoute>} />
       <Route path="/profile/:user_id/edit" element={<PrivateRoute><OwnerRoute><Profile/></OwnerRoute></PrivateRoute>} />
-      <Route path="/my-account" element={<PrivateRoute><MyAccount /></PrivateRoute>} />
+      <Route path="/my-account" element={<MyAccount />} />
+      <Route path="/my-reservation/:user_id" element={<ProfileReservation />} />
+
       
       <Route path="/workouts" element={<WorkoutIndex />} />
       <Route path="/workouts/:workout_id" element={<WorkoutShow />} />
+
+      <Route path="/form-workout" element={<FormWorkout />} />
       <Route path="/workouts/create" element={<PrivateRoute><FormWorkout /></PrivateRoute>} />
       <Route path="/workouts/:workout_id/edit" element={<PrivateRoute><OwnerRoute><FormWorkout /></OwnerRoute></PrivateRoute>}/>
       
