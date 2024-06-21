@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate  } from 'react-router-dom';
 import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
-import { getData, deleteData } from '../../services/data-fetch';
+import { getData, deleteData, updateData } from '../../services/data-fetch';
 
 function HostedWorkoutHistory() {
     const [user] = useAtom(userAtom);
@@ -66,6 +66,55 @@ function HostedWorkoutHistory() {
     return `${hours}h ${minutes}min`;
   }
 
+  // Fonction pour mettre à jour le statut des réservations
+const updateReservationStatus = async (workoutId, reservationId, newStatus) => {
+  console.log(`Mise à jour de la réservation ${reservationId} pour le workout ${workoutId} avec le nouveau statut: ${newStatus}`);
+
+  // Trouver la réservation correspondant à l'ID
+  const workoutToUpdate = workoutData.find(workout => workout.id === workoutId);
+  console.log('Workout trouvé:', workoutToUpdate);
+
+  const reservationToUpdate = workoutToUpdate?.reservations.find(reservation => reservation.id === reservationId);
+  console.log('Réservation à mettre à jour:', reservationToUpdate);
+
+  if (!reservationToUpdate) {
+    console.error('Réservation non trouvée pour cet ID');
+    return;
+  }
+
+  // Mettre à jour l'objet workoutData avec le nouveau statut
+  const updatedWorkoutData = workoutData.map(workout => {
+    if (workout.id === workoutId) {
+      return {
+        ...workout,
+        reservations: workout.reservations.map(reservation => {
+          if (reservation.id === reservationId) {
+            return { ...reservation, status: newStatus };
+          }
+          return reservation;
+        })
+      };
+    }
+    return workout;
+  });
+
+  console.log('Données mises à jour:', updatedWorkoutData);
+
+  // Appeler la méthode updateData pour envoyer les modifications au serveur
+  try {
+    const response = await updateData(`/reservations/${reservationId}`, { reservation: { status: newStatus } });
+    console.log('Réponse du serveur:', response);
+    if (response) {
+      // Si la réponse est positive, mettre à jour l'état local avec les nouvelles données
+      setWorkoutData(updatedWorkoutData);
+    }
+  } catch (error) {
+    // Gérer l'erreur ici
+    console.error('Erreur lors de la mise à jour du statut de la réservation', error);
+  }
+};
+
+
   return (
     <>
       <div className="bg-primary-color text-white text-center py-10 mb-8">
@@ -105,7 +154,13 @@ function HostedWorkoutHistory() {
                           <span>Statut: {reservation.status}</span>
                           <Link to={`/profile/${reservation.id}`} className="text-blue-600 hover:text-blue-800 ml-2">Profil</Link>
                           <div>
-                              <button className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${['pending', 'relaunched'].includes(reservation.status) ? 'bg-green-500 hover:bg-green-700' : 'bg-gray-500 cursor-not-allowed'}`} disabled={!['pending', 'relaunched'].includes(reservation.status)}>Accepter</button>
+                          <button 
+                              onClick={() => updateReservationStatus(workout.id, reservation.id, 'accepted')}
+                              className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${['pending', 'relaunched'].includes(reservation.status) ? 'bg-green-500 hover:bg-green-700' : 'bg-gray-500 cursor-not-allowed'}`} 
+                              disabled={!['pending', 'relaunched'].includes(reservation.status)}
+                            >
+                              Accepter
+                          </button>
                               <button className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${['pending', 'relaunched'].includes(reservation.status) ? 'bg-red-500 hover:bg-red-700' : 'bg-gray-500 cursor-not-allowed'}`} disabled={!['pending', 'relaunched'].includes(reservation.status)}>Refuser</button>
                               <button className={`text-white font-medium rounded-lg text-sm px-3 py-1 ${['closed', 'host_cancelled', 'user_cancelled'].includes(reservation.status) ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-700'}`} disabled={['closed', 'host_cancelled', 'user_cancelled'].includes(reservation.status)}>Contacter client</button>
                           </div>

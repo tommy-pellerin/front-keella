@@ -69,11 +69,12 @@ export async function deleteData(objectUrl) {
 }
 
 // Fonction pour update les donnees
-export async function updateData(objectUrl, workoutData, filesToUpload) {
+export async function updateData(objectUrl, workoutData, filesToUpload, isReservation = false) {
   const formData = new FormData();
   for (const key in workoutData) {
     if (workoutData.hasOwnProperty(key)) {
-      formData.append(`workout[${key}]`, workoutData[key]);
+      const prefix = isReservation ? 'reservation' : 'workout';
+      formData.append(`${prefix}[${key}]`, data[key]);
     }
   }
   // Vérifiez que filesToUpload est défini et est un tableau avant d'utiliser forEach
