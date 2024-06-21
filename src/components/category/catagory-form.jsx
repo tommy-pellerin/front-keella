@@ -70,10 +70,10 @@ const CategoryForm = (props) => {
         if (error.response) {
           console.log(error.response);
           error.response.json().then((body) => {
-            console.error('Erreur du serveur:', body.error);
+            console.error('Erreur du serveur:', body.errors);
             setAlert({
               showAlert:true,
-              message: `${body.error}`,
+              message: `${body.errors.join(', ')}`,
               alertType:"error"
             })
           });

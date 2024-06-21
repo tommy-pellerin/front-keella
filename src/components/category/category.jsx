@@ -3,11 +3,16 @@ import { getData, deleteData } from '../../services/data-fetch'
 import CategoryForm from './catagory-form';
 import LoadingSpinner from '../static/LoadingSpinner.jsx'
 
+//atom
+import { useAtom } from "jotai";
+import { alertAtom } from "../../store/alert";
+
 const Category = () => {
   const [categories,setCategories] = useState([])
   const [showForm, setShowForm] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [,setAlert] = useAtom(alertAtom);
 
   const getCategories = async () => {
     setIsLoading(true);
@@ -32,11 +37,24 @@ const Category = () => {
     try {
       const data = await deleteData(`/categories/${id}`);
       console.log(data);
+      getCategories();
     } catch (error) {
-      console.error(error);
+      console.error('Error caught in calling function:', error);
+        if (error.response) {
+          console.log(error.response);
+          error.response.json().then((body) => {
+            console.error('Erreur du serveur:', body.errors);
+            setAlert({
+              showAlert:true,
+              message: `${body.errors.join(', ')}`,
+              alertType:"error"
+            })
+          });
+        }
     }
     };
     deleteCategory();
+    
   }
   const handleEdit = (category) => {
     setSelectedCategory(category);
@@ -53,7 +71,7 @@ const Category = () => {
       <button className='button-green-small my-3' onClick={()=>{setShowForm(!showForm)}}>Create</button>
       {showForm && <CategoryForm category={selectedCategory} onCategorySaved={getCategories}/>}
     {categories.map((category) => (
-      <div key={category.id} className='grid grid-cols-4 my-3'>
+      <div key={category.id} className='grid grid-cols-5 my-3'>
         <div className='col-span-2 max-h-80'>
           {category.category_image ? 
             <img src={category.category_image} alt={`image de ${category.name}`} className="h-full w-auto" />
@@ -62,6 +80,7 @@ const Category = () => {
           }
         </div>
         <h3 className='col-span-1'>{category.name}</h3>
+        <p className='col-span-1'>Nombre de workout attaché : {category.workouts.length}</p>
         <div className='col-span-1'>
         <button className='button-primary-small' onClick={() => handleEdit(category)}>Edit</button>
           <button className='button-red-small' onClick={() => handleDelete(category.id)}>Delete</button>

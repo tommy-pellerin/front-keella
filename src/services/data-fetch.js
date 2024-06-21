@@ -67,14 +67,14 @@ export async function postData(objectUrl, body, filesToUpload) {
 
 // Fonction pour supprimer les donnees
 export async function deleteData(objectUrl) {
-  try {
+  // try {
     const response = await ky
       .delete(BASE_URL + objectUrl, { headers: getHeaders() })
       .json();
     return response;
-  } catch (error) {
-    console.error("Erreur lors de la suppression des donnees :", error);
-  }
+  // } catch (error) {
+  //   console.error("Erreur lors de la suppression des donnees :", error);
+  // }
 }
 
 // Fonction pour update les donnees
