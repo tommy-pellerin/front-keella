@@ -22,7 +22,7 @@ export default function SignOut() {
     } else {
       try {
         await authSignOut("/users/sign_out");
-        setUser({ email: "", isLogged: false });
+        setUser({ id: "", email: "", isLogged: false });
         setAlert({
           showAlert:true,
           message:"Nous somme triste de vous voir partir...",

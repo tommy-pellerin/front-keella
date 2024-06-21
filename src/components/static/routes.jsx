@@ -8,6 +8,7 @@ import WorkoutIndex from "../workout/index";
 import WorkoutShow from "../workout/show";
 import FormWorkout from "../workout/form-workout";
 import Profile from "../user/profile";
+import EditProfile from "../user/editProfile";
 
 //protection
 import PrivateRoute from "../../services/privateRoute";
@@ -20,6 +21,7 @@ import KitUI from "../KitUI/KitUI";
 import MyAccount from "../user/my-account";
 
 
+
 export default function AppRoutes() {
   return (
     <Routes>
@@ -29,7 +31,7 @@ export default function AppRoutes() {
       <Route path="/users/password/edit" element={<ResetPassword />} />
       <Route path="/users/forget-password" element={<ForgetPassword />} />
       <Route path="/profile/:user_id" element={<PrivateRoute><Profile/></PrivateRoute>} />
-      <Route path="/profile/:user_id/edit" element={<PrivateRoute><OwnerRoute><Profile/></OwnerRoute></PrivateRoute>} />
+      <Route path="/profile/:user_id/edit" element={<PrivateRoute><OwnerRoute><EditProfile/></OwnerRoute></PrivateRoute>} />
       <Route path="/my-account" element={<MyAccount />} />
       <Route path="/my-reservation/:user_id" element={<ProfileReservation />} />
 

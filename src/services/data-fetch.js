@@ -102,6 +102,16 @@ export async function updateData(objectUrl, body, filesToUpload) {
     if (body.category.category_image) {
       formData.append('category[category_image]', body.category.category_image);
     }
+  } else if(body.user) {
+    for (const key in body.user) {
+      if (body.user.hasOwnProperty(key) && key !== 'avatar') {
+        console.log(`Ajout de ${key}:`, body.user[key]);
+        formData.append(`user[${key}]`, body.user[key]);
+      }
+    }
+    if (body.user.avatar) {
+      formData.append('user[avatar]', body.user.avatar);
+    }
   }
   
   try {
