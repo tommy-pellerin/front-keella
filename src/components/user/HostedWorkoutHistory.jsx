@@ -86,19 +86,18 @@ function HostedWorkoutHistory() {
                 <ul className="mb-4">
   {workout.reservations && workout.reservations.map(reservation => (
     <li key={reservation.id} className="flex justify-between items-center mb-2">
-        
       <span>{reservation.username}</span>
-      <span>UserID: {reservation.id}</span> 
-      <span>Statut: {reservation.status}</span> 
-                        <Link to={`/profile/${reservation.id}`} className="text-blue-600 hover:text-blue-800 ml-2">Profil</Link>
-                      <div>
-                        <button className="text-white bg-green-500 hover:bg-green-700 font-medium rounded-lg text-sm px-3 py-1 mr-2">Accepter</button>
-                        <button className="text-white bg-red-500 hover:bg-red-700 font-medium rounded-lg text-sm px-3 py-1 mr-2">Refuser</button>
-                        <button className="text-white bg-blue-500 hover:bg-blue-700 font-medium rounded-lg text-sm px-3 py-1">Contacter client</button>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+      <span>UserID: {reservation.id}</span>
+      <span>Statut: {reservation.status}</span>
+      <Link to={`/profile/${reservation.id}`} className="text-blue-600 hover:text-blue-800 ml-2">Profil</Link>
+      <div>
+        <button className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${['pending', 'relaunched'].includes(reservation.status) ? 'bg-green-500 hover:bg-green-700' : 'bg-gray-500 cursor-not-allowed'}`} disabled={!['pending', 'relaunched'].includes(reservation.status)}>Accepter</button>
+        <button className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${['pending', 'relaunched'].includes(reservation.status) ? 'bg-red-500 hover:bg-red-700' : 'bg-gray-500 cursor-not-allowed'}`} disabled={!['pending', 'relaunched'].includes(reservation.status)}>Refuser</button>
+        <button className={`text-white font-medium rounded-lg text-sm px-3 py-1 ${['closed', 'host_cancelled', 'user_cancelled'].includes(reservation.status) ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-700'}`} disabled={['closed', 'host_cancelled', 'user_cancelled'].includes(reservation.status)}>Contacter client</button>
+      </div>
+    </li>
+  ))}
+</ul>
               </>
             )}
           </div>
