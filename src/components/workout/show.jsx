@@ -55,13 +55,12 @@ const WorkoutShow = () => {
 
   const handleReservation = (e) => {
     e.preventDefault();
+    console.log(workout);
     const body = 
     {
       "reservation":{
         "workout_id": workout.id,
         "quantity": quantity,
-        "total": (quantity*workout.price),
-        "status": "pending",
       }
     };
     const bookPlaces = async () => {
@@ -75,18 +74,42 @@ const WorkoutShow = () => {
               message:"Votre demande a bien été envoyée !",
               alertType:"success"
             })
+            setWorkout(prevWorkout => ({
+              ...prevWorkout,
+              available_places: prevWorkout.available_places - quantity
+            }));
+            setQuantity(1)
           }
         } catch (error) {
-          console.error(error);
-          setAlert({
-            showAlert:true,
-            message:"Une erreur est survenue. Veuillez réessayer",
-            alertType:"error"
-          })
+          console.error('Error caught in calling function:', error);
+          if (error.response) {
+            console.log(error.response);
+            error.response.json().then((body) => {
+              console.error('Erreur du serveur:', body.error);
+              setAlert({
+                showAlert:true,
+                message: `${body.error}`,
+                alertType:"error"
+              })
+            });
+          }
+          
         }
       }
     };
     bookPlaces();
+  }
+
+  function formatDuration(minutes) {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    if (hours === 0) {
+      return `${remainingMinutes} minutes`;
+    } else if (remainingMinutes === 0) {
+      return `${hours}h`;
+    } else {
+      return `${hours}h${remainingMinutes}`;
+    }
   }
 
   return(
@@ -135,14 +158,16 @@ const WorkoutShow = () => {
           </div>
 
           <div className="lg:col-span-1 flex flex-col bg-slate border shadow-lg rounded-xl p-4 md:p-5">
-            <h2>Prix : {workout.price}</h2>
+            <h2>Prix de la séance : {workout.price} €</h2>
             <p>Début de la séance : {formatDate(workout.start_date)} à {formatTime(workout.start_date)}</p>
             <p>Fin de la séance : {formatDate(workout.end_date)} à {formatTime(workout.end_date)}</p>
-            <p>Durée de la séance : {workout.duration}</p>
+            <p>Durée de la séance : {formatDuration(workout.duration)}</p>
+            
             <div>
               <p>Nombre de place max : {workout.max_participants}</p>
               <p>Nombre de place disponible : {workout.available_places}</p>
-              <p>Nombre de place : {quantity}</p>
+              <h3>Nombre de place : {quantity}</h3>
+              <h3>Total à payer : {workout.price*quantity} €</h3>
               <div className="flex justify-around">
                 {/* Buttons are disabled when on conditions */}
                 <button className="button-red-small" onClick={decreaseQuantity} disabled={quantity <= 1}>-</button>

@@ -1,15 +1,24 @@
-import { useState } from "react";
-import { postData } from "../../services/data-fetch";
+import { useState, useEffect } from "react";
+import { postData, updateData } from "../../services/data-fetch";
 
 //atom
 import { useAtom } from "jotai";
 import { alertAtom } from "../../store/alert";
 
-const CategoryForm = () => {
+const CategoryForm = (props) => {
   const [name,setName] = useState("");
   const [previewUrl, setPreviewUrl] = useState(null);
   const [image,setImage] = useState(null)
   const [,setAlert] = useAtom(alertAtom);
+
+  // Set form fields when category prop changes
+  useEffect(() => {
+    if (props.category) {
+      setName(props.category.name);
+      setPreviewUrl(props.category.category_image);
+      // Note: You can't set the image file from a URL, so we leave it as null
+    }
+  }, [props.category]);
 
   const handleImageUpload = (e) => {
     if (e.target.files[0]) {
@@ -23,36 +32,56 @@ const CategoryForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const createCategory = async() => {
+    const saveCategory = async() => {
       if(image === null){
         alert("Image est vide");
         return;
       }
       try {
-        const category = await postData("/categories", {
-          category: { 
-            name:name,
-            category_image: image
-          },
-        });
+        let category;
+        if (props.category) {
+          // Edit mode: PATCH request
+          category = await updateData(`/categories/${props.category.id}`, {
+            category: { 
+              name:name,
+              category_image: image
+            },
+          });
+        } else {
+          // Create mode: POST request
+          category = await postData("/categories", {
+            category: { 
+              name:name,
+              category_image: image
+            },
+          });
+        }
         if(category){
           setAlert({
             showAlert:true,
             message:"Categorie créé",
             alertType:"success"
           })
+          props.onCategorySaved();
         }
         
       } catch (error) {
-        console.error(error); 
-        setAlert({
-          showAlert:true,
-          message:"Une erreur est survenue. Veuillez réessayer ou voir le serveur",
-          alertType:"error"
-        })
+        console.error('Error caught in calling function:', error);
+        if (error.response) {
+          console.log(error.response);
+          error.response.json().then((body) => {
+            console.error('Erreur du serveur:', body.error);
+            setAlert({
+              showAlert:true,
+              message: `${body.error}`,
+              alertType:"error"
+            })
+          });
+        }
+        
       }
     }
-    createCategory();
+    saveCategory();
   }
 
   return(
