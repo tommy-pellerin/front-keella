@@ -100,6 +100,18 @@ const WorkoutShow = () => {
     bookPlaces();
   }
 
+  function formatDuration(minutes) {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    if (hours === 0) {
+      return `${remainingMinutes} minutes`;
+    } else if (remainingMinutes === 0) {
+      return `${hours}h`;
+    } else {
+      return `${hours}h${remainingMinutes}`;
+    }
+  }
+
   return(
     <>
       <div className="border-y border-purple-900 bg-gray-300 my-10 h-2/5">
@@ -149,7 +161,7 @@ const WorkoutShow = () => {
             <h2>Prix de la séance : {workout.price} €</h2>
             <p>Début de la séance : {formatDate(workout.start_date)} à {formatTime(workout.start_date)}</p>
             <p>Fin de la séance : {formatDate(workout.end_date)} à {formatTime(workout.end_date)}</p>
-            <p>Durée de la séance : {workout.duration}</p>
+            <p>Durée de la séance : {formatDuration(workout.duration)}</p>
             
             <div>
               <p>Nombre de place max : {workout.max_participants}</p>
