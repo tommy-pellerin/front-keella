@@ -68,27 +68,39 @@ export async function deleteData(objectUrl) {
   }
 }
 
-// Fonction pour update les donnees
-export async function updateData(objectUrl, workoutData, filesToUpload, isReservation = false) {
+// Fonction pour mettre à jour les données
+export async function updateData(objectUrl, data, filesToUpload = [], isReservation = false) {
+  console.log('URL de la requête:', BASE_URL + objectUrl);
+  console.log('Données à envoyer:', data);
+  console.log('Fichiers à uploader:', filesToUpload);
+  console.log('Est-ce une réservation ?:', isReservation);
+
   const formData = new FormData();
-  for (const key in workoutData) {
-    if (workoutData.hasOwnProperty(key)) {
-      const prefix = isReservation ? 'reservation' : 'workout';
+  // Déterminer le préfixe en fonction du type de données
+  const prefix = isReservation ? 'reservation' : 'workout';
+
+  // Ajouter les données au formData
+  for (const key in data) {
+    if (data.hasOwnProperty(key)) {
       formData.append(`${prefix}[${key}]`, data[key]);
+      console.log(`Ajouté au formData: ${prefix}[${key}] =`, data[key]);
     }
   }
-  // Vérifiez que filesToUpload est défini et est un tableau avant d'utiliser forEach
-  if (Array.isArray(filesToUpload)) {
-    filesToUpload.forEach((file, index) => {
-      formData.append('workout[workout_images][]', file);
+
+  // Ajouter les fichiers si nécessaire
+  if (filesToUpload.length > 0 && !isReservation) {
+    filesToUpload.forEach((file) => {
+      formData.append(`${prefix}[workout_images][]`, file);
+      console.log(`Fichier ajouté au formData: ${prefix}[workout_images][] =`, file.name);
     });
   }
-  
+
   try {
     const response = await ky.patch(BASE_URL + objectUrl, {
       headers: getHeaders(),
       body: formData,
     }).json();
+    console.log('Réponse du serveur:', response);
     return response;
   } catch (error) {
     console.error("Erreur lors de la mise à jour des données :", error);

@@ -74,11 +74,12 @@ const updateReservationStatus = async (workoutId, reservationId, newStatus) => {
   const workoutToUpdate = workoutData.find(workout => workout.id === workoutId);
   console.log('Workout trouvé:', workoutToUpdate);
 
-  const reservationToUpdate = workoutToUpdate?.reservations.find(reservation => reservation.id === reservationId);
+  const reservationToUpdate = workoutData.find(workout => workout.id === workoutId)
+    ?.reservations.find(reservation => reservation.id === reservationId);
   console.log('Réservation à mettre à jour:', reservationToUpdate);
 
   if (!reservationToUpdate) {
-    console.error('Réservation non trouvée pour cet ID');
+    console.error('Réservation non trouvée pour cet ID:', reservationId);
     return;
   }
 
@@ -99,10 +100,13 @@ const updateReservationStatus = async (workoutId, reservationId, newStatus) => {
   });
 
   console.log('Données mises à jour:', updatedWorkoutData);
+  // Préparer les données pour l'envoi
+  const reservationData = { status: newStatus };
+  console.log('Données à envoyer:', reservationData);
 
   // Appeler la méthode updateData pour envoyer les modifications au serveur
   try {
-    const response = await updateData(`/reservations/${reservationId}`, { reservation: { status: newStatus } });
+    const response = await updateData(`/reservations/${reservationId}`, { status: newStatus }, [], true);
     console.log('Réponse du serveur:', response);
     if (response) {
       // Si la réponse est positive, mettre à jour l'état local avec les nouvelles données
