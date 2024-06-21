@@ -9,6 +9,7 @@ import WorkoutShow from "../workout/show";
 import FormWorkout from "../workout/form-workout";
 import Profile from "../user/profile";
 import OwnerRoute from "./OwnerRoute";
+import Category from "../category/category";
 
 //Style
 import KitUI from "../KitUI/KitUI";
@@ -17,6 +18,7 @@ import MyAccount from "../user/my-account";
 //Atom
 import { useAtomValue } from 'jotai';
 import { userAtom } from "../../store/user";
+
 
 
 
@@ -52,6 +54,10 @@ export default function AppRoutes() {
       <Route path="/workouts/create" element={<PrivateRoute><FormWorkout /></PrivateRoute>} />
       <Route path="/workouts/:workout_id/edit" element={<PrivateRoute><OwnerRoute><FormWorkout /></OwnerRoute></PrivateRoute>}/>
       
+      {/* Il faut etre admin pour utiliser ses pages */}
+      <Route path="/categories" element={<Category/>} />
+      <Route path="/categories/create" element={<KitUI/>} />
+      <Route path="/categories/edit" element={<KitUI/>} />
       <Route path="/kit-ui" element={<KitUI/>} />
     </Routes>
   );

@@ -35,8 +35,19 @@ export async function postData(objectUrl, body, filesToUpload) {
     for (const key in body.reservation) {
         formData.append(`reservation[${key}]`, body.reservation[key]);
     }
+  } else if (body.category) {
+    formData = new FormData();
+    for (const key in body) {
+      if (body.hasOwnProperty(key) && key !== 'category_image') {
+        console.log(`Ajout de ${key}:`, body.category[key]);
+        formData.append(`category[${key}]`, body.category[key]);
+      }
+    }
+    if (body.category.category_image) {
+      formData.append('category[category_image]', body.category.category_image);
+    }
   }
-  
+
   try {
     const response = await ky.post(BASE_URL + objectUrl, {
       headers: getHeaders(),
