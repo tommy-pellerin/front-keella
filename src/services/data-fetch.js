@@ -19,7 +19,6 @@ export async function postData(objectUrl, body, filesToUpload) {
   const formData = new FormData();
   console.log(body);
   if(body.price) {
-    formData = new FormData();
     for (const key in body) {
       if (body.hasOwnProperty(key) && key !== 'workout_images') {
         console.log(`Ajout de ${key}:`, body[key]);
