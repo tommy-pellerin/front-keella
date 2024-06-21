@@ -25,6 +25,20 @@ function ProfileReservation() {
         profileData();
     }, [user, user_id]);
 
+    const handlePay = (reservation) => {
+        console.log(`Paying for reservation ${reservation}`);
+    };
+
+    const handleCancel = (reservationId) => {
+        console.log(`Cancelling reservation ${reservationId}`);
+        // Add your request logic here
+    };
+
+    const handleRelaunch = (reservationId) => {
+        console.log(`Relaunching host for reservation ${reservationId}`);
+        // Add your request logic here
+    };
+
     function formatDate(dateString) {
         const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
         return new Date(dateString).toLocaleDateString('fr-FR', options);
@@ -71,15 +85,15 @@ function ProfileReservation() {
                                     <p>Prix Total : {reservation.total} €</p>
                                     {reservation.status === "accepted" ?
                                     <>
-                                        <button className='button-green-small'>payer</button>
-                                        <button className='button-red-small'>annuler</button>
+                                        <button className='button-green-small' onClick={() => handlePay(reservation.id)}>payer</button>
+                                        <button className='button-red-small' onClick={() => handleCancel(reservation.id)}>annuler</button>
                                     </>
                                     :
                                     <></>
                                     }
                                     {reservation.status === "pending" ?
                                     <>
-                                        <button className='button-primary-small'>relancer l'hote</button>
+                                        <button className='button-primary-small' onClick={() => handleRelaunch(reservation.id)}>relancer l'hote</button>
                                         <button className='button-red-small'>annuler</button>
                                     </>
                                     :
