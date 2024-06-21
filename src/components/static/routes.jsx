@@ -12,6 +12,7 @@ import Profile from "../user/profile";
 //protection
 import PrivateRoute from "../../services/privateRoute";
 import OwnerRoute from "./OwnerRoute";
+import Category from "../category/category";
 
 //Style
 import KitUI from "../KitUI/KitUI";
@@ -35,6 +36,9 @@ export default function AppRoutes() {
       <Route path="/workouts/create" element={<PrivateRoute><FormWorkout /></PrivateRoute>} />
       <Route path="/workouts/:workout_id/edit" element={<PrivateRoute><OwnerRoute><FormWorkout /></OwnerRoute></PrivateRoute>}/>
       
+      {/* Il faut etre admin pour utiliser ses pages */}
+      <Route path="/categories" element={<PrivateRoute><Category/></PrivateRoute>} />
+      <Route path="/categories/edit" element={<KitUI/>} />
       <Route path="/kit-ui" element={<KitUI/>} />
     </Routes>
   );

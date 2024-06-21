@@ -24,6 +24,7 @@ const navigation = [
   // { name: 'Team', href: '#', current: false },
   // { name: 'Projects', href: '#', current: false },
   { name: 'Kit UI', href: '/kit-ui', current: false },
+  { name: 'Gérer les categories', href: '/categories', current: false },
   { name: 'Trouver une séance', href: '/workouts', current: false },
 ]
 
