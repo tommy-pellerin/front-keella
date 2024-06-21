@@ -19,6 +19,7 @@ export default function SignIn() {
         user: { username, email, password },
       });
       setUser({
+        id: user.user.id,
         email: user.user.email,
         isLogged: true,
       });

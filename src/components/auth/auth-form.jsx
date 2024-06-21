@@ -5,6 +5,8 @@ export default function AuthForm({ onSubmit, buttonText }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
+
+  //check if is signing up
   const match = useMatch("/sign-up");
   const isSigningUp = match ? true : false;
 
@@ -16,6 +18,7 @@ export default function AuthForm({ onSubmit, buttonText }) {
   return (
     <div className="container bg-gray-200 mx-auto lg:w-3/5 my-5 border border-gray rounded-lg">
       <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-5 my-5">
+        {/* display is signignup */}
         {isSigningUp &&
         <div className="sm:w-full lg:w-3/5">
           <label>User name</label>
@@ -29,6 +32,7 @@ export default function AuthForm({ onSubmit, buttonText }) {
           ></input>
         </div>
         }
+
         <div className="w-3/5">
           <label>Email</label>
           <br />

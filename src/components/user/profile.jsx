@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { getData } from '../../services/data-fetch';
 import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
+import { Link } from 'react-router-dom';
 
 function Profile() {
     const [user] = useAtom(userAtom);
@@ -27,7 +28,7 @@ function Profile() {
     function formatDate(dateString) {
         const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
         return new Date(dateString).toLocaleDateString('fr-FR', options);
-      }
+    }
 
     if (!profile) {
         return <div><LoadingSpinner/></div>;
@@ -36,7 +37,7 @@ function Profile() {
     return (
         <div className="">
         <div className='bg-blue-500 text-white text-center py-10 mb-8'>
-            <h2 className='md-4'>Mon Profil</h2>
+            <h2 className='md-4'>Profil</h2>
         </div>
         <div className="container mx-auto p-4">
 
@@ -62,7 +63,7 @@ function Profile() {
                     }
                     {user.email === profile.email ?
                     <>
-                        <a className='button-green-large'>Éditer le profil</a>
+                        <Link to={`/profile/${user.id}/edit`} className='button-green-large'>Éditer le profil</Link>
                     </>
                     :
                     <></>

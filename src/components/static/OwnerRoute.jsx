@@ -41,7 +41,7 @@ const OwnerRoute = ({ children }) => {
       const getUser = async () => {
         try {
           const data = await getData(`/users/${user_id}`);
-          console.log(data);
+          // console.log(data);
           setIsOwner(checkOwner(currentUser, data));
         } catch (error) {
           console.error(error);
