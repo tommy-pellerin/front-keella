@@ -6,6 +6,9 @@ import Footer from "./components/static/footer";
 import Alert from "./styles/Alert"; 
 import LoadingSpinner from "./components/static/LoadingSpinner";
 
+//Protection
+import TokenExpirationCheck from "./services/tokenExpired";
+
 //Atom
 import { useAtom } from 'jotai';
 import { userAtom } from "./store/user";
@@ -32,7 +35,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <header>
-        <Navbar />
+        
+          <Navbar />
+        
         <Alert 
           showAlert={alert.showAlert} 
           setShowAlert={setAlert} 

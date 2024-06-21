@@ -1,4 +1,6 @@
 import { useLocation, Navigate } from "react-router-dom";
+import TokenExpirationCheck from "./tokenExpired";
+
 //Atom
 import { useAtomValue } from 'jotai';
 import { userAtom } from "../store/user";
@@ -10,9 +12,13 @@ const PrivateRoute = ({ children }) => {
   const location = useLocation();
   const [,setAlert] = useAtom(alertAtom);
   
-  console.log("islooged?", currentUser.isLogged);
+  console.log("isloged?", currentUser.isLogged);
   if (currentUser.isLogged) {
-    return children;
+    return (
+      <TokenExpirationCheck>
+        {children}
+      </TokenExpirationCheck>
+    )
   } else {
     setAlert({
       showAlert:true,
