@@ -24,6 +24,7 @@ const navigation = [
   // { name: 'Team', href: '#', current: false },
   // { name: 'Projects', href: '#', current: false },
   { name: 'Kit UI', href: '/kit-ui', current: false },
+  { name: 'Gérer les categories', href: '/categories', current: false },
   { name: 'Trouver une séance', href: '/workouts', current: false },
 ]
 
@@ -142,7 +143,7 @@ export default function Navbar() {
                       </MenuItem>
                       <MenuItem>
                         {({ focus }) => (
-                          <Link to="/profile/me" className={classNames(focus ? 'bg-gray-100' : '', 'block text-center px-4 py-2 text-sm text-gray-700')}>Mon profil</Link>
+                          <Link to={`/profile/${user.id}`} className={classNames(focus ? 'bg-gray-100' : '', 'block text-center px-4 py-2 text-sm text-gray-700')}>Mon profil</Link>
                         )}
                       </MenuItem>
                       <MenuItem>
