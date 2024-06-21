@@ -4,7 +4,7 @@ import { getData } from '../../services/data-fetch'
 
 function WorkoutList() {
     const [workouts, setWorkouts] = useState([]);
-    const [visibleCount, setVisibleCount] = useState(6);
+    const [visibleCount, setVisibleCount] = useState(12);
 
     useEffect(() => {
         const getWorkouts = async () => {
@@ -21,7 +21,7 @@ function WorkoutList() {
       }, []);
 
       const loadMore = () => {
-        setVisibleCount((prevCount) => prevCount + 3);
+        setVisibleCount((prevCount) => prevCount + 6);
     };
 
   return (
@@ -35,7 +35,7 @@ function WorkoutList() {
         <h3 className="text-lg font-bold text-gray-800">
             {workout.title}
         </h3>
-        <p className="mt-1 text-gray-500">
+        <p className="mt-1 text-gray-500 text-description">
             {workout.description}            
         </p>
         <ul>

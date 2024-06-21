@@ -5,7 +5,7 @@ import { getData } from '../../services/data-fetch';
 import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
 
-function UserProfile() {
+function Profile() {
     const [user] = useAtom(userAtom);
     const [profile, setProfile] = useState(null);
 
@@ -34,7 +34,12 @@ function UserProfile() {
     }
 
     return (
+        <div className="">
+        <div className='bg-blue-500 text-white text-center py-10 mb-8'>
+            <h2 className='md-4'>Mon Profil</h2>
+        </div>
         <div className="container mx-auto p-4">
+
             <div className="flex justify-center">
                 <div className="bg-white rounded-lg shadow-lg p-6">
                     <h1 className="mb-4 text-center">Compte de {profile.username}</h1>
@@ -64,10 +69,10 @@ function UserProfile() {
                     }
                 </div>
 
-
+                    </div>
             </div>
         </div>
     );
 }
 
-export default UserProfile;
+export default Profile;
