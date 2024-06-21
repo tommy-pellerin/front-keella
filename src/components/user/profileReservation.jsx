@@ -27,7 +27,7 @@ function ProfileReservation() {
 
     const handlePay = (reservation) => {
         console.log(`Paying for reservation ${reservation}`);
-        
+
     };
 
     const handleCancel = (reservationId) => {
@@ -93,7 +93,7 @@ function ProfileReservation() {
                                     {reservation.status === "pending" ?
                                     <>
                                         <button className='button-primary-small' onClick={() => handleRelaunch(reservation.id)}>relancer l'hote</button>
-                                        <button className='button-red-small'>annuler</button>
+                                        <button className='button-red-small' onClick={() => handleCancel(reservation.id)}>annuler</button>
                                     </>
                                     :
                                     <></>
