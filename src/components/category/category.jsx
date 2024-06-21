@@ -11,6 +11,7 @@ const Category = () => {
   const [categories,setCategories] = useState([])
   const [showForm, setShowForm] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [isWorkoutsLoading, setIsWorkoutsLoading] = useState(true); //just for using category ther are attached to category
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [,setAlert] = useAtom(alertAtom);
 
@@ -20,6 +21,7 @@ const Category = () => {
       const data = await getData(`/categories?sort=name`);
       console.log(data);
       setCategories(data);
+      setIsWorkoutsLoading(false);
       setSelectedCategory(null); // Reset selected category
     } catch (error) {
       console.error(error);
@@ -80,7 +82,11 @@ const Category = () => {
           }
         </div>
         <h3 className='col-span-1'>{category.name}</h3>
-        <p className='col-span-1'>Nombre de workout attaché : {category.workouts.length}</p>
+        {isWorkoutsLoading ? (
+          <p>Loading workouts...</p>
+        ) : (
+          <p className='col-span-1'>Nombre de workout attaché : {category.workouts.length}</p>
+        )}
         <div className='col-span-1'>
         <button className='button-primary-small' onClick={() => handleEdit(category)}>Edit</button>
           <button className='button-red-small' onClick={() => handleDelete(category.id)}>Delete</button>
