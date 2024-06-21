@@ -27,16 +27,15 @@ function ProfileReservation() {
 
     const handlePay = (reservation) => {
         console.log(`Paying for reservation ${reservation}`);
+        
     };
 
     const handleCancel = (reservationId) => {
         console.log(`Cancelling reservation ${reservationId}`);
-        // Add your request logic here
     };
 
     const handleRelaunch = (reservationId) => {
         console.log(`Relaunching host for reservation ${reservationId}`);
-        // Add your request logic here
     };
 
     function formatDate(dateString) {

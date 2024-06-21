@@ -4,6 +4,8 @@ import { getData } from "../../services/data-fetch";
 import { useAtomValue } from 'jotai';
 import { userAtom } from "../../store/user";
 import { useEffect, useState } from "react";
+import { useAtom } from "jotai";
+import { alertAtom } from "../../store/alert";
 
 function checkOwner(currentUser, objectToCompare) {
   console.log("object à comparer:",objectToCompare, currentUser);
@@ -18,6 +20,7 @@ const OwnerRoute = ({ children }) => {
   const { reservation_id } = useParams();
   const location = useLocation();
   const [isOwner, setIsOwner] = useState(null);
+  const [,setAlert] = useAtom(alertAtom);
 
   useEffect(() => {
     //check if currentUser is the owner of the workout
@@ -62,24 +65,29 @@ const OwnerRoute = ({ children }) => {
     
   }, [reservation_id, user_id, workout_id]);
   
+  useEffect(() => {
+    if (isOwner === false) {
+      setAlert({
+        showAlert: true,
+        message: "Vous n'etre pas autorisé à rentrer car vous n'etes pas l'auteur de la page",
+        alertType: "error"
+      });
+    }
+  }, [isOwner]);
+  
   if (isOwner === null) {
     return <div>Loading...</div>; // Or your loading spinner
   }
   
+  if (!isOwner) {
+    return <Navigate to="/" />;
+  }
+  
   return (
     <>
-      {isOwner ? (
-        <>
-          {console.log("you are owner")}
-          {children}
-        </>
-      ) : (
-        <>
-          {console.log("you are not owner")}
-          <Navigate to="/"/>
-        </>
-      )}
-    </>
+      {console.log("you are owner")}
+      {children}
+    </>      
   )
   
 }
