@@ -16,10 +16,9 @@ export async function getData(objectUrl) {
 
 // Fonction pour envoyer les données
 export async function postData(objectUrl, body, filesToUpload) {
-  let formData;
+  const formData = new FormData();
   console.log(body);
   if(body.price) {
-    formData = new FormData();
     for (const key in body) {
       if (body.hasOwnProperty(key) && key !== 'workout_images') {
         console.log(`Ajout de ${key}:`, body[key]);
@@ -31,12 +30,21 @@ export async function postData(objectUrl, body, filesToUpload) {
       formData.append('workout[workout_images][]', imageFile); // Utilisez la clé 'workout[workout_images][]'
     });
   } else if(body.reservation) {
-    formData = new FormData();
     for (const key in body.reservation) {
         formData.append(`reservation[${key}]`, body.reservation[key]);
     }
+  } else if (body.category) {
+    for (const key in body.category) {
+      if (body.category.hasOwnProperty(key) && key !== 'category_image') {
+        console.log(`Ajout de ${key}:`, body.category[key]);
+        formData.append(`category[${key}]`, body.category[key]);
+      }
+    }
+    if (body.category.category_image) {
+      formData.append('category[category_image]', body.category.category_image);
+    }
   }
-  
+
   // try {
     const response = await ky.post(BASE_URL + objectUrl, {
       headers: getHeaders(),
@@ -58,41 +66,52 @@ export async function postData(objectUrl, body, filesToUpload) {
 
 // Fonction pour supprimer les donnees
 export async function deleteData(objectUrl) {
-  try {
+  // try {
     const response = await ky
       .delete(BASE_URL + objectUrl, { headers: getHeaders() })
       .json();
     return response;
-  } catch (error) {
-    console.error("Erreur lors de la suppression des donnees :", error);
-  }
+  // } catch (error) {
+  //   console.error("Erreur lors de la suppression des donnees :", error);
+  // }
 }
 
-// Fonction pour mettre à jour les données
-export async function updateData(objectUrl, data, filesToUpload = [], isReservation = false) {
-  console.log('URL de la requête:', BASE_URL + objectUrl);
-  console.log('Données à envoyer:', data);
-  console.log('Fichiers à uploader:', filesToUpload);
-  console.log('Est-ce une réservation ?:', isReservation);
-
+// Fonction pour update les donnees
+export async function updateData(objectUrl, body, filesToUpload) {
   const formData = new FormData();
-  // Déterminer le préfixe en fonction du type de données
-  const prefix = isReservation ? 'reservation' : 'workout';
-
-  // Ajouter les données au formData
-  for (const key in data) {
-    if (data.hasOwnProperty(key)) {
-      formData.append(`${prefix}[${key}]`, data[key]);
-      console.log(`Ajouté au formData: ${prefix}[${key}] =`, data[key]);
+  console.log(body);
+  if(body.price) {
+    for (const key in body) {
+      if (body.hasOwnProperty(key)) {
+        formData.append(`workout[${key}]`, body[key]);
+      }
     }
-  }
-
-  // Ajouter les fichiers si nécessaire
-  if (filesToUpload.length > 0 && !isReservation) {
-    filesToUpload.forEach((file) => {
-      formData.append(`${prefix}[workout_images][]`, file);
-      console.log(`Fichier ajouté au formData: ${prefix}[workout_images][] =`, file.name);
-    });
+    // Vérifiez que filesToUpload est défini et est un tableau avant d'utiliser forEach
+    if (Array.isArray(filesToUpload)) {
+      filesToUpload.forEach((file, index) => {
+        formData.append('workout[workout_images][]', file);
+      });
+    }
+  } else if(body.category) {
+    for (const key in body.category) {
+      if (body.category.hasOwnProperty(key) && key !== 'category_image') {
+        console.log(`Ajout de ${key}:`, body.category[key]);
+        formData.append(`category[${key}]`, body.category[key]);
+      }
+    }
+    if (body.category.category_image) {
+      formData.append('category[category_image]', body.category.category_image);
+    }
+  } else if(body.user) {
+    for (const key in body.user) {
+      if (body.user.hasOwnProperty(key) && key !== 'avatar') {
+        console.log(`Ajout de ${key}:`, body.user[key]);
+        formData.append(`user[${key}]`, body.user[key]);
+      }
+    }
+    if (body.user.avatar) {
+      formData.append('user[avatar]', body.user.avatar);
+    }
   }
 
   try {

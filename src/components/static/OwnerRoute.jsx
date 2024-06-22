@@ -8,7 +8,7 @@ import { useAtom } from "jotai";
 import { alertAtom } from "../../store/alert";
 
 function checkOwner(currentUser, objectToCompare) {
-  console.log("object à comparer:",objectToCompare);
+  console.log("object à comparer:",objectToCompare, currentUser);
   //flash
   return currentUser.id === objectToCompare.id;
 }
@@ -41,7 +41,7 @@ const OwnerRoute = ({ children }) => {
       const getUser = async () => {
         try {
           const data = await getData(`/users/${user_id}`);
-          console.log(data);
+          // console.log(data);
           setIsOwner(checkOwner(currentUser, data));
         } catch (error) {
           console.error(error);
