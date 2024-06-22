@@ -113,6 +113,10 @@ export async function updateData(objectUrl, body, filesToUpload) {
       formData.append('user[avatar]', body.user.avatar);
     }
   }
+    if (body.status) { 
+      formData.append('reservation[status]', body.status);
+      
+    }
 
   try {
     const response = await ky.patch(BASE_URL + objectUrl, {

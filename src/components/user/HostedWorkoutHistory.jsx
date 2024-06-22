@@ -66,57 +66,22 @@ function HostedWorkoutHistory() {
     return `${hours}h ${minutes}min`;
   }
 
-  // Fonction pour mettre à jour le statut des réservations
-const updateReservationStatus = async (workoutId, reservationId, newStatus) => {
-  console.log(`Mise à jour de la réservation ${reservationId} pour le workout ${workoutId} avec le nouveau statut: ${newStatus}`);
-
-  // Trouver la réservation correspondant à l'ID
-  const workoutToUpdate = workoutData.find(workout => workout.id === workoutId);
-  console.log('Workout trouvé:', workoutToUpdate);
-
-  const reservationToUpdate = workoutData.find(workout => workout.id === workoutId)
-    ?.reservations.find(reservation => reservation.id === reservationId);
-  console.log('Réservation à mettre à jour:', reservationToUpdate);
-
-  if (!reservationToUpdate) {
-    console.error('Réservation non trouvée pour cet ID:', reservationId);
-    return;
-  }
-
-  // Mettre à jour l'objet workoutData avec le nouveau statut
-  const updatedWorkoutData = workoutData.map(workout => {
-    if (workout.id === workoutId) {
-      return {
-        ...workout,
-        reservations: workout.reservations.map(reservation => {
-          if (reservation.id === reservationId) {
-            return { ...reservation, status: newStatus };
-          }
-          return reservation;
-        })
-      };
+  // Fonction pour afficher les réservations pour un ID de séance d'entraînement spécifique
+  function displayReservations(workoutId) {
+    const workout = workoutData.find(w => w.id === workoutId);
+    if (!workout) {
+      console.log('Séance d\'entraînement non trouvée');
+      return;
     }
-    return workout;
-  });
 
-  console.log('Données mises à jour:', updatedWorkoutData);
-  // Préparer les données pour l'envoi
-  const reservationData = { status: newStatus };
-  console.log('Données à envoyer:', reservationData);
-
-  // Appeler la méthode updateData pour envoyer les modifications au serveur
-  try {
-    const response = await updateData(`/reservations/${reservationId}`, { status: newStatus }, [], true);
-    console.log('Réponse du serveur:', response);
-    if (response) {
-      // Si la réponse est positive, mettre à jour l'état local avec les nouvelles données
-      setWorkoutData(updatedWorkoutData);
-    }
-  } catch (error) {
-    // Gérer l'erreur ici
-    console.error('Erreur lors de la mise à jour du statut de la réservation', error);
+    return workout.reservations.map((reservation, index) => (
+      <div key={index}>
+        
+        <p>ID du user de la reservation: {reservation.id}</p> {/* Ajout de l'ID de la réservation */}
+        <p>Statut: {reservation.status}</p>
+      </div>
+    ));
   }
-};
 
 
   return (
@@ -135,7 +100,9 @@ const updateReservationStatus = async (workoutId, reservationId, newStatus) => {
           
         {openWorkoutId === workout.id && (
                 <>
-
+                  <div>
+                  {displayReservations(workout.id)}
+                </div>
                   <p className="text-gray-600 mb-4">
                   Date et heure de création du workout: {new Date(workout.created_at).toLocaleString('fr-FR', { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                   </p>
@@ -147,7 +114,7 @@ const updateReservationStatus = async (workoutId, reservationId, newStatus) => {
                   <p className="text-gray-600 mb-4">Date et heure de début: {new Date(workout.start_date).toLocaleString('fr-FR', { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                   </p>
                   <p className="text-gray-600 mb-4">Places disponibles: {workout.available_places}</p>
-                  <p className="text-gray-600 mb-4">Catégorie: {workout.category}</p>
+                  <p className="text-gray-600 mb-4">Catégorie: {workout.category.name}</p>
                   
                   
                   <ul className="mb-4">
