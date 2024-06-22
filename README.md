@@ -45,3 +45,10 @@ try {
         alertType:"error"
       })
     }
+
+### checkToken function
+it return 4 status possibles:
+- expired :  for token expired
+- valid : for token valid
+- invalid : for invalid token (because wrong type of jwt or other reason that jwtDecode can't decrypt)
+- not_found : there is no token in the cookies or there is no cookies with name searched
