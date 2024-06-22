@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom"
 import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
-import { useAtom } from 'jotai';
-import { userAtom } from '../../store/user';
+
 
 
 const MyAccount = () => {
   const [user] = useAtom(userAtom)
 
-  const [user] = useAtom(userAtom);
+  
 
   return (
     <>
