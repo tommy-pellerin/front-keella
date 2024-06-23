@@ -5,6 +5,7 @@ import { useParams, Link } from "react-router-dom";
 import { useAtom } from "jotai";
 import { alertAtom } from "../../store/alert";
 import ImageCarrousel from "./ImageCarrousel";
+import Checkout from "../payment/checkout";
 
 const WorkoutShow = () => {
   const [quantity,setQuantity] = useState(1)
@@ -190,7 +191,10 @@ const WorkoutShow = () => {
             {quantity > workout.available_places ?
             <button className="button-primary-large" disabled={quantity > workout.available_places}>Il n&apos;y a plus de place</button>
             :
+            <>
             <button className="button-primary-large" onClick={handleReservation} disabled={quantity > workout.available_places}>Envoyer une demande de réservation</button>
+            <Checkout />
+            </>
             }
             {/* <button className="py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700" onClick={handleReservation}>Envoyer une demande de réservation</button> */}
 

@@ -9,6 +9,8 @@ import WorkoutShow from "../workout/show";
 import FormWorkout from "../workout/form-workout";
 import Profile from "../user/profile";
 import EditProfile from "../user/editProfile";
+import Success from "../payment/success";
+import Cancel from "../payment/cancel";
 
 //protection
 import PrivateRoute from "../../services/privateRoute";
@@ -43,6 +45,9 @@ export default function AppRoutes() {
       <Route path="/workouts/create" element={<PrivateRoute><FormWorkout /></PrivateRoute>} />
       <Route path="/workouts/:workout_id/edit" element={<PrivateRoute><OwnerRoute><FormWorkout /></OwnerRoute></PrivateRoute>}/>
       
+      <Route path="/payment/success" element={<Success />} />
+      <Route path="/payment/cancel" element={<Cancel />} />
+
       {/* Il faut etre admin pour utiliser ses pages */}
       <Route path="/categories" element={<PrivateRoute><Category/></PrivateRoute>} />
       <Route path="/categories/edit" element={<KitUI/>} />
