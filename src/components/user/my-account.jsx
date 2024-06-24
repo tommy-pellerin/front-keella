@@ -11,7 +11,7 @@ const MyAccount = () => {
 
   return (
     <>
-      <div className="bg-blue-500 text-white text-center py-10 mb-8">
+      <div className="bg-blue-500">
         <h1 className="text-4xl">Mon compte</h1>
       </div>
       <div className="container mx-auto my-5">

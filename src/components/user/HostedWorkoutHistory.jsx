@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate  } from 'react-router-dom';
 import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
+import { alertAtom } from '../../store/alert';
+import Alert from '../../styles/Alert';
 import { getData, deleteData, updateData } from '../../services/data-fetch';
 
 function HostedWorkoutHistory() {
@@ -11,7 +13,8 @@ function HostedWorkoutHistory() {
     const [workoutIdToDelete, setWorkoutIdToDelete] = useState(null);
     const [openWorkoutId, setOpenWorkoutId] = useState(null);
     const [workoutData, setWorkoutData] = useState([]); // État pour stocker les données des workouts
-  
+    const [alertState, setAlertState] = useAtom(alertAtom);
+
     useEffect(() => {
         
       const fetchHostedWorkouts = async () => {
@@ -35,6 +38,11 @@ function HostedWorkoutHistory() {
           }
         } catch (error) {
           console.error('Erreur lors de la récupération des données:', error);
+          setAlertState({
+            showAlert: true,
+            message: 'Erreur lors de la récupération des données',
+            alertType: 'error'
+          });
         }
       };
   
@@ -53,9 +61,19 @@ function HostedWorkoutHistory() {
             if (response === null) {
               console.log("Deletion succeeded, updating state");
               setWorkoutData(prevWorkouts => prevWorkouts.filter(workout => workout.id !== workoutId));
+              setAlertState({
+                showAlert: true,
+                message: 'Séance d\'entraînement supprimée avec succès',
+                alertType: 'success'
+              });
             }
           } catch (error) {
             console.error('Erreur lors de la suppression de la séance d\'entraînement:', error);
+            setAlertState({
+              showAlert: true,
+              message: 'Erreur lors de la suppression de la séance d\'entraînement',
+              alertType: 'error'
+            });
           }
         }
       };
@@ -81,22 +99,6 @@ function HostedWorkoutHistory() {
     return `${hours}h ${minutes}min`;
   }
 
-  // // Fonction pour afficher les réservations pour un ID de séance d'entraînement spécifique
-  // function displayReservations(workoutId) {
-  //   const workout = workoutData.find(w => w.id === workoutId);
-  //   if (!workout) {
-  //     console.log('Séance d\'entraînement non trouvée');
-  //     return;
-  //   }
-
-  //   return workout.reservations.map((reservation, index) => (
-  //     <div key={index}>
-  //       <p>ID de la réservation: {reservation.reservationId}</p>
-  //       <p>ID du user de la reservation: {reservation.id}</p> {/* Ajout de l'ID de la réservation */}
-  //       <p>Statut: {reservation.status}</p>
-  //     </div>
-  //   ));
-  // }
 
   // Fonction pour mettre à jour le statut d'une réservation
 const updateReservationStatus = async (workoutId, reservationId, newStatus) => {
@@ -118,16 +120,34 @@ const updateReservationStatus = async (workoutId, reservationId, newStatus) => {
         }
         return workout;
       }));
+      setAlertState({
+        showAlert: true,
+        message: 'Statut de réservation mis à jour avec succès',
+        alertType: 'success'
+      });
     }
   } catch (error) {
     console.error('Erreur lors de la mise à jour du statut de la réservation:', error);
+    setAlertState({
+      showAlert: true,
+      message: 'Erreur lors de la mise à jour du statut de la réservation',
+      alertType: 'error'
+    });
   }
 };
 
 
   return (
     <>
-      <div className="bg-primary-color text-white text-center py-10 mb-8">
+    {/* Alert Component */}
+    <Alert
+          showAlert={alertState.showAlert}
+          setShowAlert={(show) => setAlertState((prevState) => ({ ...prevState, showAlert: show }))}
+          message={alertState.message}
+          type={alertState.alertType}
+        />
+
+      <div className="bg-blue-500">
         <h1 className="text-4xl">Mes Annonces</h1>
       </div>
       <div className="flex flex-col gap-4 p-4">
@@ -142,9 +162,7 @@ const updateReservationStatus = async (workoutId, reservationId, newStatus) => {
           
         {openWorkoutId === workout.id && (
                 <>
-                  {/* <div>
-                  {displayReservations(workout.id)}
-                </div> */}
+                  
                   <p className="text-gray-600 mb-4">
                   Date et heure de création du workout: {new Date(workout.created_at).toLocaleString('fr-FR', { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                   </p>
@@ -162,25 +180,35 @@ const updateReservationStatus = async (workoutId, reservationId, newStatus) => {
                   <ul className="mb-4">
                       {workout.reservations && workout.reservations.map(reservation => (
                           <li key={reservation.id} className="flex justify-between items-center mb-2">
-                          <span>Client: {reservation.username}</span>
-                          
+                          <span>Client: 
+                              <Link to={`/profile/${reservation.id}`} className="text-blue-600 hover:text-blue-800 ml-2">
+                                  {reservation.username}
+                              </Link>
+                          </span>
                           <span>Statut: {reservation.status}</span>
-                          <Link to={`/profile/${reservation.id}`} className="text-blue-600 hover:text-blue-800 ml-2">Profil</Link>
-                          <div>
-                          <button 
-                              onClick={() => updateReservationStatus(workout.id, reservation.reservationId, 'accepted')}
-                              className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${['pending', 'relaunched'].includes(reservation.status) ? 'bg-green-500 hover:bg-green-700' : 'bg-gray-500 cursor-not-allowed'}`} 
-                              disabled={!['pending', 'relaunched'].includes(reservation.status)}
-                            >
-                              Accepter
-                          </button>
-                            <button 
-                            onClick={() => updateReservationStatus(workout.id, reservation.reservationId, 'refused')}
-                              className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${['pending', 'relaunched'].includes(reservation.status) ? 'bg-red-500 hover:bg-red-700' : 'bg-gray-500 cursor-not-allowed'}`} disabled={!['pending', 'relaunched'].includes(reservation.status)}>
-                              Refuser
-                            </button>
-                              <button className={`text-white font-medium rounded-lg text-sm px-3 py-1 ${['closed', 'host_cancelled', 'user_cancelled'].includes(reservation.status) ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-700'}`} disabled={['closed', 'host_cancelled', 'user_cancelled'].includes(reservation.status)}>Contacter client</button>
-                          </div>
+                                                
+<div>
+    <button 
+        onClick={() => updateReservationStatus(workout.id, reservation.reservationId, 'accepted')}
+        className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${['pending', 'relaunched'].includes(reservation.status) ? 'bg-green-500 hover:bg-green-700' : 'bg-gray-500 cursor-not-allowed'}`} 
+        disabled={!['pending', 'relaunched'].includes(reservation.status)}
+    >
+        Accepter
+    </button>
+    <button 
+        onClick={() => updateReservationStatus(workout.id, reservation.reservationId, 'refused')}
+        className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${['pending', 'relaunched'].includes(reservation.status) ? 'bg-red-500 hover:bg-red-700' : 'bg-gray-500 cursor-not-allowed'}`} 
+        disabled={!['pending', 'relaunched'].includes(reservation.status)}
+    >
+        Refuser
+    </button>
+    <button 
+        className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${['closed', 'host_cancelled', 'user_cancelled'].includes(reservation.status) ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`} 
+        disabled={['closed', 'host_cancelled', 'user_cancelled'].includes(reservation.status)}
+    >
+        Contacter client
+    </button>
+</div>
                           </li>
                       ))}
                       </ul>
