@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { UsersIcon, CurrencyDollarIcon, CalendarIcon, ClockIcon, RocketLaunchIcon, MapPinIcon, MapIcon, IdentificationIcon, PencilSquareIcon } from '@heroicons/react/24/solid';
 import { postData, getData, updateData } from '../../services/data-fetch';
+import { BASE_URL} from '../../services/config-fetch';
 import Alert from '../../styles/Alert';
 
 const FormWorkout = () => {
@@ -272,11 +273,13 @@ const FormWorkout = () => {
                 type={alertType} 
             />
         
-            <div className="bg-blue-500 text-white text-center py-10 mb-8">
-                <h1 className="text-4xl">
-                    {workout_id ? 'Éditer votre séance' : 'Proposer une nouvelle séance'}
-                </h1>
-            </div>
+        
+      {/* Bandeau bleu avec un titre */}
+        <div className="bg-blue-500">
+        <h1 className="text-4xl">
+            {workout_id ? 'Éditer votre séance' : 'Proposer une nouvelle séance'}
+        </h1>
+        </div>
   
             <div className="flex flex-col items-center mt-8 mb-16">
                 <div className="grid grid-cols-3 gap-4 mb-16">

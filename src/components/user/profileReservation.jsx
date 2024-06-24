@@ -54,7 +54,7 @@ function ProfileReservation() {
 
     return (
         <div className='mx-auto'>
-            <div className='bg-blue-500 text-white text-center py-10 mb-8'>
+            <div className='bg-blue-500'>
                 <h2 className='md-4'>Mes Réservations</h2>
             </div>
             <div className="flex flex-wrap">
