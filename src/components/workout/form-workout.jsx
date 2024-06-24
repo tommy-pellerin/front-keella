@@ -287,7 +287,7 @@ const FormWorkout = () => {
                     {renderEmptySlots()}
                 </div>
 
-                <div className="w-full max-w-4xl mb-8">
+                <div className="w-full max-w-4xl mb-8 border p-4 rounded">
                     <label htmlFor="description" className="text-blue-500 font-semibold mb-2">
                         Description 
                     </label>
@@ -309,18 +309,18 @@ const FormWorkout = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
   <div className="mb-6">
     <label htmlFor="max_participants" className="text-blue-500 font-semibold mb-2">Nombre de participants</label>
-    <div className="flex items-center mb-4">
+    <div className="flex items-center mb-4 border p-2 rounded">
       <UsersIcon className="h-6 text-blue-500 mr-2" />
       <input type="number" id="max_participants" name="max_participants" value={workout.max_participants} placeholder="Entre 1 et 1000" onChange={handleChange} required className="w-full" />
     </div>
 
     <label htmlFor="zip_code" className="text-blue-500 font-semibold mb-2">Code postal</label>
-    <div className="flex items-center mb-4">
+    <div className="flex items-center mb-4 border p-2 rounded">
       <MapPinIcon className="h-6 text-blue-500 mr-2" />
       <input type="text" id="zip_code" name="zip_code" placeholder="5 chiffres" value={workout.zip_code} onChange={handleChange} required className="w-full" />
     </div>
     <label htmlFor="city" className="text-blue-500 font-semibold mb-2">Ville</label>
-    <div className="flex items-center mb-4">
+    <div className="flex items-center mb-4 border p-2 rounded">
       <MapIcon className="h-6 text-blue-500 mr-2" />
       <input type="text" id="city" name="city" placeholder="Ville" value={workout.city} onChange={handleChange} required className="w-full" />
     </div>
@@ -328,22 +328,22 @@ const FormWorkout = () => {
 
   <div className="mb-6">
     <label htmlFor="title" className="text-blue-500 font-semibold mb-2">Titre</label>
-    <div className="flex items-center mb-4">
+    <div className="flex items-center mb-4 border p-2 rounded">
       <IdentificationIcon className="h-6 text-blue-500 mr-2" />
       <input type="text" id="title" name="title" placeholder="3 à 50 charactères" value={workout.title} onChange={handleChange} required className="w-full" />
     </div>
 
-                            <div className="flex flex-col mb-4">
+                            <div className="flex flex-col mb-4 ">
                               <label htmlFor="price" className="text-blue-500 font-semibold mb-2">
                                   Prix 
                               </label>
-                              <div className="flex items-center">
+                              <div className="flex items-center border p-2 rounded">
                                   <CurrencyDollarIcon className="h-6 text-blue-500 mr-2" />
                                   <input 
                                       type="number" 
                                       name="price" 
                                       id="price"
-                                      placeholder="Entrez un montant entre 0 et 100" 
+                                      placeholder="Un montant entre 0 et 100€" 
                                       value={workout.price} 
                                       onChange={handleChange} 
                                       required 
@@ -355,7 +355,7 @@ const FormWorkout = () => {
                           </div>
 
                           <label htmlFor="category_id" className="text-blue-500 font-semibold mb-2">Catégorie</label>
-                          <div className="flex items-center mb-4">
+                          <div className="flex items-center mb-4 border p-2 rounded">
                             <RocketLaunchIcon className="h-6 text-blue-500 mr-2" />
                             <select 
                                 id="category_id" 
@@ -375,12 +375,12 @@ const FormWorkout = () => {
                                               
                         <div className="mb-6">
                           <label htmlFor="start_date" className="text-blue-500 font-semibold mb-2">Date de début</label>
-                          <div className="flex items-center mb-2">
+                          <div className="flex items-center mb-2 border p-2 rounded">
                             <CalendarIcon className="h-6 text-blue-500 mr-2" />
                             <input type="date" id="start_date" name="start_date" value={workout.start_date} placeholder="Date de début" onChange={handleChange} required className="w-full mb-4" />
                           </div>
                           <label htmlFor="start_time" className="text-blue-500 font-semibold mb-2">Heure de début</label>
-                          <div className="flex items-center mb-2">
+                          <div className="flex items-center mb-2 border p-2 rounded">
                             <ClockIcon className="h-6 text-blue-500 mr-2" />
                             <select id="start_time" name="start_time" value={workout.start_time} onChange={handleChange} required className="w-full mb-4">
                               {[...Array(48)].map((_, index) => {
@@ -393,7 +393,7 @@ const FormWorkout = () => {
                           </div>
 
                           <label htmlFor="duration" className="text-blue-500 font-semibold mb-2">Durée</label>
-                          <div className="flex items-center mb-4">
+                          <div className="flex items-center mb-4 border p-2 rounded">
                             <ClockIcon className="h-6 text-blue-500 mr-2" />
                             <select id="duration" name="duration" value={workout.duration} onChange={handleChange} required className="w-full mb-4">
                               <option value="">Sélectionnez une durée</option>
