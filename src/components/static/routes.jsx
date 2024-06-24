@@ -11,6 +11,7 @@ import Profile from "../user/profile";
 import EditProfile from "../user/editProfile";
 import Success from "../payment/success";
 import Cancel from "../payment/cancel";
+import TermsOfUse from "./termsOfUse";
 
 //protection
 import PrivateRoute from "../../services/privateRoute";
@@ -21,6 +22,7 @@ import Category from "../category/category";
 //Style
 import KitUI from "../KitUI/KitUI";
 import MyAccount from "../user/my-account";
+
 
 
 
@@ -47,6 +49,8 @@ export default function AppRoutes() {
       
       <Route path="/payment/success" element={<Success />} />
       <Route path="/payment/cancel" element={<Cancel />} />
+      
+      <Route path="/terms-of-use" element={<TermsOfUse />} />
 
       {/* Il faut etre admin pour utiliser ses pages */}
       <Route path="/categories" element={<PrivateRoute><Category/></PrivateRoute>} />
