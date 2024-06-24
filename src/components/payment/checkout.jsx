@@ -38,18 +38,13 @@ const Checkout = ({creditToBuy}) => {
           console.log(error.response);
           error.response.json().then((body) => {
             console.error('Erreur du serveur:', body.error);
-            // setAlert({
-            //   showAlert:true,
-            //   message: `${body.error}`,
-            //   alertType:"error"
-            // })
           });
         }
     }
   };
 
   return (
-    <button onClick={handleCheckout} className="button-primary-large">Checkout bouton</button>
+    <button onClick={handleCheckout} className="button-primary-large">Passer au paiement</button>
   )
 }
 
