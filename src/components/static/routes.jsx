@@ -1,13 +1,3 @@
-//protection
-import PrivateRoute from "../../services/privateRoute";
-import OwnerRoute from "./OwnerRoute";
-import ProfileReservation from '../user/profileReservation'
-import Category from "../category/category";
-
-//Style
-import KitUI from "../KitUI/KitUI";
-import MyAccount from "../user/my-account";
-
 //import
 import { Routes, Route} from "react-router-dom";
 import SignIn from "../auth/sign-in";
@@ -20,11 +10,21 @@ import WorkoutShow from "../workout/show";
 import FormWorkout from "../workout/form-workout";
 import Profile from "../user/profile";
 import EditProfile from "../user/editProfile";
+import MyAccount from "../user/my-account";
+import HostedWorkoutHistory from "../user/HostedWorkoutHistory";
 import Success from "../payment/success";
 import Cancel from "../payment/cancel";
 import TermsOfUse from "./termsOfUse";
 import Credit from "../payment/credit";
 
+//protection
+import PrivateRoute from "../../services/privateRoute";
+import OwnerRoute from "./OwnerRoute";
+import ProfileReservation from '../user/profileReservation'
+import Category from "../category/category";
+
+//Style
+import KitUI from "../KitUI/KitUI";
 
 
 
@@ -41,7 +41,7 @@ export default function AppRoutes() {
       <Route path="/my-account" element={<MyAccount />} />
       <Route path="/my-reservation/:user_id" element={<ProfileReservation />} />
 
-      
+      <Route path="/my-account/:user_id/hosted_workouts" element={<PrivateRoute><HostedWorkoutHistory/></PrivateRoute>} />
       <Route path="/workouts" element={<WorkoutIndex />} />
       <Route path="/workouts/:workout_id" element={<WorkoutShow />} />
 
