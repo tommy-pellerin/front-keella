@@ -1,0 +1,30 @@
+/* Style pour les infobulles */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .tooltip .tooltipText {
+    visibility: hidden; /* Caché par défaut */
+    width: 200px;
+    background-color: black;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    
+    /* Positionnement de l'infobulle */
+    position: absolute;
+    z-index: 1000; /* Assurez-vous qu'il est au-dessus des autres éléments */
+    bottom: 100%; /* Afficher au-dessus de l'élément */
+    left: 50%;
+    transform: translateX(-50%); /* Centrer l'infobulle */
+    opacity: 0; /* Transparent par défaut */
+    transition: opacity 0.3s;
+  }
+  
+  .tooltip:hover .tooltipText {
+    visibility: visible; /* Visible au survol */
+    opacity: 1; /* Opaque au survol */
+  }
