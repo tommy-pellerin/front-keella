@@ -56,6 +56,7 @@ const FormWorkout = () => {
                   max_participants: workoutData.max_participants.toString() || '',
                   // ... autres champs si nécessaire ...
                 });
+                setCategoryId(workoutData.category_id.toString());
                 setPreviewImages(workoutData.image_urls || []);
                 console.log(workoutData.image_urls);
               }
@@ -353,11 +354,18 @@ const FormWorkout = () => {
                           <label htmlFor="category_id" className="text-blue-500 font-semibold mb-2">Catégorie</label>
                           <div className="flex items-center mb-4">
                             <RocketLaunchIcon className="h-6 text-blue-500 mr-2" />
-                            <select id="category_id" name="category_id" onChange={handleChange} required className="w-full">
-                              <option value="">Sélectionner la Catégorie</option>
-                              {categories.map((category) => (
-                                <option key={category.id} value={category.id}>{category.name}</option>
-                              ))}
+                            <select 
+                                id="category_id" 
+                                name="category_id" 
+                                value={category_id} // Assurez-vous que la valeur correspond à l'état category_id
+                                onChange={handleChange} 
+                                required 
+                                className="w-full"
+                            >
+                                <option value="">Sélectionner la Catégorie</option>
+                                {categories.map((category) => (
+                                    <option key={category.id} value={category.id}>{category.name}</option>
+                                ))}
                             </select>
                           </div>
                         </div>
