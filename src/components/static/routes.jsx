@@ -9,6 +9,8 @@ import WorkoutShow from "../workout/show";
 import FormWorkout from "../workout/form-workout";
 import Profile from "../user/profile";
 import EditProfile from "../user/editProfile";
+import MyAccount from "../user/my-account";
+import HostedWorkoutHistory from "../user/HostedWorkoutHistory";
 
 //protection
 import PrivateRoute from "../../services/privateRoute";
@@ -18,7 +20,6 @@ import Category from "../category/category";
 
 //Style
 import KitUI from "../KitUI/KitUI";
-import MyAccount from "../user/my-account";
 
 
 
@@ -35,7 +36,7 @@ export default function AppRoutes() {
       <Route path="/my-account" element={<MyAccount />} />
       <Route path="/my-reservation/:user_id" element={<ProfileReservation />} />
 
-      
+      <Route path="/my-account/:user_id/hosted_workouts" element={<PrivateRoute><HostedWorkoutHistory/></PrivateRoute>} />
       <Route path="/workouts" element={<WorkoutIndex />} />
       <Route path="/workouts/:workout_id" element={<WorkoutShow />} />
 
