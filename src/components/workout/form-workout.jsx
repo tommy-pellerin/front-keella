@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { UsersIcon, CurrencyDollarIcon, CalendarIcon, ClockIcon, RocketLaunchIcon, MapPinIcon, MapIcon, IdentificationIcon, PencilSquareIcon } from '@heroicons/react/24/solid';
 import { postData, getData, updateData } from '../../services/data-fetch';
-import { BASE_URL} from '../../services/config-fetch';
+
 import Alert from '../../styles/Alert';
 
 const FormWorkout = () => {
@@ -255,7 +255,7 @@ const handleRemoveImage = (index) => {
         
         
       {/* Bandeau bleu avec un titre */}
-        <div className="bg-blue-500 text-white text-center py-10 mb-8">
+        <div className="bg-blue-500">
         <h1 className="text-4xl">
             {workout_id ? 'Éditer votre séance' : 'Proposer une nouvelle séance'}
         </h1>
