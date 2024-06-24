@@ -114,13 +114,13 @@ const FormWorkout = () => {
   }
         // Validation de la ville
             if (workout.city.length < 3 || workout.city.length > 50) {
-              errors.push('La ville doit contenir entre 3 et 50 caractères.');
+              errors.push('La ville doit contenir entre 3 et 50 charactères.');
           }
 
           // Validation du titre
           const letterCount = workout.title.replace(/\s/g, '').length;
           if (letterCount < 3 || letterCount > 50) {
-              errors.push('Le titre doit contenir entre 3 et 50 lettres.');
+              errors.push('Le titre doit contenir entre 3 et 50 charactères.');
           }
         
 
@@ -234,7 +234,7 @@ const FormWorkout = () => {
                     <span className="text-gray-500">Ajouter une image</span>
                     <button
                         onClick={() => document.getElementById(`imageUpload${i}`).click()}
-                        className="absolute bottom-0 right-0 bg-blue-500 text-white p-2 rounded-full"
+                        className="absolute bottom-0 right-0 bg-blue-400 text-white p-2 rounded-full"
                     >
                         +
                     </button>
