@@ -70,7 +70,7 @@ function ProfileReservation() {
                                 </div>
                             ))
                         ) : (
-                            <p><LoadingSpinner /></p>
+                            <div><LoadingSpinner /></div>
                         )}
                     </div>
                 </div>
@@ -136,9 +136,9 @@ function ProfileReservation() {
                                 </div>
                             ))
                         ) : (
-                            <p>
+                            <div>
                                 <LoadingSpinner />
-                            </p>
+                            </div>
                         )}
                     </div>
                 </div>
