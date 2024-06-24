@@ -56,6 +56,9 @@ export default function AuthForm({ onSubmit, buttonText }) {
           ></input>
         </div>
         <div className="w-3/5">
+        {isSigningUp && <p>En appuyant sur le bouton Accepter et continuer ci-dessous, j&apos;accepte les <Link to="/terms-of-use" className="underline hover:no-underline">conditions d&apos;utilisation</Link> de Keella et je certifie que j&apos;ai plus de 18 ans.</p>}
+        </div>
+        <div className="w-3/5">
           <button type="submit" className="button-primary-large">{buttonText}</button>
         </div>
         {isSigningUp ?

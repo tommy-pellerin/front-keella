@@ -69,7 +69,7 @@ const WorkoutShow = () => {
       }
     };
     const bookPlaces = async () => {
-      if(window.confirm("Are you sure you want to send this reservation?")) {
+      if(window.confirm("Vous allez etre débité du montant indiqué, etes vous sure de vouloir continuer ?")) {
         try {
           const data = await postData(`/reservations`,body);
           console.log(data);
@@ -189,7 +189,9 @@ const WorkoutShow = () => {
             {quantity > workout.available_places ?
             <button className="button-primary-large" disabled={quantity > workout.available_places}>Il n&apos;y a plus de place</button>
             :
+            <>
             <button className="button-primary-large" onClick={handleReservation} disabled={quantity > workout.available_places}>Envoyer une demande de réservation</button>
+            </>
             }
             {/* <button className="py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700" onClick={handleReservation}>Envoyer une demande de réservation</button> */}
 
