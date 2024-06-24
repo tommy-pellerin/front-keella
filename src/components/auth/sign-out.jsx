@@ -17,7 +17,7 @@ export default function SignOut() {
         message: "Votre session a expiré. Veuillez vous reconnecter.",
         alertType: "warning"
       });
-      setUser({ email: "", isLogged: false });
+      setUser({ id: "", email: "", isLogged: false });
       navigate("/sign-in");
     } else {
       try {

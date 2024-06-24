@@ -30,7 +30,8 @@ export default function checkTokenExpiration() {
     }
   } else {
     console.error("No JWT token found");
+    return true //i manage the case when token is not found like the token is expired
     // setIsTokenExpired(true); // I mute this because if there is no token does not mean that the token expired
   }
   return false
-};
+}
