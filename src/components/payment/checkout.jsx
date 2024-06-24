@@ -49,7 +49,7 @@ const Checkout = () => {
   return (
     
       <button onClick={handleCheckout}>Checkout bouton</button>
-   
+
     
   )
 }
