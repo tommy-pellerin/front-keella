@@ -5,6 +5,7 @@ import { getData } from '../../services/data-fetch';
 import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
 import { Link } from 'react-router-dom';
+import RatingStars from '../rating/HostRatings';
 
 function Profile() {
     const [user] = useAtom(userAtom);
@@ -55,6 +56,7 @@ function Profile() {
                     :
                         <p className="text-center">Nombre de Scéances passés : 0</p>
                     }
+                    
 
                     {profile.hosted_workouts ?
                     <p className="text-center">Nombre de Scéances proposé : {profile.hosted_workouts.length}</p>
@@ -72,6 +74,8 @@ function Profile() {
 
                     </div>
             </div>
+        <RatingStars userId={profile.id}/>
+
         </div>
     );
 }
