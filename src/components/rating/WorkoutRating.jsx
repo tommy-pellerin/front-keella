@@ -2,24 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { getData } from '../../services/data-fetch';
 import './RatingStars.css';
 
-export default function RatingStars({userId}) {
+export default function WorkoutRating({ workoutId }) {
   const [ratings, setRatings] = useState([]);
 
   useEffect(() => {
     const fetchRatings = async () => {
-      console.log(`Fetching ratings for user ID: ${userId}`); // Log before fetching data
-      const data = await getData(`/ratings?rateable_type=User&rateable_id=${userId}`);
-      console.log('Data received:', data); // Log after receiving data
+      console.log(`Fetching ratings for workout ID: ${workoutId}`); // Log avant de récupérer les données
+      const data = await getData(`/ratings?rateable_type=Workout&rateable_id=${workoutId}`);
+      console.log('Data received:', data); // Log après la réception des données
       
-      // Filtrer les évaluations pour ne garder que celles de l'utilisateur actuel
-      const filteredRatings = data.filter(rating => rating.user_id === userId);
-      console.log('Filtered Ratings:', filteredRatings); // Log after filtering data
+      // Filtrer les évaluations pour ne garder que celles liées au workoutId actuel
+      const filteredRatings = data.filter(rating => rating.workout_id === workoutId);
+      console.log('Filtered Ratings:', filteredRatings); // Log après le filtrage des données
       
       setRatings(filteredRatings);
     };
-  
+
     fetchRatings();
-  }, [userId]);
+  }, [workoutId]);
 
   const renderStars = (rating) => {
     let stars = '';
@@ -42,4 +42,3 @@ export default function RatingStars({userId}) {
     </div>
   );
 }
-

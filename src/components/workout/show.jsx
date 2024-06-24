@@ -5,6 +5,7 @@ import { useParams, Link } from "react-router-dom";
 import { useAtom } from "jotai";
 import { alertAtom } from "../../store/alert";
 import ImageCarrousel from "./ImageCarrousel";
+import WorkoutRating from "../rating/WorkoutRating";
 
 const WorkoutShow = () => {
   const [quantity,setQuantity] = useState(1)
@@ -148,6 +149,7 @@ const WorkoutShow = () => {
                 "Loading..."
                 }
                 <p>Notes :</p>
+                <WorkoutRating workoutId={workout.id}/>
               </div>
               <div>
                 {workout.host ?
