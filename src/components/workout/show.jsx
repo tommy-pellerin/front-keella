@@ -35,9 +35,8 @@ const WorkoutShow = () => {
         setWorkout(data);
         if(data.image_urls){
           setWorkout_images(data.image_urls)
-        }
-        if(data.category.category_image){
-          setWorkoutCategory(workout.category)
+        } else if(data.category.category_image){
+          setWorkoutCategory(data.category)
           // setWorkoutCategoryLoading(false)
         }
       } catch (error) {
@@ -184,8 +183,8 @@ const WorkoutShow = () => {
               <h3>Total à payer : {workout.price*quantity} €</h3>
               <div className="flex justify-around">
                 {/* Buttons are disabled when on conditions */}
-                <button className="button-red-small" onClick={decreaseQuantity} disabled={quantity <= 1}>-</button>
-                <button className="button-green-small" onClick={increaseQuantity} disabled={quantity >= workout.available_places}>+</button>
+                <button className="button-red-small" onClick={decreaseQuantity} disabled={quantity <= 1} aria-label="minus one place">-</button>
+                <button className="button-green-small" onClick={increaseQuantity} disabled={quantity >= workout.available_places} aria-label="add one place">+</button>
               </div>
             </div>
             {quantity > workout.available_places ?
