@@ -32,7 +32,7 @@ export default function SignIn() {
   return (
   <div className="text-center my-5">
     <h1>Inscription</h1>
-    <AuthForm onSubmit={handleSignup} buttonText="Sign Up" />
+    <AuthForm onSubmit={handleSignup} buttonText="Accepter et continuer" />
   </div>
   )
 }

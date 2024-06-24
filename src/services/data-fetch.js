@@ -66,14 +66,18 @@ export async function postData(objectUrl, body, filesToUpload) {
 
 // Fonction pour supprimer les donnees
 export async function deleteData(objectUrl) {
-  // try {
-    const response = await ky
-      .delete(BASE_URL + objectUrl, { headers: getHeaders() })
-      .json();
-    return response;
-  // } catch (error) {
-  //   console.error("Erreur lors de la suppression des donnees :", error);
-  // }
+  try {
+    // No need to parse JSON for a 204 No Content response
+    const response = await ky.delete(BASE_URL + objectUrl, { headers: getHeaders() });
+    if (response.status === 204) {
+      return null;
+    } else {
+      return response.json();
+    }
+  } catch (error) {
+    console.error("Erreur lors de la suppression des données :", error);
+    return null;
+  }
 }
 
 // Fonction pour update les donnees
@@ -119,12 +123,17 @@ export async function updateData(objectUrl, body, filesToUpload) {
       formData.append('user[avatar]', body.user.avatar);
     }
   }
-  
+    if (body.status) { 
+      formData.append('reservation[status]', body.status);
+      
+    }
+
   try {
     const response = await ky.patch(BASE_URL + objectUrl, {
       headers: getHeaders(),
       body: formData,
     }).json();
+    console.log('Réponse du serveur:', response);
     return response;
   } catch (error) {
     console.error("Erreur lors de la mise à jour des données :", error);
