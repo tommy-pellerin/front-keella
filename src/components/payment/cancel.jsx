@@ -1,6 +1,18 @@
+import { Link } from "react-router-dom"
+
 const Cancel = () => {
   return(
-    <h1>Cancel</h1>
+    <>
+      <section className="bg-red-500 py-5 text-center">
+        <h1 className="text-light">Echec</h1>
+      </section>
+      <div className="container mx-auto text-center my-5"> 
+        <h2>Le paiement n&apos;a pas abouti.</h2> 
+        <p>Aucun prélèvement ne sera fait sur votre compte</p> 
+        <Link to="/payment/credit" className="button-green-small">Retourner au panier</Link>
+        <Link to="/" className="button-primary-small">Retourner a l&apos;accueil</Link>
+      </div>
+    </>
   )
 }
 

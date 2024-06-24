@@ -1,3 +1,14 @@
+//protection
+import PrivateRoute from "../../services/privateRoute";
+import OwnerRoute from "./OwnerRoute";
+import ProfileReservation from '../user/profileReservation'
+import Category from "../category/category";
+
+//Style
+import KitUI from "../KitUI/KitUI";
+import MyAccount from "../user/my-account";
+
+//import
 import { Routes, Route} from "react-router-dom";
 import SignIn from "../auth/sign-in";
 import SignUp from "../auth/sign-up";
@@ -12,16 +23,7 @@ import EditProfile from "../user/editProfile";
 import Success from "../payment/success";
 import Cancel from "../payment/cancel";
 import TermsOfUse from "./termsOfUse";
-
-//protection
-import PrivateRoute from "../../services/privateRoute";
-import OwnerRoute from "./OwnerRoute";
-import ProfileReservation from '../user/profileReservation'
-import Category from "../category/category";
-
-//Style
-import KitUI from "../KitUI/KitUI";
-import MyAccount from "../user/my-account";
+import Credit from "../payment/credit";
 
 
 
@@ -49,6 +51,7 @@ export default function AppRoutes() {
       
       <Route path="/payment/success" element={<Success />} />
       <Route path="/payment/cancel" element={<Cancel />} />
+      <Route path="/payment/credit" element={<Credit />} />
       
       <Route path="/terms-of-use" element={<TermsOfUse />} />
 

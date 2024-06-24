@@ -1,6 +1,7 @@
-import PrivateRoute from "../../services/privateRoute";
+import Cookies from "js-cookie";
 
-const Checkout = () => {
+const Checkout = ({creditToBuy}) => {
+  const token = Cookies.get("keellauth");
 
   const handleCheckout = async () => {
     // Ask for confirmation
@@ -13,9 +14,10 @@ const Checkout = () => {
       const response = await fetch("http://localhost:3000/checkout/create", {
         method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `${token}`
         },
-        body: JSON.stringify({ total: 50 })
+        body: JSON.stringify({ total: creditToBuy })
       });
       console.log(response);
       if (!response.ok) {
@@ -47,10 +49,7 @@ const Checkout = () => {
   };
 
   return (
-    
-      <button onClick={handleCheckout}>Checkout bouton</button>
-
-    
+    <button onClick={handleCheckout} className="button-primary-large">Checkout bouton</button>
   )
 }
 
