@@ -5,6 +5,7 @@ import { postData, getData, updateData } from '../../services/data-fetch';
 import Alert from '../../styles/Alert';
 
 const FormWorkout = () => {
+    
     const [successMessage, setSuccessMessage] = useState('');
     const { workout_id } = useParams();
     // const navigate = useNavigate();
@@ -82,9 +83,17 @@ const FormWorkout = () => {
 
         // Vérifiez chaque champ ici selon les règles de validation de l'API
         // if (!workout.title) errors.push('Le titre est requis.');
-        if (!workout.description) errors.push('La description est requise.');
+        // Validation de la description
+          if (!workout.description) {
+            errors.push('La description est requise.');
+          } else {
+            const letterCount = workout.description.replace(/\s/g, '').length;
+            if (letterCount < 10 || letterCount > 1000) {
+                errors.push('La description doit contenir entre 10 et 1000 charactères.');
+            }
+          }
         // if (!workout.city) errors.push('La ville est requise.');
-        if (!workout.zip_code) errors.push('Le code postal est requis.');
+        if (!workout.zip_code) errors.push('Le code postal requis doit contenir 5 chiffres');
         // Validation du prix
         const price = parseFloat(workout.price);
         if (isNaN(price) || price < 0 || price > 100) {
@@ -97,8 +106,20 @@ const FormWorkout = () => {
             if (workoutStartDate < fourHoursLater) {
                 errors.push('La date de début doit être supérieure à 4h avant le début du workout.');
             }
-        // if (!workout.duration) errors.push('La durée est requise');
-        // if (!workout.max_participants) errors.push('Le nombre de participants est requis.');
+        // Validation du code postal
+          if (!/^\d{5}$/.test(workout.zip_code)) {
+            errors.push('Le code postal doit contenir exactement 5 chiffres.');
+  }
+        // Validation de la ville
+            if (workout.city.length < 3 || workout.city.length > 50) {
+              errors.push('La ville doit contenir entre 3 et 50 caractères.');
+          }
+
+          // Validation du titre
+          const letterCount = workout.title.replace(/\s/g, '').length;
+          if (letterCount < 3 || letterCount > 50) {
+              errors.push('Le titre doit contenir entre 3 et 50 lettres.');
+          }
         
 
         // Si des erreurs de validation sont trouvées
@@ -226,6 +247,8 @@ const FormWorkout = () => {
         }
         return emptySlots;
     };
+    
+  
 
     return (
         <>
@@ -261,93 +284,122 @@ const FormWorkout = () => {
                 </div>
 
                 <div className="w-full max-w-4xl mb-8">
-                    <PencilSquareIcon className="h-6 text-blue-500 mr-2" />
-                    <textarea name="description" placeholder="Description" value={workout.description} onChange={handleChange} required className="w-full h-32" />
+                    <label htmlFor="description" className="text-blue-500 font-semibold mb-2">
+                        Description 
+                    </label>
+                    <div className="flex items-center">
+                        <PencilSquareIcon className="h-6 text-blue-500 mr-2" />
+                        <textarea 
+                            name="description" 
+                            id="description"
+                            placeholder="Entrez une description de 10 à 1000 charactères" 
+                            value={workout.description} 
+                            onChange={handleChange} 
+                            required 
+                            className="w-full h-32" 
+                        />
+                    </div>
                 </div>
 
                 <form onSubmit={handleSubmit} className="w-full max-w-4xl mb-8">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                        <div className="mb-6">
-                            <div className="flex items-center mb-4">
-                                <UsersIcon className="h-6 text-blue-500 mr-2" />
-        <input type="number" name="max_participants" value={workout.max_participants}placeholder="Nombre de participants" onChange={handleChange} required className="w-full" />
-                            </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+  <div className="mb-6">
+    <label htmlFor="max_participants" className="text-blue-500 font-semibold mb-2">Nombre de participants</label>
+    <div className="flex items-center mb-4">
+      <UsersIcon className="h-6 text-blue-500 mr-2" />
+      <input type="number" id="max_participants" name="max_participants" value={workout.max_participants} placeholder="Entre 1 et 1000" onChange={handleChange} required className="w-full" />
+    </div>
 
-                            <div className="flex items-center mb-4">
-                                <MapPinIcon className="h-6 text-blue-500 mr-2" />
-                                <input type="text" name="zip_code" placeholder="Code postal" value={workout.zip_code} onChange={handleChange} required className="w-full" />
-                            </div>
-                            <div className="flex items-center mb-4">
-                                <MapIcon className="h-6 text-blue-500 mr-2" />
-                                <input type="text" name="city" placeholder="Ville" value={workout.city} onChange={handleChange} required className="w-full" />
-                            </div>
+    <label htmlFor="zip_code" className="text-blue-500 font-semibold mb-2">Code postal</label>
+    <div className="flex items-center mb-4">
+      <MapPinIcon className="h-6 text-blue-500 mr-2" />
+      <input type="text" id="zip_code" name="zip_code" placeholder="5 chiffres" value={workout.zip_code} onChange={handleChange} required className="w-full" />
+    </div>
+    <label htmlFor="city" className="text-blue-500 font-semibold mb-2">Ville</label>
+    <div className="flex items-center mb-4">
+      <MapIcon className="h-6 text-blue-500 mr-2" />
+      <input type="text" id="city" name="city" placeholder="Ville" value={workout.city} onChange={handleChange} required className="w-full" />
+    </div>
+  </div>
+
+  <div className="mb-6">
+    <label htmlFor="title" className="text-blue-500 font-semibold mb-2">Titre</label>
+    <div className="flex items-center mb-4">
+      <IdentificationIcon className="h-6 text-blue-500 mr-2" />
+      <input type="text" id="title" name="title" placeholder="3 à 50 charactères" value={workout.title} onChange={handleChange} required className="w-full" />
+    </div>
+
+                            <div className="flex flex-col mb-4">
+                              <label htmlFor="price" className="text-blue-500 font-semibold mb-2">
+                                  Prix 
+                              </label>
+                              <div className="flex items-center">
+                                  <CurrencyDollarIcon className="h-6 text-blue-500 mr-2" />
+                                  <input 
+                                      type="number" 
+                                      name="price" 
+                                      id="price"
+                                      placeholder="Entrez un montant entre 0 et 100" 
+                                      value={workout.price} 
+                                      onChange={handleChange} 
+                                      required 
+                                      className="w-full" 
+                                      min="0" 
+                                      max="100" 
+                                  />
+                              </div>
+                          </div>
+
+                          <label htmlFor="category_id" className="text-blue-500 font-semibold mb-2">Catégorie</label>
+                          <div className="flex items-center mb-4">
+                            <RocketLaunchIcon className="h-6 text-blue-500 mr-2" />
+                            <select id="category_id" name="category_id" onChange={handleChange} required className="w-full">
+                              <option value="">Sélectionner la Catégorie</option>
+                              {categories.map((category) => (
+                                <option key={category.id} value={category.id}>{category.name}</option>
+                              ))}
+                            </select>
+                          </div>
                         </div>
-
+                                              
                         <div className="mb-6">
-                            <div className="flex items-center mb-4">
-                                <IdentificationIcon className="h-6 text-blue-500 mr-2" />
-                                <input type="text" name="title" placeholder="Titre " value={workout.title} onChange={handleChange} required className="w-full" />
-                                    
-                            </div>
+                          <label htmlFor="start_date" className="text-blue-500 font-semibold mb-2">Date de début</label>
+                          <div className="flex items-center mb-2">
+                            <CalendarIcon className="h-6 text-blue-500 mr-2" />
+                            <input type="date" id="start_date" name="start_date" value={workout.start_date} placeholder="Date de début" onChange={handleChange} required className="w-full mb-4" />
+                          </div>
+                          <label htmlFor="start_time" className="text-blue-500 font-semibold mb-2">Heure de début</label>
+                          <div className="flex items-center mb-2">
+                            <ClockIcon className="h-6 text-blue-500 mr-2" />
+                            <select id="start_time" name="start_time" value={workout.start_time} onChange={handleChange} required className="w-full mb-4">
+                              {[...Array(48)].map((_, index) => {
+                                const hours = String(Math.floor(index / 2)).padStart(2, '0');
+                                const minutes = index % 2 === 0 ? '00' : '30';
+                                const timeValue = `${hours}:${minutes}`;
+                                return <option key={timeValue} value={timeValue}>{timeValue}</option>;
+                              })}
+                            </select>
+                          </div>
 
-                            <div className="flex items-center mb-4">
-                                <CurrencyDollarIcon className="h-6 text-blue-500 mr-2" />
-                                <input type="number" name="price" placeholder="Prix" value={workout.price} onChange={handleChange} required className="w-full" />
-                                    
-                            </div>
-
-                            <div className="flex items-center mb-4">
-                                <RocketLaunchIcon className="h-6 text-blue-500 mr-2" />
-                                <select name="category_id" onChange={handleChange} required className="w-full">
-                                    <option value="">Sélectionner la Catégorie</option>
-                                    {categories.map((category) => (
-                                        <option key={category.id} value={category.id}>{category.name}</option>
-                                    ))}
-                                </select>
-                            </div>
+                          <label htmlFor="duration" className="text-blue-500 font-semibold mb-2">Durée</label>
+                          <div className="flex items-center mb-4">
+                            <ClockIcon className="h-6 text-blue-500 mr-2" />
+                            <select id="duration" name="duration" value={workout.duration} onChange={handleChange} required className="w-full mb-4">
+                              <option value="">Sélectionnez une durée</option>
+                              {[...Array(16)].map((_, index) => {
+                                const value = (index + 1) * 30;
+                                const hours = Math.floor(value / 60);
+                                const minutes = value % 60;
+                                return (
+                                  <option key={value} value={value}>
+                                    {hours > 0 ? `${hours}h ` : ''}{minutes > 0 ? `${minutes} min` : ''}
+                                  </option>
+                                );
+                              })}
+                            </select>
+                          </div>
                         </div>
-                        
-                        <div className="mb-6">
-                            <div className="flex items-center mb-2">
-                                <CalendarIcon className="h-6 text-blue-500 mr-2" />
-                                <input type="date" name="start_date" value={workout.start_date} placeholder="Date de début" onChange={handleChange} required className="w-full mb-4" />
-                            </div>
-                            <div className="flex items-center mb-2">
-                                <ClockIcon className="h-6 text-blue-500 mr-2" />
-                                <select 
-                                    name="start_time" 
-                                    value={workout.start_time} 
-                                    onChange={handleChange} 
-                                    required 
-                                    className="w-full mb-4"
-                                >
-                                    {[...Array(48)].map((_, index) => {
-                                        const hours = String(Math.floor(index / 2)).padStart(2, '0');
-                                        const minutes = index % 2 === 0 ? '00' : '30';
-                                        const timeValue = `${hours}:${minutes}`;
-                                        return <option key={timeValue} value={timeValue}>{timeValue}</option>;
-                                    })}
-                                </select>
-                            </div>
-
-                            <div className="flex items-center mb-4">
-                                <ClockIcon className="h-6 text-blue-500 mr-2" />
-                                <select name="duration" value={workout.duration} onChange={handleChange} required className="w-full mb-4">
-                                    <option value="">Sélectionnez une durée</option>
-                                    {[...Array(16)].map((_, index) => {
-                                        const value = (index + 1) * 30;
-                                        const hours = Math.floor(value / 60);
-                                        const minutes = value % 60;
-                                        return (
-                                            <option key={value} value={value}>
-                                                {hours > 0 ? `${hours}h ` : ''}{minutes > 0 ? `${minutes} min` : ''} 
-                                            </option>
-                                        );
-                                    })}
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                      </div>
                     
                     <div className="flex justify-center">
                         <button type="submit" className="button-primary-small text-white py-3 px-6 rounded">
