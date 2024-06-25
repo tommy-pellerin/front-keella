@@ -184,13 +184,16 @@ const WorkoutShow = () => {
             
             <div>
               <p>Nombre de place max : {workout.max_participants}</p>
-              <p>Nombre de place disponible : {workout.available_places}</p>
-              <h3>Nombre de place : {quantity}</h3>
+              <p>Nombre de place disponible : {workout.available_places}</p>              
               <h3>Total à payer : {workout.price*quantity} €</h3>
-              <div className="flex justify-around">
+              <div className="flex justify-between items-center">
+                <h3>Nombre de place : </h3>
                 {/* Buttons are disabled when on conditions */}
-                <button className="button-red-small" onClick={decreaseQuantity} disabled={quantity <= 1} aria-label="minus one place">-</button>
-                <button className="button-green-small" onClick={increaseQuantity} disabled={quantity >= workout.available_places} aria-label="add one place">+</button>
+                <div className="flex justify-around items-center my-3">
+                  <button className="button-red-small" onClick={decreaseQuantity} disabled={quantity <= 1} aria-label="minus one place">-</button>
+                  <h3 className="mx-3">{quantity}</h3>
+                  <button className="button-green-small" onClick={increaseQuantity} disabled={quantity >= workout.available_places} aria-label="add one place">+</button>
+                </div>
               </div>
             </div>
             {quantity > workout.available_places ?
