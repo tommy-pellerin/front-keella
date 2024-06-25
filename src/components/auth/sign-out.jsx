@@ -46,6 +46,6 @@ export default function SignOut() {
     }
   };
   return (
-    <div onClick={handleSignOut}>Sign out</div>
+    <div onClick={handleSignOut}>Se déconnecter</div>
   );
 }
