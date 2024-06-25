@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 import LoadingSpinner from '../static/LoadingSpinner';
 
 import { useParams } from 'react-router-dom';
-import { getData } from '../../services/data-fetch';
+import { getData, updateData } from '../../services/data-fetch';
 import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
+import { alertAtom } from '../../store/alert';
+import Alert from '../../styles/Alert';
 
 function ProfileReservation() {
     const [user] = useAtom(userAtom);
     const [profile, setProfile] = useState(null);
+    const [alertState, setAlertState] = useAtom(alertAtom);
 
     const { user_id } = useParams();
 
@@ -30,8 +33,28 @@ function ProfileReservation() {
 
     };
 
-    const handleCancel = (reservationId) => {
+    const handleCancel = async(reservationId) => {
         console.log(`Cancelling reservation ${reservationId}`);
+        if(window.confirm("Are you sure you want to delete this reservation?")) {
+        try {
+            const newStatus = "user_cancelled"; // Status for user_cancelled
+            const response = await updateData(`/reservations/${reservationId}`, { status: newStatus });
+            const data = await getData(`/users/${user_id}`);
+            setProfile(data);
+            setAlertState({
+                showAlert: true,
+                message: 'Vous avez bien annulé votre réservation',
+                alertType: 'success'
+              });
+        } catch (error) {
+            console.error('Erreur lors de la mise à jour du statut de la réservation:', error);
+            setAlertState({
+              showAlert: true,
+              message: 'Erreur lors de la mise à jour du statut de la réservation',
+              alertType: 'error'
+            });
+        }
+        }
     };
 
     const handleRelaunch = (reservationId) => {
@@ -54,8 +77,14 @@ function ProfileReservation() {
 
     return (
         <div className='mx-auto'>
-            <div className='bg-blue-500'>
-                <h2 className='md-4'>Mes Réservations</h2>
+        <Alert
+          showAlert={alertState.showAlert}
+          setShowAlert={(show) => setAlertState((prevState) => ({ ...prevState, showAlert: show }))}
+          message={alertState.message}
+          type={alertState.alertType}
+        />
+            <div className='bg-blue-500 text-white text-center py-10 mb-8'>
+                <h2 className='text-4xl'>Mes Réservations</h2>
             </div>
             <div className="flex flex-wrap">
                 <div className="w-full lg:w-1/2 p-2">
@@ -70,14 +99,20 @@ function ProfileReservation() {
                                 </div>
                             ))
                         ) : (
-                            <p><LoadingSpinner /></p>
+                    <div className="bg-gray-100 flex items-center justify-center min-h-screen">
+                        <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+                            <h3 className="text-2xl font-bold text-red-600 mb-4">Vous n'avez pas de Réservation</h3>
+                        </div>
+                    </div>
                         )}
                     </div>
                 </div>
                 <div className="w-full lg:w-1/2 p-2">
                     <div className="space-y-4 text-end">
                         {profile.reservations?.length > 0 ? (
-                            profile.reservations.map(reservation => (
+                            profile.reservations.map(reservation =>{
+                                const canRelaunch = new Date(reservation.created_at) <= new Date(Date.now() - 12 * 60 * 60 * 1000);
+                            return (
                                 <div key={reservation.id} className="p-4 rounded-lg">
                                     <p>Quantité : {reservation.quantity}</p>
                                     <p>Status : {reservation.status}</p>
@@ -92,7 +127,7 @@ function ProfileReservation() {
                                     }
                                     {reservation.status === "pending" ?
                                     <>
-                                        <button className='button-primary-small' onClick={() => handleRelaunch(reservation.id)}>relancer l'hote</button>
+                                        <button className='button-primary-small' onClick={() => handleRelaunch(reservation.id)} disabled={!canRelaunch}>relancer l'hote</button>
                                         <button className='button-red-small' onClick={() => handleCancel(reservation.id)}>annuler</button>
                                     </>
                                     :
@@ -114,7 +149,7 @@ function ProfileReservation() {
                                     }
                                     {reservation.status === "user_cancelled" ?
                                     <>
-                                        <button className='button-red-small'>Vous avez annulé votre réservation</button>
+                                        <button className='button-red-small disable'>Vous avez annulé votre réservation</button>
                                     </>
                                     :
                                     <></>
@@ -134,11 +169,11 @@ function ProfileReservation() {
                                     <></>
                                     }
                                 </div>
-                            ))
+                            );
+                        })
                         ) : (
-                            <p>
-                                <LoadingSpinner />
-                            </p>
+                            <div>
+                            </div>
                         )}
                     </div>
                 </div>
