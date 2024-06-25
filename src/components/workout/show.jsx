@@ -119,7 +119,7 @@ const WorkoutShow = () => {
 
   return(
     <>
-      <div className="border-y border-purple-900 bg-gray-300 my-10 h-2/5">
+      <div className="border-y border-black bg-gray-200 my-10 h-2/5">
       {workout_images && workout_images.length > 0 ? 
         <ImageCarrousel images={workout_images}/>
         : 
@@ -128,8 +128,8 @@ const WorkoutShow = () => {
           :
           (workout.category&& workout.category.category_image ?
             <ImageCarrousel images={[workout.category.category_image]}/>
-            : 
-            "No image attached and no category image"
+            :
+            <p className="text-center">No image attached and no category image</p>
           )
         )
       }
@@ -151,12 +151,19 @@ const WorkoutShow = () => {
               </div>
               <div>
                 {workout.host ?
-                  <Link to={`/profile/${workout.host.id}`}>
-                  <img
-                    className="h-8 w-8 rounded-full"
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                    alt=""
-                  />
+                  
+                  <Link to={`/profile/${workout.host.id}`} className="flex gap-2 items-center">
+                    <p>Hote : {workout.host.username}</p>
+                    {workout.host && 
+                          <div className="h-8 w-8 border rounded-full flex justify-center items-center overflow-hidden">
+                            {workout.host.avatar ? <img src={workout.host.avatar} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="User avatar"/>
+                            :
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="black" className="size-6">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                            </svg>
+                            }
+                          </div>
+                    }
                   </Link>
                 :
                   "Loading..."
@@ -177,13 +184,16 @@ const WorkoutShow = () => {
             
             <div>
               <p>Nombre de place max : {workout.max_participants}</p>
-              <p>Nombre de place disponible : {workout.available_places}</p>
-              <h3>Nombre de place : {quantity}</h3>
+              <p>Nombre de place disponible : {workout.available_places}</p>              
               <h3>Total à payer : {workout.price*quantity} €</h3>
-              <div className="flex justify-around">
+              <div className="flex justify-between items-center">
+                <h3>Nombre de place : </h3>
                 {/* Buttons are disabled when on conditions */}
-                <button className="button-red-small" onClick={decreaseQuantity} disabled={quantity <= 1} aria-label="minus one place">-</button>
-                <button className="button-green-small" onClick={increaseQuantity} disabled={quantity >= workout.available_places} aria-label="add one place">+</button>
+                <div className="flex justify-around items-center my-3">
+                  <button className="button-red-small" onClick={decreaseQuantity} disabled={quantity <= 1} aria-label="minus one place">-</button>
+                  <h3 className="mx-3">{quantity}</h3>
+                  <button className="button-green-small" onClick={increaseQuantity} disabled={quantity >= workout.available_places} aria-label="add one place">+</button>
+                </div>
               </div>
             </div>
             {quantity > workout.available_places ?
@@ -193,7 +203,6 @@ const WorkoutShow = () => {
             <button className="button-primary-large" onClick={handleReservation} disabled={quantity > workout.available_places}>Envoyer une demande de réservation</button>
             </>
             }
-            {/* <button className="py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700" onClick={handleReservation}>Envoyer une demande de réservation</button> */}
 
           </div>
         </div>
