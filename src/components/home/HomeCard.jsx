@@ -8,7 +8,7 @@ function CardHome() {
   useEffect(() => {
     const getWorkouts = async () => {
       try {
-        const data = await getData(`/workouts`);
+        const data = await getData(`/workouts?sort=start_date&page_size=3`);
         const sortedData = data.sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
         setWorkouts(sortedData);
       } catch (error) {
