@@ -156,4 +156,32 @@ p {
   pointer-events: none; /* disabled:pointer-events-none */
 }
 
+/*Button witout color*/
+.button-no-color {
+  padding: 0.5rem 0.75rem; /* py-2 px-3 */
+  display: inline-flex; /* inline-flex */
+  justify-content: center; /* justify-center */
+  align-items: center; /* items-center */
+  gap: 0 0.5rem; /* gap-x-2 */
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 600; /* font-semibold */
+  border-radius: 0.5rem; /* rounded-lg */
+  border: none; /* border border-transparent */
+  color: white; /* text-white */
+}
+
+/*bandeau bleu*/
+.bg-blue-500 {
+  background-color: #4299e1; /* Cette couleur correspond à la classe bg-blue-500 de Tailwind */
+  color: white; /* text-white */
+  text-align: center; /* text-center */
+  padding-top: 2.5rem; /* py-10 (1 rem = 4) */
+  padding-bottom: 2.5rem; /* py-10 (1 rem = 4) */
+  margin-bottom: 2rem; /* mb-8 (1 rem = 4) */
+}
+
+/*carte workout index*/
+.text-description {
+  word-wrap: break-word;
+}
 

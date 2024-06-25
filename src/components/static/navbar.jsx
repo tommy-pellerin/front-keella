@@ -24,6 +24,7 @@ const navigation = [
   // { name: 'Team', href: '#', current: false },
   // { name: 'Projects', href: '#', current: false },
   { name: 'Kit UI', href: '/kit-ui', current: false },
+  { name: 'Gérer les categories', href: '/categories', current: false },
   { name: 'Trouver une séance', href: '/workouts', current: false },
 ]
 
@@ -124,12 +125,12 @@ export default function Navbar() {
                     <>
                       <MenuItem>
                         {({ focus }) => (
-                          <Link to="/sign-in" className={classNames(focus ? 'bg-gray-100' : '', 'block text-center px-4 py-2 text-sm text-gray-700')}>Log In</Link>
+                          <Link to="/sign-in" className={classNames(focus ? 'bg-gray-100' : '', 'block text-center px-4 py-2 text-sm text-gray-700')}>Se connecter</Link>
                         )}
                       </MenuItem>
                       <MenuItem>
                         {({ focus }) => (
-                          <Link to="/sign-up" className={classNames(focus ? 'bg-gray-100' : '', 'block text-center px-4 py-2 text-sm text-gray-700')}>Sign Up</Link>
+                          <Link to="/sign-up" className={classNames(focus ? 'bg-gray-100' : '', 'block text-center px-4 py-2 text-sm text-gray-700')}>S&apos;inscrire</Link>
                         )}
                       </MenuItem>
                     </> 
@@ -137,7 +138,12 @@ export default function Navbar() {
                     <>
                       <MenuItem>
                         {({ focus }) => (
-                          <Link to="/profile/me" className={classNames(focus ? 'bg-gray-100' : '', 'block text-center px-4 py-2 text-sm text-gray-700')}>Your Profile</Link>
+                          <Link to="/my-account" className={classNames(focus ? 'bg-gray-100' : '', 'block text-center px-4 py-2 text-sm text-gray-700')}>Mon compte</Link>
+                        )}
+                      </MenuItem>
+                      <MenuItem>
+                        {({ focus }) => (
+                          <Link to={`/profile/${user.id}`} className={classNames(focus ? 'bg-gray-100' : '', 'block text-center px-4 py-2 text-sm text-gray-700')}>Mon profil</Link>
                         )}
                       </MenuItem>
                       <MenuItem>
@@ -147,6 +153,12 @@ export default function Navbar() {
                           </button>
                         )}
                       </MenuItem>
+                      <MenuItem>
+                        {({ focus }) => (
+                          <Link to="/workouts/create" className={classNames(focus ? 'bg-gray-100' : '', 'block text-center px-4 py-2 text-sm text-gray-700')}>Créer une annonce</Link>
+                        )}
+                      </MenuItem>
+                      
                     </>
                     }
                     </MenuItems>
