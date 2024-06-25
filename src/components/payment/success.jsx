@@ -19,7 +19,9 @@ const Success = () => {
       // console.log(session_id);
       // console.log(session_token);
       try {
-        const response = await fetch(`http://localhost:3000/checkout/success`, {
+        const url = "https://back-keella.fly.dev/checkout/success"
+      // const url = "http://localhost:3000/checkout/success"
+        const response = await fetch(url, {
           method: "PATCH",
           headers: {
             'Content-Type': 'application/json',

@@ -11,7 +11,9 @@ const Checkout = ({creditToBuy}) => {
       return; // Exit the function if the user cancels
     }
     try {
-      const response = await fetch("http://localhost:3000/checkout/create", {
+      const url = "https://back-keella.fly.dev/checkout/create"
+      // const url = "http://localhost:3000/checkout/create"
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
