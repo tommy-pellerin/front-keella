@@ -149,7 +149,7 @@ const WorkoutShow = () => {
                 "Loading..."
                 }
                 <p>Notes :</p>
-                <WorkoutRating workoutId={workout.id}/>
+                
               </div>
               <div>
                 {workout.host ?
@@ -201,7 +201,7 @@ const WorkoutShow = () => {
         </div>
 
         <div className="my-5">
-          Commentaires
+        <WorkoutRating workoutId={workout.id}/>
         </div>
       </div>
 

@@ -18,7 +18,7 @@ export default function RatingStars({ ratings }) {
           <div className="stars" style={{ color: 'yellow' }}>
             {renderStars(rating.rating)}
           </div>
-          <p>Rated by: {rating.user ? 
+          <p>Rated by host of workout ID: {rating.user ? 
             <Link to={`/profile/${rating.user.id}`}>{rating.user.username}</Link> 
             : 'Unknown'}</p>
           <p>Rateable Type: {rating.rateable_type}</p>
