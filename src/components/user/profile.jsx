@@ -6,7 +6,7 @@ import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
 import { Link } from 'react-router-dom';
 import RatingStars from '../rating/HostRatings';
-import WorkoutRating from '../rating/WorkoutRating';
+
 
 function Profile() {
     const [user] = useAtom(userAtom);
@@ -75,8 +75,8 @@ function Profile() {
 
                     </div>
             </div>
-        <RatingStars userId={profile.id}/>
-        <WorkoutRating workoutId={profile.id}/>
+            <RatingStars ratings={profile.ratings_received} />
+        
 
         </div>
     );

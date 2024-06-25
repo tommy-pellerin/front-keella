@@ -1,26 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { getData } from '../../services/data-fetch';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import './RatingStars.css';
 
-export default function RatingStars({userId}) {
-  const [ratings, setRatings] = useState([]);
-
-  useEffect(() => {
-    const fetchRatings = async () => {
-      console.log(`Fetching ratings for user ID: ${userId}`); // Log before fetching data
-      const data = await getData(`/ratings?rateable_type=User&rateable_id=${userId}`);
-      console.log('Data received:', data); // Log after receiving data
-      
-      // Filtrer les évaluations pour ne garder que celles de l'utilisateur actuel
-      const filteredRatings = data.filter(rating => rating.user_id === userId);
-      console.log('Filtered Ratings:', filteredRatings); // Log after filtering data
-      
-      setRatings(filteredRatings);
-    };
-  
-    fetchRatings();
-  }, [userId]);
-
+export default function RatingStars({ ratings }) {
   const renderStars = (rating) => {
     let stars = '';
     for (let i = 0; i < 5; i++) {
@@ -36,10 +18,15 @@ export default function RatingStars({userId}) {
           <div className="stars" style={{ color: 'yellow' }}>
             {renderStars(rating.rating)}
           </div>
+          <p>Rated by: {rating.user ? 
+            <Link to={`/profile/${rating.user.id}`}>{rating.user.username}</Link> 
+            : 'Unknown'}</p>
+          <p>Rateable Type: {rating.rateable_type}</p>
+          <p>Rateable ID: {rating.rateable_id}</p>
+          <p>Workout ID: {rating.workout_id}</p>
           <p>{rating.comment}</p>
         </div>
       ))}
     </div>
   );
 }
-
