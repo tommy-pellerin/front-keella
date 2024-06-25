@@ -5,7 +5,7 @@ import { getData } from '../../services/data-fetch';
 import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
 import { Link } from 'react-router-dom';
-import RatingStars from '../rating/HostRatings';
+import RatingStars from '../rating/ProfilHostRatings';
 
 
 function Profile() {
