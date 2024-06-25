@@ -136,6 +136,10 @@ const updateReservationStatus = async (workoutId, reservationId, newStatus) => {
   }
 };
 
+  if(!workoutData){
+    <div>Loading...</div>
+  }
+
 
   return (
     <>

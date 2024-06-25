@@ -28,9 +28,28 @@ function ProfileReservation() {
         profileData();
     }, [user, user_id]);
 
-    const handlePay = (reservation) => {
-        console.log(`Paying for reservation ${reservation}`);
-
+    const handlePay = async(reservationId) => {
+        console.log(`Paying host for reservation ${reservationId}`);
+        if(window.confirm("Vous confirmez que la séance est terminé ?")) {
+            try {
+                const newStatus = "closed"; // Status for user_cancelled
+                const response = await updateData(`/reservations/${reservationId}`, { status: newStatus });
+                const data = await getData(`/users/${user_id}`);
+                setProfile(data);
+                setAlertState({
+                    showAlert: true,
+                    message: "Merci d'avoir confirmer la fin de la séance, nous allons proceder au paiement de l'hote",
+                    alertType: 'success'
+                });
+            } catch (error) {
+                console.error('Erreur lors de la mise à jour du statut de la réservation:', error);
+                setAlertState({
+                    showAlert: true,
+                    message: 'Erreur lors de la mise à jour du statut de la réservation',
+                    alertType: 'error'
+                });
+            }
+            }
     };
 
     const handleCancel = async(reservationId) => {
@@ -119,7 +138,7 @@ function ProfileReservation() {
                                     <p>Prix Total : {reservation.total} €</p>
                                     {reservation.status === "accepted" ?
                                     <>
-                                        <button className='button-green-small' onClick={() => handlePay(reservation.id)}>payer</button>
+                                        <button className='button-green-small' onClick={() => handlePay(reservation.id)}>Confirmer fin séance</button>
                                         <button className='button-red-small' onClick={() => handleCancel(reservation.id)}>annuler</button>
                                     </>
                                     :
