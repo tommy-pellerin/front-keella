@@ -66,7 +66,7 @@ const WorkoutShow = () => {
   }
 
   //handle booking
-  const handleReservation = async (e) => {
+  const handleReservation = (e) => {
     e.preventDefault();
 
     //check authentication
