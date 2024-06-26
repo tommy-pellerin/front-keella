@@ -21,23 +21,30 @@ import {
 } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
-const navigation = [
-  // { name: 'Dashboard', href: '#', current: true },
-  // { name: 'Team', href: '#', current: false },
-  // { name: 'Projects', href: '#', current: false },
-  { name: 'Kit UI', href: '/kit-ui', current: false },
-  { name: 'Gérer les categories', href: '/categories', current: false },
-  { name: 'Trouver une séance', href: '/workouts', current: false },
-]
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
 
 export default function Navbar() {
-
   const [user] = useAtom(userAtom);
   const [profile, setProfile] = useState(null);
+
+  let navigation = [
+    { name: 'Trouver une séance', href: '/workouts', current: false },
+    { name: 'Kit UI', href: '/kit-ui', current: false },
+    { name: 'Gérer les categories', href: '/categories', current: false },
+  ]
+  // navbar available only if is admin
+  // if (user.isAdmin) {
+  //   navigation = [
+  //     ...navigation,
+  //     { name: 'Kit UI', href: '/kit-ui', current: false },
+  //     { name: 'Gérer les catégories', href: '/categories', current: false },
+  //   ];
+  // }
+  
+  function classNames(...classes) {
+    return classes.filter(Boolean).join(' ')
+  }
+
 
   useEffect(() => {
       const profileData = async () => {
@@ -107,16 +114,6 @@ export default function Navbar() {
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
                 </button> */}
                     
-                {user.isLogged &&
-                  <Link to="/payment/credit">
-                    <button className="relative rounded-full p-1 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 flex items-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="gray" className="h-6 w-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M14.25 7.756a4.5 4.5 0 1 0 0 8.488M7.5 10.5h5.25m-5.25 3h5.25M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                      </svg>
-                      <p className="ml-2">{profile && profile.credit}</p>
-                    </button>
-                  </Link>
-                }
 
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
@@ -124,7 +121,7 @@ export default function Navbar() {
                     <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="absolute -inset-1.5" />
                       <span className="sr-only">Open user menu</span>
-                      {user.isLogged ?
+                      {profile ?
                         (profile && 
                           <div className="h-8 w-8 border rounded-full flex justify-center items-center overflow-hidden">
                             {profile.avatar ? <img src={profile.avatar} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="User avatar"/>
