@@ -47,7 +47,7 @@ function Profile() {
             <div className="flex justify-center">
                 <div className="bg-white rounded-lg shadow-lg p-6">
                     <h1 className="mb-4 text-center">Compte de {profile.username}</h1>
-                    <UserAverageRating ratings={profile.ratings_received} />
+                    <UserAverageRating averageRating={parseFloat(profile.average_rating)} />
                     <p className="text-center">Actif depuis : {formatDate(profile.created_at)}</p>
                     {profile.avatar?
                         <img src={profile.avatar}></img>
