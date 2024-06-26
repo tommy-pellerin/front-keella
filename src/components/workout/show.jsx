@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react"
 import { getData, postData } from "../../services/data-fetch";
-import { useParams, Link } from "react-router-dom";
-
+import { useParams, Link, useNavigate } from "react-router-dom";
+//atom
 import { useAtom } from "jotai";
+import { userAtom } from "../../store/user";
 import { alertAtom } from "../../store/alert";
 import ImageCarrousel from "./ImageCarrousel";
+//security
+import checkTokenExpiration from "../../services/checkToken";
 
 const WorkoutShow = () => {
   const [quantity,setQuantity] = useState(1)
@@ -13,8 +16,11 @@ const WorkoutShow = () => {
   const [workout_images,setWorkout_images] = useState([])
   const [workoutCategory,setWorkoutCategory] = useState(null)
   const [workoutCategoryLoading,setWorkoutCategoryLoading] = useState(false)
-  //use alert component
+  const navigate = useNavigate();
+
+  //use atom
   const [,setAlert] = useAtom(alertAtom);
+  const [user, setUser] = useAtom(userAtom);
 
   function formatDate(dateString) {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
@@ -24,7 +30,7 @@ const WorkoutShow = () => {
     const options = { hour: '2-digit', minute: '2-digit' };
     return new Date(dateString).toLocaleTimeString('fr-FR', options);
   }
-
+  //loading data to show
   useEffect(() => {
     // setWorkoutCategoryLoading(true)
     const getWorkouts = async () => {
@@ -45,6 +51,7 @@ const WorkoutShow = () => {
     getWorkouts();
   }, [workout_id]);
 
+  //manage quantity
   const increaseQuantity = () => {
     if(quantity >= workout.available_places){
       return
@@ -58,8 +65,32 @@ const WorkoutShow = () => {
     setQuantity(quantity - 1)
   }
 
+  //handle booking
   const handleReservation = (e) => {
     e.preventDefault();
+
+    //check authentication
+    if (!user.isLogged){
+      setAlert({
+        showAlert: true,
+        message: "Vous devez etre connecté pour pouvoir réserver",
+        alertType: "warning"
+      });
+      navigate("/sign-in");
+      return
+    }
+    //check tokenEx
+    if (checkTokenExpiration()) {
+      setAlert({
+        showAlert: true,
+        message: "Votre session a expiré. Veuillez vous reconnecter.",
+        alertType: "warning"
+      });
+      setUser({ id: "", email: "", isLogged: false });
+      navigate("/sign-in");
+      return
+    }
+    
     console.log(workout);
     const body = 
     {
