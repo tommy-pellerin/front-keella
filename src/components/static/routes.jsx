@@ -26,7 +26,7 @@ import { useEffect } from "react";
 //protection
 import PrivateRoute from "../../services/privateRoute";
 import OwnerRoute from "./OwnerRoute";
-import checkTokenExpiration from "../../services/checkToken";
+import checkTokenAndLocalStorage from "../../services/checkTokenAndLocalStorage";
 
 //Style
 import KitUI from "../KitUI/KitUI";
@@ -39,43 +39,9 @@ export default function AppRoutes() {
   const navigate = useNavigate();
   const [,setAlert] = useAtom(alertAtom);
   const [user, setUser] = useAtom(userAtom);
-
-  const checkTokenAndLocalStorage = () =>{
-    const tokenStatus = checkTokenExpiration();
-    if(tokenStatus.isValid){
-      console.log("Token is valid");
-      return
-    } else {
-      if (tokenStatus.reason === "notFound") {
-        // Check if user data is in local storage and seems valid
-        const localUserData = localStorage.getItem("user");
-        if (localUserData) {
-          setUser({ id: "", email: "", isLogged: false });
-          console.log("local storage present but token not found");
-          setAlert({
-            showAlert: true,
-            message: "Votre connection a expiré, veuillez vous reconnecter",
-            alertType: "warning"
-          });
-          navigate("/sign-in");
-          return
-        }
-      } else {
-        // For expired or invalid token
-        console.log("token expired or invalid");
-        setAlert({
-          showAlert: true,
-          message: "Votre connection a expiré, veuillez vous reconnecter",
-          alertType: "warning"
-        });
-        navigate("/sign-in");
-        return
-      }
-    }
-  }
   
   useEffect(() => {
-    checkTokenAndLocalStorage()
+    checkTokenAndLocalStorage(user, setUser, setAlert, navigate)
   }, []);
 
   return (

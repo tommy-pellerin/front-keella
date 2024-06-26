@@ -7,15 +7,15 @@ import { userAtom } from "../../store/user";
 import { alertAtom } from "../../store/alert";
 import ImageCarrousel from "./ImageCarrousel";
 //security
-import checkTokenExpiration from "../../services/checkToken";
+import checkTokenAndLocalStorage from "../../services/checkTokenAndLocalStorage";
 
 const WorkoutShow = () => {
   const [quantity,setQuantity] = useState(1)
   const [workout, setWorkout] = useState({});
   const { workout_id } = useParams();
-  const [workout_images,setWorkout_images] = useState([])
-  const [workoutCategory,setWorkoutCategory] = useState(null)
-  const [workoutCategoryLoading,setWorkoutCategoryLoading] = useState(false)
+  const [workout_images, setWorkout_images] = useState([])
+  const [workoutCategory, setWorkoutCategory] = useState(null)
+  const [workoutCategoryLoading, setWorkoutCategoryLoading] = useState(false)
   const navigate = useNavigate();
 
   //use atom
@@ -65,37 +65,6 @@ const WorkoutShow = () => {
     setQuantity(quantity - 1)
   }
 
-  const checkTokenAndLocalStorage = async () =>{
-    const tokenStatus = checkTokenExpiration();
-    if(tokenStatus.isValid){
-      console.log("Token is valid");
-    } else {
-      if (tokenStatus.reason === "notFound") {
-        // Check if user data is in local storage and seems valid
-        const localUserData = localStorage.getItem("user");
-        if (localUserData) {
-          setUser({ id: "", email: "", isLogged: false });
-          console.log("local storage present but token not found");
-          setAlert({
-            showAlert: true,
-            message: "Votre connection a expiré, veuillez vous reconnecter",
-            alertType: "warning"
-          });
-          navigate("/sign-in");
-        }
-      } else {
-        // For expired or invalid token
-        console.log("token expired or invalid");
-        setAlert({
-          showAlert: true,
-          message: "Votre connection a expiré, veuillez vous reconnecter",
-          alertType: "warning"
-        });
-        navigate("/sign-in");
-      }
-    }
-  }
-
   //handle booking
   const handleReservation = async (e) => {
     e.preventDefault();
@@ -111,8 +80,9 @@ const WorkoutShow = () => {
       return
     }
     //check token expiration
-    const tokenStatus = await checkTokenAndLocalStorage();
-    if (!tokenStatus.isValid){
+    const tokenStatus = checkTokenAndLocalStorage(user, setUser, setAlert, navigate);
+    //if tokenStatus = true means token is not expired or invalid
+    if (!tokenStatus) {
       return;
     }
     
@@ -212,7 +182,7 @@ const WorkoutShow = () => {
                     <p>Hote : {workout.host.username}</p>
                     {workout.host && 
                           <div className="h-8 w-8 border rounded-full flex justify-center items-center overflow-hidden">
-                            {workout.host.avatar ? <img src={workout.host.avatar} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="User avatar"/>
+                            {workout.host_avatar ? <img src={workout.host_avatar} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="User avatar"/>
                             :
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="black" className="size-6">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
