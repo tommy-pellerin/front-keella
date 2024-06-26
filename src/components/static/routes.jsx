@@ -16,6 +16,9 @@ import Success from "../payment/success";
 import Cancel from "../payment/cancel";
 import TermsOfUse from "./termsOfUse";
 import Credit from "../payment/credit";
+import LegalNotices from "./legalNotices";
+import PrivacyPolicy from "./privacyPolicy";
+import Help from "./help";
 
 //protection
 import PrivateRoute from "../../services/privateRoute";
@@ -25,6 +28,8 @@ import Category from "../category/category";
 
 //Style
 import KitUI from "../KitUI/KitUI";
+
+
 
 
 
@@ -54,6 +59,9 @@ export default function AppRoutes() {
       <Route path="/payment/credit" element={<Credit />} />
       
       <Route path="/terms-of-use" element={<TermsOfUse />} />
+      <Route path="/legal-notices" element={<LegalNotices />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/help" element={<Help />} />
 
       {/* Il faut etre admin pour utiliser ses pages */}
       <Route path="/categories" element={<PrivateRoute><Category/></PrivateRoute>} />
