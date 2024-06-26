@@ -25,7 +25,7 @@ function AskCookiesConsent() {
   if (!showModal) return null;
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full bg-blue-500/50 flex justify-center items-center z-40">
+    <div className="fixed top-0 left-0 w-full h-full bg-gray-500/60 flex justify-center items-center z-40">
       <CookieConsent
         location="bottom"
         buttonText="ACCEPTER"
