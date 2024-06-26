@@ -18,17 +18,23 @@ export default function RatingStars({ ratings }) {
         console.log('Rating data:', rating);
 
         return (
-          <div key={rating.id} className="rating">
-            <div className="stars" style={{ color: 'yellow' }}>
-              {renderStars(rating.rating)}
+          <div key={rating.id} className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+            <div className="md:flex">
+              <div className="p-8">
+                <div className="stars text-yellow-600">
+                  {renderStars(rating.rating)}
+                </div>
+                <div className="tracking-wide text-sm text-indigo-500 font-semibold">
+                  Rated by User of workout ID: {rating.user && rating.user.username ? 
+                    <Link to={`/profile/${rating.user_id}`} className="text-blue-500 hover:underline">{rating.user.username}</Link> 
+                    : 'Unknown'}
+                </div>
+                <p className="block mt-1 text-lg leading-tight font-medium text-black">Rateable Type: {rating.rateable_type}</p>
+                <p className="mt-2 text-gray-500">Rateable ID: {rating.rateable_id}</p>
+                <p className="mt-2 text-gray-500">Workout ID: {rating.workout_id}</p>
+                <p className="mt-2 text-gray-500">{rating.comment}</p>
+              </div>
             </div>
-            <p>Rated by host of workout ID: {rating.user && rating.user.username ? 
-              <Link to={`/profile/${rating.user_id}`}>{rating.user.username}</Link> 
-              : 'Unknown'}</p>
-            <p>Rateable Type: {rating.rateable_type}</p>
-            <p>Rateable ID: {rating.rateable_id}</p>
-            <p>Workout ID: {rating.workout_id}</p>
-            <p>{rating.comment}</p>
           </div>
         );
       })}

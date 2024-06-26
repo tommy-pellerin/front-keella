@@ -37,19 +37,27 @@ export default function WorkoutRating({ workoutId }) {
         // Log pour chaque évaluation individuelle
         console.log('Rendering rating:', rating);
         return (
-        <div key={rating.id} className="rating">
-          <div className="stars" style={{ color: 'yellow' }}>
-            {renderStars(rating.rating)}
+          <div key={rating.id} className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+          <div className="md:flex">
+            <div className="p-8">
+            <div className="tracking-wide text-sm text-indigo-500 font-semibold">
+                <p>Rated by: {rating.user ? 
+                  <Link to={`/profile/${rating.user_id}`}>{rating.user.username}</Link> 
+                  : 'Unknown'}</p>
+                </div>
+              <div className="stars text-yellow-600">
+                  {renderStars(rating.rating)}
+                </div>
+                
+                
+                <p className="mt-2 text-gray-500">{rating.comment}</p>
+                {/* Vérification des valeurs avant de les afficher */}
+                  <p>Rateable Type: {rating.rateable_type}</p>
+                  <p>Rateable ID: {rating.rateable_id}</p>
+                  <p>Workout ID: {rating.workout_id}</p>
+              </div>
+            </div>
           </div>
-          <p>{rating.comment}</p>
-          <p>Rated by: {rating.user ? 
-            <Link to={`/profile/${rating.user_id}`}>{rating.user.username}</Link> 
-            : 'Unknown'}</p>
-          {/* Vérification des valeurs avant de les afficher */}
-            <p>Rateable Type: {rating.rateable_type || 'Not provided'}</p>
-            <p>Rateable ID: {rating.rateable_id || 'Not provided'}</p>
-            <p>Workout ID: {rating.workout_id || 'Not provided'}</p>
-        </div>
       );
     })}
     </div>

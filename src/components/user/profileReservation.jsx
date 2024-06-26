@@ -8,6 +8,7 @@ import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
 import { alertAtom } from '../../store/alert';
 import Alert from '../../styles/Alert';
+import '../rating/RatingStars.css';
 
 function ProfileReservation() {
     const [user] = useAtom(userAtom);
@@ -133,7 +134,7 @@ function ProfileReservation() {
                         {profile.participated_workouts?.length > 0 ? (
                             profile.participated_workouts.map(reservation => (
                                 <div key={reservation.id} className="p-4 rounded-lg">
-                                    <p>{reservation.title}<br />{reservation.description}</p>
+                                    <p className="text-description">{reservation.title}<br />{reservation.description}</p>
                                     <p>Date : {formatDate(reservation.start_date)} à {formatTime(reservation.start_date)}</p>
                                     <p>Ville : {reservation.city}</p>
                                     <p>Durée : {reservation.duration} minutes</p>
@@ -152,13 +153,21 @@ function ProfileReservation() {
                     <div className="space-y-4 text-end">
                         {profile.reservations?.length > 0 ? (
                             profile.reservations.map(reservation =>{
-                                const hostId = reservation.host_id;
+                                
                                 const canRelaunch = new Date(reservation.created_at) <= new Date(Date.now() - 12 * 60 * 60 * 1000);
                             return (
                                 <div key={reservation.id} className="p-4 rounded-lg">
                                     <p>Quantité : {reservation.quantity}</p>
                                     <p>Status : {reservation.status}</p>
-                                    <p>Prix Total : {reservation.total} €</p>
+                                    <p className="prix-total clearfix">Prix Total : {reservation.total} €</p>
+                                    <div className="ratings-container">
+                                    <CreateWorkoutRatings className="rating-component" workoutId={reservation.workout_id} />
+                                    <CreateUserRatings 
+                                        className="rating-component"
+                                        hostId={reservation.host_id} 
+                                        workoutId={reservation.workout_id}  
+                                    />
+                                    </div>
                                     {reservation.status === "accepted" ?
                                     <>
                                         <button className='button-green-small' onClick={() => handlePay(reservation.id)}>Confirmer fin séance</button>
@@ -199,12 +208,7 @@ function ProfileReservation() {
                                     {reservation.is_closed ?
                                     <>
                                     <button className='button-red-small'>L'évènement est fini</button>
-                                    <CreateWorkoutRatings workoutId={reservation.workout_id} />
                                     
-                                    <CreateUserRatings 
-                                        hostId={reservation.host_id} 
-                                        workoutId={reservation.workout_id}  
-                                    />
                                     
                                     </>
                                     :
@@ -226,6 +230,7 @@ function ProfileReservation() {
                         )}
                     </div>
                 </div>
+                
             </div>
         </div>
     );

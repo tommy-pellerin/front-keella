@@ -55,13 +55,13 @@ export default function CreateUserRatings({ hostId, workoutId, }) {
   return (
     <div className="create-rating">
       <h2 onClick={toggleAccordion} style={{ cursor: 'pointer' }}>
-        Leave a rating and comment for your host
+        Note et commente ton hôte
       </h2>
       {isOpen && (
         <>
           {error && <p className="error">{error}</p>}
           {success && <p className="success">Rating created successfully!</p>}
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="form-container">
             <div className="stars">
               {Array.from({ length: 5 }, (_, i) => (
                 <span

@@ -55,13 +55,13 @@ export default function CreateWorkoutRatings({ workoutId }) {
   return (
     <div className="create-rating">
       <h2 onClick={toggleAccordion} style={{ cursor: 'pointer' }}>
-        Laisse une note et commentaire à ton workout.
+        Note et commente ton workout
       </h2>
       {isOpen && ( // Afficher le contenu de l'accordéon si isOpen est vrai
         <>
       {error && <p className="error">{error}</p>}
       {success && <p className="success">Rating created successfully!</p>}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="form-container">
         <div className="stars">
           {Array.from({ length: 5 }, (_, i) => (
             <span
