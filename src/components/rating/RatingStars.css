@@ -2,3 +2,67 @@
 .rating .stars {
   font-size: 24px;
 }
+
+.stars {
+  display: flex;
+  cursor: pointer;
+}
+
+.star {
+  font-size: 2rem;
+  color: grey;
+  transition: color 0.2s;
+}
+
+.star.selected {
+  color: rgb(212, 190, 64);
+}
+
+.create-rating {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.create-rating h2 {
+  text-align: center;
+}
+
+.create-rating .error {
+  color: #d9534f;
+}
+
+.create-rating .success {
+  color: #5cb85c;
+}
+
+.create-rating form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.create-rating textarea {
+  width: 100%;
+  height: 100px;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.create-rating button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #0275d8;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.create-rating button:hover {
+  background-color: #025aa5;
+}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { postData } from '../../services/data-fetch';
 import './RatingStars.css';
 
-export default function CreateWorkoutRatings({ workoutId }) {
+export default function CreateUserRatings({ userId }) {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [error, setError] = useState(null);
@@ -24,9 +24,9 @@ export default function CreateWorkoutRatings({ workoutId }) {
 
     const newRating = {
       rating: {
-        rateable_type: 'Workout',
-        rateable_id: workoutId,
-        workout_id: workoutId,
+        rateable_type: 'User', 
+        rateable_id: userId, 
+        user_id: userId, 
         rating,
         comment,
       }
@@ -55,33 +55,33 @@ export default function CreateWorkoutRatings({ workoutId }) {
   return (
     <div className="create-rating">
       <h2 onClick={toggleAccordion} style={{ cursor: 'pointer' }}>
-        Laisse une note et commentaire à ton workout.
+        Laisse une note et commentaire à ton hote
       </h2>
-      {isOpen && ( // Afficher le contenu de l'accordéon si isOpen est vrai
+      {isOpen && (
         <>
-      {error && <p className="error">{error}</p>}
-      {success && <p className="success">Rating created successfully!</p>}
-      <form onSubmit={handleSubmit}>
-        <div className="stars">
-          {Array.from({ length: 5 }, (_, i) => (
-            <span
-              key={i}
-              className={`star ${i < rating ? 'selected' : ''}`}
-              onClick={() => setRating(i + 1)}
-            >
-              ★
-            </span>
-          ))}
-        </div>
-        <textarea
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          maxLength="500"
-          placeholder="Leave a comment (max 500 characters)"
-        />
-        <button type="submit">Submit Rating</button>
-      </form>
-      </>
+          {error && <p className="error">{error}</p>}
+          {success && <p className="success">Rating created successfully!</p>}
+          <form onSubmit={handleSubmit}>
+            <div className="stars">
+              {Array.from({ length: 5 }, (_, i) => (
+                <span
+                  key={i}
+                  className={`star ${i < rating ? 'selected' : ''}`}
+                  onClick={() => setRating(i + 1)}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+            <textarea
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              maxLength="500"
+              placeholder="Leave a comment (max 500 characters)"
+            />
+            <button type="submit">Submit Rating</button>
+          </form>
+        </>
       )}
     </div>
   );

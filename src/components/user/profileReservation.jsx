@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import LoadingSpinner from '../static/LoadingSpinner';
-
+import CreateWorkoutRatings from '../rating/CreateWorkoutRatings';
+import CreateUserRatings from '../rating/CreateUserRatings';
 import { useParams } from 'react-router-dom';
 import { getData, updateData } from '../../services/data-fetch';
 import { useAtom } from 'jotai';
@@ -12,7 +13,7 @@ function ProfileReservation() {
     const [user] = useAtom(userAtom);
     const [profile, setProfile] = useState(null);
     const [alertState, setAlertState] = useAtom(alertAtom);
-
+    const [hostId, setHostId] = useState(null);
     const { user_id } = useParams();
 
     useEffect(() => {
@@ -27,6 +28,8 @@ function ProfileReservation() {
         };
         profileData();
     }, [user, user_id]);
+
+            
 
     const handlePay = async(reservationId) => {
         console.log(`Paying host for reservation ${reservationId}`);
@@ -51,6 +54,8 @@ function ProfileReservation() {
             }
             }
     };
+
+   
 
     const handleCancel = async(reservationId) => {
         console.log(`Cancelling reservation ${reservationId}`);
@@ -94,6 +99,7 @@ function ProfileReservation() {
         return <div><LoadingSpinner /></div>;
     }
 
+
     return (
         <div className='mx-auto'>
         <Alert
@@ -130,6 +136,7 @@ function ProfileReservation() {
                     <div className="space-y-4 text-end">
                         {profile.reservations?.length > 0 ? (
                             profile.reservations.map(reservation =>{
+                         
                                 const canRelaunch = new Date(reservation.created_at) <= new Date(Date.now() - 12 * 60 * 60 * 1000);
                             return (
                                 <div key={reservation.id} className="p-4 rounded-lg">
@@ -176,6 +183,10 @@ function ProfileReservation() {
                                     {reservation.status === "closed" ?
                                     <>
                                         <button className='button-red-small'>L'évènement est fini</button>
+                                        <CreateWorkoutRatings workoutId={reservation.workout_id} />
+                                        {hostId && (
+                                        <CreateUserRatings userId={hostId} />
+                                        )}
                                     </>
                                     :
                                     <></>

@@ -191,28 +191,28 @@ const updateReservationStatus = async (workoutId, reservationId, newStatus) => {
                           </span>
                           <span>Statut: {reservation.status}</span>
                                                 
-<div>
-    <button 
-        onClick={() => updateReservationStatus(workout.id, reservation.reservationId, 'accepted')}
-        className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${['pending', 'relaunched'].includes(reservation.status) ? 'bg-green-500 hover:bg-green-700' : 'bg-gray-500 cursor-not-allowed'}`} 
-        disabled={!['pending', 'relaunched'].includes(reservation.status)}
-    >
-        Accepter
-    </button>
-    <button 
-        onClick={() => updateReservationStatus(workout.id, reservation.reservationId, 'refused')}
-        className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${['pending', 'relaunched'].includes(reservation.status) ? 'bg-red-500 hover:bg-red-700' : 'bg-gray-500 cursor-not-allowed'}`} 
-        disabled={!['pending', 'relaunched'].includes(reservation.status)}
-    >
-        Refuser
-    </button>
-    <button 
-        className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${['closed', 'host_cancelled', 'user_cancelled'].includes(reservation.status) ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`} 
-        disabled={['closed', 'host_cancelled', 'user_cancelled'].includes(reservation.status)}
-    >
-        Contacter client
-    </button>
-</div>
+                          <div>
+                              <button 
+                                  onClick={() => updateReservationStatus(workout.id, reservation.reservationId, 'accepted')}
+                                  className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${['pending', 'relaunched'].includes(reservation.status) ? 'bg-green-500 hover:bg-green-700' : 'bg-gray-500 cursor-not-allowed'}`} 
+                                  disabled={!['pending', 'relaunched'].includes(reservation.status)}
+                              >
+                                  Accepter
+                              </button>
+                              <button 
+                                  onClick={() => updateReservationStatus(workout.id, reservation.reservationId, 'refused')}
+                                  className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${['pending', 'relaunched'].includes(reservation.status) ? 'bg-red-500 hover:bg-red-700' : 'bg-gray-500 cursor-not-allowed'}`} 
+                                  disabled={!['pending', 'relaunched'].includes(reservation.status)}
+                              >
+                                  Refuser
+                              </button>
+                              <button 
+                                  className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${['closed', 'host_cancelled', 'user_cancelled'].includes(reservation.status) ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`} 
+                                  disabled={['closed', 'host_cancelled', 'user_cancelled'].includes(reservation.status)}
+                              >
+                                  Contacter client
+                              </button>
+                          </div>
                           </li>
                       ))}
                       </ul>
