@@ -84,10 +84,14 @@ export async function deleteData(objectUrl) {
 export async function updateData(objectUrl, body, filesToUpload) {
   const formData = new FormData();
   console.log(body);
+
+  // Déterminez si la mise à jour concerne un workout
+  const isWorkoutUpdate = 'is_closed' in body || 'price' in body;
   // Wrap the body in the 'reservation' key
   for (const key in body) {
     if (body.hasOwnProperty(key)) {
-        formData.append(`reservation[${key}]`, body[key]);
+      const formKey = isWorkoutUpdate ? `workout[${key}]` : `reservation[${key}]`;
+      formData.append(formKey, body[key]);
     }
   }
   if(body.price) {
@@ -96,12 +100,12 @@ export async function updateData(objectUrl, body, filesToUpload) {
         formData.append(`workout[${key}]`, body[key]);
       }
     }
-    // Vérifiez que filesToUpload est défini et est un tableau avant d'utiliser forEach
-    if (Array.isArray(filesToUpload)) {
-      filesToUpload.forEach((file, index) => {
-        formData.append('workout[workout_images][]', file);
-      });
-    }
+    // Ajoutez les fichiers d'images pour les workouts si nécessaire
+  if (isWorkoutUpdate && Array.isArray(filesToUpload)) {
+    filesToUpload.forEach((file) => {
+      formData.append('workout[workout_images][]', file);
+    });
+  }
   } else if(body.category) {
     for (const key in body.category) {
       if (body.category.hasOwnProperty(key) && key !== 'category_image') {

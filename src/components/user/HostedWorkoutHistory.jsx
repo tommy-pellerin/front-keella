@@ -23,6 +23,7 @@ function HostedWorkoutHistory() {
           if (data && data.hosted_workouts) {
             const fetchedWorkoutData = await Promise.all(data.hosted_workouts.map(async (workout) => {
               const workoutDetails = await getData(`/workouts/${workout.id}`);
+              console.log(workoutDetails);
               return {
                 ...workout,
                 category: workoutDetails.category,
@@ -140,6 +141,35 @@ const updateReservationStatus = async (workoutId, reservationId, newStatus) => {
     <div>Loading...</div>
   }
 
+  // Fonction pour marquer le workout comme fermé
+const closeWorkout = async (workoutId) => {
+  try {
+    const response = await updateData(`/workouts/${workoutId}`, { is_closed: true });
+    console.log(response);
+    if (response) {
+      // Mettre à jour l'état local pour refléter la fermeture du workout
+      setWorkoutData(workoutData.map(workout => {
+        if (workout.id === workoutId) {
+          return { ...workout, is_closed: true };
+        }
+        return workout;
+      }));
+      setAlertState({
+        showAlert: true,
+        message: 'La séance a été marquée comme terminée',
+        alertType: 'success'
+      });
+    }
+  } catch (error) {
+    console.error('Erreur lors de la fermeture de la séance:', error);
+    setAlertState({
+      showAlert: true,
+      message: 'Erreur lors de la fermeture de la séance',
+      alertType: 'error'
+    });
+  }
+};
+
 
   return (
     <>
@@ -207,10 +237,11 @@ const updateReservationStatus = async (workoutId, reservationId, newStatus) => {
                                   Refuser
                               </button>
                               <button 
-                                  className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${['closed', 'host_cancelled', 'user_cancelled'].includes(reservation.status) ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`} 
-                                  disabled={['closed', 'host_cancelled', 'user_cancelled'].includes(reservation.status)}
+                                onClick={() => closeWorkout(workout.id)}
+                                className={`text-white font-medium rounded-lg text-sm px-3 py-1 ${!workout.is_closed ? 'bg-red-500 hover:bg-red-700' : 'bg-gray-500 cursor-not-allowed'}`}
+                                disabled={workout.is_closed}
                               >
-                                  Contacter client
+                                Clôturer la séance
                               </button>
                           </div>
                           </li>
