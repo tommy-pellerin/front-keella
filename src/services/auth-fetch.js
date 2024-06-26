@@ -1,6 +1,6 @@
 import ky from "ky";
 import Cookies from "js-cookie";
-import { BASE_URL, getHeaders } from "./config-fetch";
+import { BASE_URL, getHeaders } from "./config-fetch.js";
 
 // Fonction pour se SignIn-Up
 export async function authSignInUp(objectUrl, body) {
