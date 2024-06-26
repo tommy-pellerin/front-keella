@@ -18,7 +18,12 @@ export async function getData(objectUrl) {
 export async function postData(objectUrl, body, filesToUpload) {
   const formData = new FormData();
   console.log(body);
-  if(body.price) {
+  // Ajout de la logique pour les évaluations
+  if (body.rating) {
+    for (const key in body.rating) {
+      formData.append(`rating[${key}]`, body.rating[key]);
+    }
+  } else if(body.price) {
     for (const key in body) {
       if (body.hasOwnProperty(key) && key !== 'workout_images') {
         console.log(`Ajout de ${key}:`, body[key]);

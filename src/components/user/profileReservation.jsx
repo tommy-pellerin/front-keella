@@ -20,8 +20,14 @@ function ProfileReservation() {
         const profileData = async () => {
             try {
                 const data = await getData(`/users/${user_id}`);
-                console.log("user: ", data);
-                setProfile(data);
+                const updatedReservations = [];
+    
+                for (const reservation of data.reservations) {
+                    const workoutData = await getData(`/workouts/${reservation.workout_id}`);
+                    updatedReservations.push({ ...reservation, is_closed: workoutData.is_closed });
+                }
+    
+                setProfile({ ...data, reservations: updatedReservations });
             } catch (error) {
                 console.error(error);
             }
@@ -180,13 +186,10 @@ function ProfileReservation() {
                                     :
                                     <></>
                                     }
-                                    {reservation.status === "closed" ?
+                                    {reservation.is_closed ?
                                     <>
-                                        <button className='button-red-small'>L'évènement est fini</button>
-                                        <CreateWorkoutRatings workoutId={reservation.workout_id} />
-                                        {hostId && (
-                                        <CreateUserRatings userId={hostId} />
-                                        )}
+                                    <button className='button-red-small'>L'évènement est fini</button>
+                                    <CreateWorkoutRatings workoutId={reservation.workout_id} />
                                     </>
                                     :
                                     <></>
