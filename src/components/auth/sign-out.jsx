@@ -10,16 +10,43 @@ export default function SignOut() {
   const [, setUser] = useAtom(userAtom);
   const [,setAlert] = useAtom(alertAtom);
 
-  const handleSignOut = async () => {
-    if (checkTokenExpiration()) {
-      setAlert({
-        showAlert: true,
-        message: "Votre session a expiré. Veuillez vous reconnecter.",
-        alertType: "warning"
-      });
-      setUser({ id: "", email: "", isLogged: false });
-      navigate("/sign-in");
+  const checkTokenAndLocalStorage = () =>{
+    const tokenStatus = checkTokenExpiration();
+    if(tokenStatus.isValid){
+      console.log("Token is valid");
     } else {
+      if (tokenStatus.reason === "notFound") {
+        // Check if user data is in local storage and seems valid
+        const localUserData = localStorage.getItem("user");
+        if (localUserData) {
+          setUser({ id: "", email: "", isLogged: false });
+          console.log("local storage present but token not found");
+          setAlert({
+            showAlert: true,
+            message: "Votre connection a expiré, veuillez vous reconnecter",
+            alertType: "warning"
+          });
+          navigate("/sign-in");
+          return
+        }
+      } else {
+        // For expired or invalid token
+        console.log("token expired or invalid");
+        setAlert({
+          showAlert: true,
+          message: "Votre connection a expiré, veuillez vous reconnecter",
+          alertType: "warning"
+        });
+        navigate("/sign-in");
+        return
+      }
+    }
+  }
+
+  const handleSignOut = async () => {
+
+    const tokenStatus = checkTokenAndLocalStorage();
+    if (tokenStatus.isValid) {
       try {
         await authSignOut("/users/sign_out");
         setUser({ id: "", email: "", isLogged: false });

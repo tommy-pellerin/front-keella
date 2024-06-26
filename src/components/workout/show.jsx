@@ -65,8 +65,39 @@ const WorkoutShow = () => {
     setQuantity(quantity - 1)
   }
 
+  const checkTokenAndLocalStorage = async () =>{
+    const tokenStatus = checkTokenExpiration();
+    if(tokenStatus.isValid){
+      console.log("Token is valid");
+    } else {
+      if (tokenStatus.reason === "notFound") {
+        // Check if user data is in local storage and seems valid
+        const localUserData = localStorage.getItem("user");
+        if (localUserData) {
+          setUser({ id: "", email: "", isLogged: false });
+          console.log("local storage present but token not found");
+          setAlert({
+            showAlert: true,
+            message: "Votre connection a expiré, veuillez vous reconnecter",
+            alertType: "warning"
+          });
+          navigate("/sign-in");
+        }
+      } else {
+        // For expired or invalid token
+        console.log("token expired or invalid");
+        setAlert({
+          showAlert: true,
+          message: "Votre connection a expiré, veuillez vous reconnecter",
+          alertType: "warning"
+        });
+        navigate("/sign-in");
+      }
+    }
+  }
+
   //handle booking
-  const handleReservation = (e) => {
+  const handleReservation = async (e) => {
     e.preventDefault();
 
     //check authentication
@@ -80,15 +111,9 @@ const WorkoutShow = () => {
       return
     }
     //check token expiration
-    if (checkTokenExpiration()) {
-      setAlert({
-        showAlert: true,
-        message: "Votre session a expiré. Veuillez vous reconnecter.",
-        alertType: "warning"
-      });
-      setUser({ id: "", email: "", isLogged: false });
-      navigate("/sign-in");
-      return
+    const tokenStatus = await checkTokenAndLocalStorage();
+    if (!tokenStatus.isValid){
+      return;
     }
     
     console.log(workout);

@@ -1,5 +1,5 @@
 //import
-import { Routes, Route} from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import SignIn from "../auth/sign-in";
 import SignUp from "../auth/sign-up";
 import ResetPassword from "../auth/reset-password";
@@ -19,21 +19,65 @@ import Credit from "../payment/credit";
 import LegalNotices from "./legalNotices";
 import PrivacyPolicy from "./privacyPolicy";
 import Help from "./help";
+import ProfileReservation from '../user/profileReservation'
+import Category from "../category/category";
+import { useEffect } from "react";
 
 //protection
 import PrivateRoute from "../../services/privateRoute";
 import OwnerRoute from "./OwnerRoute";
-import ProfileReservation from '../user/profileReservation'
-import Category from "../category/category";
+import checkTokenExpiration from "../../services/checkToken";
 
 //Style
 import KitUI from "../KitUI/KitUI";
 
-
-
-
+import { useAtom } from "jotai";
+import { alertAtom } from "../../store/alert";
+import { userAtom } from "../../store/user";
 
 export default function AppRoutes() {
+  const navigate = useNavigate();
+  const [,setAlert] = useAtom(alertAtom);
+  const [user, setUser] = useAtom(userAtom);
+
+  const checkTokenAndLocalStorage = () =>{
+    const tokenStatus = checkTokenExpiration();
+    if(tokenStatus.isValid){
+      console.log("Token is valid");
+      return
+    } else {
+      if (tokenStatus.reason === "notFound") {
+        // Check if user data is in local storage and seems valid
+        const localUserData = localStorage.getItem("user");
+        if (localUserData) {
+          setUser({ id: "", email: "", isLogged: false });
+          console.log("local storage present but token not found");
+          setAlert({
+            showAlert: true,
+            message: "Votre connection a expiré, veuillez vous reconnecter",
+            alertType: "warning"
+          });
+          navigate("/sign-in");
+          return
+        }
+      } else {
+        // For expired or invalid token
+        console.log("token expired or invalid");
+        setAlert({
+          showAlert: true,
+          message: "Votre connection a expiré, veuillez vous reconnecter",
+          alertType: "warning"
+        });
+        navigate("/sign-in");
+        return
+      }
+    }
+  }
+  
+  useEffect(() => {
+    checkTokenAndLocalStorage()
+  }, []);
+
   return (
     <Routes>
       <Route path="/" element={<Home />} />
@@ -50,13 +94,12 @@ export default function AppRoutes() {
       <Route path="/workouts" element={<WorkoutIndex />} />
       <Route path="/workouts/:workout_id" element={<WorkoutShow />} />
 
-      <Route path="/form-workout" element={<FormWorkout />} />
       <Route path="/workouts/create" element={<PrivateRoute><FormWorkout /></PrivateRoute>} />
       <Route path="/workouts/:workout_id/edit" element={<PrivateRoute><OwnerRoute><FormWorkout /></OwnerRoute></PrivateRoute>}/>
       
-      <Route path="/payment/success" element={<Success />} />
-      <Route path="/payment/cancel" element={<Cancel />} />
-      <Route path="/payment/credit" element={<Credit />} />
+      <Route path="/payment/success" element={<PrivateRoute><Success /></PrivateRoute>} />
+      <Route path="/payment/cancel" element={<PrivateRoute><Cancel /></PrivateRoute>} />
+      <Route path="/payment/credit" element={<PrivateRoute><Credit /></PrivateRoute>} />
       
       <Route path="/terms-of-use" element={<TermsOfUse />} />
       <Route path="/legal-notices" element={<LegalNotices />} />
@@ -65,8 +108,7 @@ export default function AppRoutes() {
 
       {/* Il faut etre admin pour utiliser ses pages */}
       <Route path="/categories" element={<PrivateRoute><Category/></PrivateRoute>} />
-      <Route path="/categories/edit" element={<KitUI/>} />
-      <Route path="/kit-ui" element={<KitUI/>} />
+      <Route path="/kit-ui" element={<PrivateRoute><KitUI/></PrivateRoute>} />
     </Routes>
   );
 }

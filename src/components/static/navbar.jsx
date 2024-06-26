@@ -47,6 +47,7 @@ export default function Navbar() {
 
 
   useEffect(() => {
+    if(user.isLogged){
       const profileData = async () => {
           try {
               const data = await getData(`/users/${user.id}`);
@@ -57,6 +58,7 @@ export default function Navbar() {
           }
       };
       profileData();
+    }
   }, [user]);
 
   return (
