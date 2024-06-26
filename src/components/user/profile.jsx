@@ -36,7 +36,7 @@ function Profile() {
 
     return (
         <div className="">
-        <div className='bg-blue-500'>
+        <div className='background-blue-500'>
             <h2 className='md-4'>Profil</h2>
         </div>
         <div className="container mx-auto p-4">
@@ -45,11 +45,11 @@ function Profile() {
                 <div className="bg-white rounded-lg shadow-lg p-6">
                     <h1 className="mb-4 text-center">Compte de {profile.username}</h1>
                     <p className="text-center">Actif depuis : {formatDate(profile.created_at)}</p>
-                    {profile.avatar?
+                    {/* {profile.avatar?
                         <img src={profile.avatar}></img>
                     :
                         <img src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' alt='default img'></img>
-                    }
+                    } */}
                     {profile.participated_workouts ?
                         <p className="text-center">Nombre de Scéances passés : {profile.participated_workouts?.length}</p>
                     :
