@@ -8,7 +8,9 @@ import { alertAtom } from "../../store/alert";
 import ImageCarrousel from "./ImageCarrousel";
 //security
 import checkTokenExpiration from "../../services/checkToken";
+//rating
 import WorkoutRating from "../rating/WorkoutRating";
+import WorkoutAverageRating from "../rating/WorkoutAverageRating";
 
 const WorkoutShow = () => {
   const [quantity,setQuantity] = useState(1)
@@ -179,7 +181,9 @@ const WorkoutShow = () => {
                 :
                 "Loading..."
                 }
-                <p>Notes :</p>
+                <div className="my-5">
+                     <WorkoutAverageRating averageRating={workout.average_rating} />
+                </div>
                 
               </div>
               <div>
