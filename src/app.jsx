@@ -5,12 +5,14 @@ import Navbar from "./components/static/navbar";
 import Footer from "./components/static/footer";
 import Alert from "./styles/Alert"; 
 import LoadingSpinner from "./components/static/LoadingSpinner";
+import AskCookiesConsent from "./store/cookieConsent";
 
 //Atom
 import { useAtom } from 'jotai';
 import { userAtom } from "./store/user";
 import { isLoadingAtom } from "./store/isLoading";
 import { alertAtom } from "./store/alert";
+
 
 export default function App() {
   const [isLoading, setIsLoading] = useAtom(isLoadingAtom);
@@ -46,6 +48,7 @@ export default function App() {
         <AppRoutes />
       </main>
       <footer>
+        <AskCookiesConsent/>
         <Footer />
       </footer>
     </BrowserRouter>
