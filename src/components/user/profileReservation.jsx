@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import LoadingSpinner from '../static/LoadingSpinner';
 import CreateWorkoutRatings from '../rating/CreateWorkoutRatings';
-import CreateUserRatings from '../rating/CreateUserRatings';
+import CreateUserRatings from '../rating/CreateUserRatingsForHostedWorkouts.jsx';
 import { useParams } from 'react-router-dom';
 import { getData, updateData } from '../../services/data-fetch';
 import { useAtom } from 'jotai';
@@ -13,7 +13,7 @@ function ProfileReservation() {
     const [user] = useAtom(userAtom);
     const [profile, setProfile] = useState(null);
     const [alertState, setAlertState] = useAtom(alertAtom);
-    const [hostId, setHostId] = useState(null);
+    
     const { user_id } = useParams();
 
     useEffect(() => {
@@ -21,13 +21,23 @@ function ProfileReservation() {
             try {
                 const data = await getData(`/users/${user_id}`);
                 const updatedReservations = [];
+                let hostedWorkout = null;
     
                 for (const reservation of data.reservations) {
                     const workoutData = await getData(`/workouts/${reservation.workout_id}`);
-                    updatedReservations.push({ ...reservation, is_closed: workoutData.is_closed });
+                updatedReservations.push({ 
+                    ...reservation, 
+                    is_closed: workoutData.is_closed,
+                    host_id: workoutData.host_id 
+                });
+                    // Si la réservation est fermée et que c'est un workout hébergé, enregistrez les détails
+                    if (workoutData.is_closed && workoutData.host_id === user_id) {
+                        hostedWorkout = workoutData;
+                    }
                 }
     
-                setProfile({ ...data, reservations: updatedReservations });
+                // Mettez à jour le profil avec les réservations et le workout hébergé
+                setProfile({ ...data, reservations: updatedReservations, hostedWorkout });
             } catch (error) {
                 console.error(error);
             }
@@ -142,7 +152,7 @@ function ProfileReservation() {
                     <div className="space-y-4 text-end">
                         {profile.reservations?.length > 0 ? (
                             profile.reservations.map(reservation =>{
-                         
+                                const hostId = reservation.host_id;
                                 const canRelaunch = new Date(reservation.created_at) <= new Date(Date.now() - 12 * 60 * 60 * 1000);
                             return (
                                 <div key={reservation.id} className="p-4 rounded-lg">
@@ -190,6 +200,12 @@ function ProfileReservation() {
                                     <>
                                     <button className='button-red-small'>L'évènement est fini</button>
                                     <CreateWorkoutRatings workoutId={reservation.workout_id} />
+                                    
+                                    <CreateUserRatings 
+                                        hostId={reservation.host_id} 
+                                        workoutId={reservation.workout_id}  
+                                    />
+                                    
                                     </>
                                     :
                                     <></>

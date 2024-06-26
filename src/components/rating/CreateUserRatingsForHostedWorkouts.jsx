@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { postData } from '../../services/data-fetch';
 import './RatingStars.css';
 
-export default function CreateUserRatings({ userId }) {
+export default function CreateUserRatings({ hostId, workoutId, }) {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [error, setError] = useState(null);
@@ -24,11 +24,11 @@ export default function CreateUserRatings({ userId }) {
 
     const newRating = {
       rating: {
-        rateable_type: 'User', 
-        rateable_id: userId, 
-        user_id: userId, 
-        rating,
-        comment,
+        rateable_type: 'User', // Type d'entité évaluée
+        rateable_id: hostId, // ID de l'utilisateur évalué
+        workout_id: workoutId, // ID du workout associé à l'évaluation
+        rating, // Note attribuée
+        comment, // Commentaire laissé
       }
     };
 
@@ -36,13 +36,13 @@ export default function CreateUserRatings({ userId }) {
 
     try {
       const response = await postData('/ratings', newRating);
+      console.log('Rating response:', response); // Log the response for debugging
       setSuccess(true);
       setRating(0);
       setComment('');
     } catch (err) {
       console.error('Error creating rating:', err);
       const errorMsg = err.response ? await err.response.json() : 'Error creating rating.';
-      console.error('Server error:', errorMsg);
       setError(errorMsg.error || 'Error creating rating.');
     }
   };
@@ -55,7 +55,7 @@ export default function CreateUserRatings({ userId }) {
   return (
     <div className="create-rating">
       <h2 onClick={toggleAccordion} style={{ cursor: 'pointer' }}>
-        Laisse une note et commentaire à ton hote
+        Leave a rating and comment for your host
       </h2>
       {isOpen && (
         <>
