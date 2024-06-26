@@ -79,7 +79,7 @@ const WorkoutShow = () => {
       navigate("/sign-in");
       return
     }
-    //check tokenEx
+    //check token expiration
     if (checkTokenExpiration()) {
       setAlert({
         showAlert: true,

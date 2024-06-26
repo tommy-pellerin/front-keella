@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { BrowserRouter} from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import AppRoutes from "./components/static/routes";
 import Navbar from "./components/static/navbar";
 import Footer from "./components/static/footer";
