@@ -1,7 +1,9 @@
 const TermsOfUse = () => {
   return (
     <div className="container mx-auto my-5">
-      <h1 className="text-center">Conditions d&apos;utilisation</h1>
+      <div className="bg-blue-500">
+        <h1 className="text-center">Conditions d&apos;utilisation</h1>
+      </div>
       <section className="my-3">
         <h1>Conditions Générales de Keella</h1>
         <p>Version à jour au 26 juin 2024</p>
@@ -68,17 +70,10 @@ const TermsOfUse = () => {
         <div>
           <h3>2. Utilisation de la Plateforme</h3>
           <p>
-            L&apos;Utilisateur s&apos;engage à utiliser la Plateforme selon les
-            Conditions Générales et la législation en vigueur, en évitant toute
-            utilisation abusive.
-          </p>
-          <p>
-            Ce résumé couvre les premières sections des Conditions Générales de
-            Keella, définissant l&apos;objet, les termes clés, ainsi que les
-            règles d&apos;inscription et d&apos;utilisation de la Plateforme.
-            Pour plus de détails ou pour toute question, l&apos;utilisateur est
-            invité à contacter Keella via l&apos;adresse email{" "}
-            <a href="mailto:contact@keella.com">contact@keella.com</a>.
+            L&apos;Utilisateur s&apos;engage à utiliser la Plateforme
+            conformément aux présentes Conditions Générales et aux lois et
+            règlements en vigueur. Toute utilisation abusive de la Plateforme
+            est interdite.
           </p>
         </div>
       </section>
@@ -139,21 +134,47 @@ const TermsOfUse = () => {
         <div>
           <h3>d. Fermeture du Compte Utilisateur</h3>
           <p>
-            L&apos;Utilisateur peut fermer son Compte à tout moment sans frais.
-            Keella peut résilier le contrat avec un préavis de 30 jours. Le
-            Compte peut être fermé temporairement ou définitivement en cas de
-            non-respect des Conditions Générales, de violation des règles
-            légales, ou pour assurer la sécurité de la Plateforme et des
-            Utilisateurs.
+            L&apos;Utilisateur peut fermer son Compte Utilisateur à tout moment
+            sans préavis et sans frais.
           </p>
           <p>
-            Ce résumé couvre les responsabilités de Keella et des Utilisateurs,
-            ainsi que les conditions de création et d&apos;utilisation des
-            Comptes Utilisateurs sur la Plateforme. Pour plus de détails ou pour
-            des questions spécifiques, il est recommandé de se référer aux
-            Conditions Générales complètes ou de contacter Keella à
-            l&apos;adresse email{" "}
-            <a href="mailto:contact@keella.com">contact@keella.com</a>.
+            Keella peut résilier le présent contrat avec un particulier à tout
+            moment sous réserve de respecter un préavis de trente (30) jours
+            après transmission d&apos;un email d&apos;information.
+          </p>
+          <p>
+            Keella se réserve le droit de fermer temporairement ou
+            définitivement un Compte Utilisateur particulier, sans préavis, en
+            cas de manquement de l&apos;Utilisateur aux présentes Conditions
+            Générales, de violation d&apos;une règle légale par
+            l&apos;Utilisateur ou encore pour protéger la sécurité de la
+            Plateforme, de Keella et/ou des autres Utilisateurs.
+          </p>
+          <p>
+            Le Compte Utilisateur peut par ailleurs être fermé en cas de plainte
+            provenant d&apos;un autre Utilisateur. L&apos;Utilisateur visé par
+            la plainte en sera informé et disposera d&apos;un délai de quinze
+            (15) jours pour y répondre avant que la décision de fermeture de son
+            Compte ne soit prise, le Compte pouvant néanmoins être suspendu dans
+            l&apos;intervalle si la faute est particulièrement grave.
+          </p>
+          <p>
+            La fermeture du Compte Utilisateur pour quelque motif que ce soit
+            est susceptible de causer la perte de l&apos;ensemble des données et
+            avantages conférés à l&apos;Utilisateur. De façon générale, Keella
+            ne s&apos;engage en aucun cas à sauvegarder les contenus appartenant
+            à l&apos;Utilisateur en dehors de ses données personnelles qui font
+            l&apos;objet d&apos;un traitement et d&apos;une sécurisation
+            conforme au règlement général sur la protection des données (RGPD).
+            Dans ces conditions, il est à la charge de l&apos;Utilisateur de
+            prendre les mesures nécessaires pour conserver l&apos;ensemble de
+            ses données et contenus.
+          </p>
+          <p>
+            La fermeture du Compte de l&apos;Utilisateur, quelle qu&apos;en soit
+            la raison, ne le dispense pas de respecter les obligations
+            contractées auprès d&apos;autres Utilisateurs avant la fermeture du
+            Compte et non encore réalisées.
           </p>
         </div>
       </section>
@@ -243,11 +264,11 @@ const TermsOfUse = () => {
             indication contraire.
           </li>
           <li>
-            Au prix indiqué sur l&apos;annonce s&apos;ajoute une commission correspondant
-            au paiement pour l&apos;utilisation de la Plateforme mise à disposition
-            par Keella (« Frais techniques et de gestion »). Les Frais
-            techniques et de gestion couvrent le fonctionnement de la Plateforme
-            ainsi que sa maintenance corrective et évolutive.
+            Au prix indiqué sur l&apos;annonce s&apos;ajoute une commission
+            correspondant au paiement pour l&apos;utilisation de la Plateforme
+            mise à disposition par Keella (« Frais techniques et de gestion »).
+            Les Frais techniques et de gestion couvrent le fonctionnement de la
+            Plateforme ainsi que sa maintenance corrective et évolutive.
           </li>
         </ul>
       </section>
@@ -294,10 +315,10 @@ const TermsOfUse = () => {
             le prélèvement automatique du prix du service puisse être effectué.
           </li>
           <li>
-            L&apos;Utilisateur Organisateur percevra le montant de la réservation,
-            moins la commission de Keella, dans un délai indicatif de trois à
-            cinq jours après que l&apos;Utilisateur Demandeur ait profité du bien
-            réservé.
+            L&apos;Utilisateur Organisateur percevra le montant de la
+            réservation, moins la commission de Keella, dans un délai indicatif
+            de trois à cinq jours après que l&apos;Utilisateur Demandeur ait
+            profité du bien réservé.
           </li>
         </ul>
       </section>
@@ -331,8 +352,8 @@ const TermsOfUse = () => {
                 réservation et les frais de service sont conservés par Keella.
               </li>
               <li>
-                Aucun remboursement si l&apos;Utilisateur Locataire ne profite pas du
-                bien sur la totalité du créneau réservé.
+                Aucun remboursement si l&apos;Utilisateur Locataire ne profite
+                pas du bien sur la totalité du créneau réservé.
               </li>
             </ul>
           </li>
@@ -340,9 +361,9 @@ const TermsOfUse = () => {
             <strong>Rétractation et Droit de Rétractation :</strong>
             <ul>
               <li>
-                Conformément à l&apos;article L221-28 du code de la consommation, les
-                réservations de prestations de loisirs à date déterminée ne sont
-                pas soumises au droit de rétractation.
+                Conformément à l&apos;article L221-28 du code de la
+                consommation, les réservations de prestations de loisirs à date
+                déterminée ne sont pas soumises au droit de rétractation.
               </li>
             </ul>
           </li>
@@ -529,11 +550,12 @@ const TermsOfUse = () => {
             veuillez consulter la Politique de confidentialité de Keella.
           </li>
           <li>
-            Ce résumé couvre les principaux points relatifs aux avis des
-            Utilisateurs sur la Plateforme Keella, ainsi que les dispositions
-            concernant la loi applicable et l&apos;attribution de juridiction en
-            cas de litige. Pour plus de détails, veuillez consulter les
-            Conditions Générales complètes disponibles sur la Plateforme Keella.
+            Avant de recourir à un médiateur, l&apos;Utilisateur particulier
+            doit tenter de résoudre le litige en envoyant un email à
+            contact@keella.com, en expliquant clairement sa demande. En cas
+            d&apos;échec de résolution amiable, l&apos;Utilisateur particulier
+            peut saisir le médiateur. Keella communiquera le médiateur choisi à
+            ce moment-là.
           </li>
         </ul>
       </section>

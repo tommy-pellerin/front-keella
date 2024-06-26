@@ -9,8 +9,8 @@ export default function Footer() {
       <div>
         <ul>
           <li><Link to="/terms-of-use">Conditions d&apos;utilisation</Link></li>
-          <li><Link to="#">Politique de confidentialité</Link></li>
-          <li><Link to="#">Mentions légales</Link></li>
+          <li><Link to="/privacy-policy">Politique de confidentialité</Link></li>
+          <li><Link to="/legal-notices">Mentions légales</Link></li>
         </ul>
       </div>
       <div>
