@@ -6,9 +6,6 @@ import Footer from "./components/static/footer";
 import Alert from "./styles/Alert"; 
 import LoadingSpinner from "./components/static/LoadingSpinner";
 
-//Protection
-import TokenExpirationCheck from "./services/tokenExpired";
-
 //Atom
 import { useAtom } from 'jotai';
 import { userAtom } from "./store/user";
@@ -19,6 +16,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useAtom(isLoadingAtom);
   const [, setUser] = useAtom(userAtom);
   const [alert, setAlert] = useAtom(alertAtom);
+
   // When the component mounts, read the persisted state from localStorage
   useEffect(() => {
     const persistedState = localStorage.getItem('user');
@@ -26,6 +24,7 @@ export default function App() {
       setUser(JSON.parse(persistedState));
     }
     setIsLoading(false);
+
   }, []);
 
   if (isLoading) {
@@ -35,9 +34,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <header>
-        
-          <Navbar />
-        
+        <Navbar />
         <Alert 
           showAlert={alert.showAlert} 
           setShowAlert={setAlert} 
