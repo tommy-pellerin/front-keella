@@ -15,7 +15,7 @@ export default function Footer() {
       </div>
       <div>
         <ul>
-          <li><Link to="#">Questions fréquentes</Link></li>
+          <li><Link to="/help">Questions fréquentes</Link></li>
           <li><Link to="#">Contact</Link></li>
         </ul>
       </div>
