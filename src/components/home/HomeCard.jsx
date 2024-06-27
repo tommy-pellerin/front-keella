@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getData } from '../../services/data-fetch';
 
+import { formatDate, formatTime, formatDuration } from '../../services/time-fixes';
+
 function CardHome() {
   const [workouts, setWorkouts] = useState([]);
 
@@ -37,9 +39,9 @@ function CardHome() {
               </p>
               <ul>
                 <li className="mt-1 text-gray-500 ">Prix : {workout.price}</li>
-                <li className="mt-1 text-gray-500 ">Durée : {workout.duration}</li>
+                <li className="mt-1 text-gray-500 ">Durée : {formatDuration(workout.duration)}</li>
                 <li className="mt-1 text-gray-500 ">Nombre de place : {workout.max_participants}</li>
-                <li className="mt-1 text-gray-500 ">Date : {new Date(workout.start_date).toLocaleDateString()}</li>
+                <li className="mt-1 text-gray-500 ">Date : {formatDate(workout.start_date)}</li>
               </ul>
               <Link className="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent button-primary-small disabled:opacity-50 disabled:pointer-events-none" to={`/workouts/${workout.id}`}>
                 S'inscrire

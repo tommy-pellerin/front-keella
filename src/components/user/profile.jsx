@@ -6,6 +6,8 @@ import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
 import { Link } from 'react-router-dom';
 
+import { formatDate, formatTime, formatDuration } from '../../services/time-fixes';
+
 function Profile() {
     const [user] = useAtom(userAtom);
     const [profile, setProfile] = useState(null);
@@ -25,10 +27,6 @@ function Profile() {
         profileData();
     }, [user,user_id]);
     
-    function formatDate(dateString) {
-        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-        return new Date(dateString).toLocaleDateString('fr-FR', options);
-    }
 
     if (!profile) {
         return <div><LoadingSpinner/></div>;
@@ -44,7 +42,7 @@ function Profile() {
             <div className="flex justify-center">
                 <div className="bg-white rounded-lg shadow-lg p-6">
                     <h1 className="mb-4 text-center">Compte de {profile.username}</h1>
-                    <p className="text-center">Actif depuis : {formatDate(profile.created_at)}</p>
+                    <p className="text-center">Actif depuis le {formatDate(profile.created_at)}</p>
                     {profile.avatar?
                         <img src={profile.avatar}></img>
                     :
