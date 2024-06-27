@@ -1,11 +1,4 @@
 import checkTokenExpiration from '../services/checkToken.js';
-import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
-
-// Define mock functions
-const jwtDecodeMock = () => ({
-  exp: Math.floor(Date.now() / 1000) - (60 * 60), // Mock an expired token (timestamp in the past)
-});
 
 const cookiesGetMock = () => 'mockTokenValue'; // Return a mock token value
 
@@ -15,7 +8,9 @@ describe('checkTokenExpiration', () => {
 
   beforeEach(() => {
     dependencies = {
-      jwtDecode: jasmine.createSpy().and.callFake(jwtDecodeMock),
+      jwtDecode: jasmine.createSpy().and.callFake(() => ({
+        exp: Math.floor(Date.now() / 1000) + 3600 // Assurez-vous que cette valeur simule correctement un token non expiré
+      })),
       Cookies: {
         get: jasmine.createSpy().and.callFake(cookiesGetMock),
       },
@@ -23,7 +18,7 @@ describe('checkTokenExpiration', () => {
   });
 
   // Use the dependencies object in your tests
-  it('should return true if token is expired', () => {
+  it('isValid should return false if token is expired', () => {
     // Setup
     const expiredToken = 'expiredToken';
     dependencies.Cookies.get.and.returnValue(`Bearer ${expiredToken}`);
@@ -33,10 +28,10 @@ describe('checkTokenExpiration', () => {
     const result = checkTokenExpiration(dependencies);
 
     // Assert
-    expect(result).toBe(true);
+    expect(result.isValid).toBe(false);
   });
 
-  it('should return true if no token is found', () => {
+  it('isValid should return false if no token is found', () => {
     // Setup
     dependencies.Cookies.get.and.returnValue(null);
   
@@ -44,10 +39,10 @@ describe('checkTokenExpiration', () => {
     const result = checkTokenExpiration(dependencies);
   
     // Assert
-    expect(result).toBe(true);
+    expect(result.isValid).toBe(false);
   });
   
-  it('should return false if token is valid and not expired', () => {
+  it('isValid should return true if token is valid and not expired', () => {
     // Setup
     const validToken = 'validToken';
     dependencies.Cookies.get.and.returnValue(`Bearer ${validToken}`);
@@ -57,10 +52,10 @@ describe('checkTokenExpiration', () => {
     const result = checkTokenExpiration(dependencies);
   
     // Assert
-    expect(result).toBe(false);
+    expect(result.isValid).toBe(true);
   });
   
-  it('should return true if token is invalid', () => {
+  it('isValid should return false if token is invalid', () => {
     // Setup
     const invalidToken = 'invalidToken';
     dependencies.Cookies.get.and.returnValue(`Bearer ${invalidToken}`);
@@ -70,6 +65,6 @@ describe('checkTokenExpiration', () => {
     const result = checkTokenExpiration(dependencies);
   
     // Assert
-    expect(result).toBe(true);
+    expect(result.isValid).toBe(false);
   });
 });
