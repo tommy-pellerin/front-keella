@@ -1,19 +1,19 @@
-import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { getData } from '../../services/data-fetch';
 
-const WorkoutList = forwardRef((props, ref) => {
+function WorkoutList() {
     const [workouts, setWorkouts] = useState([]);
     const [visibleCount, setVisibleCount] = useState(6); // Initial visible count
     const location = useLocation();
 
     const fetchWorkouts = async (query = '', resetVisibleCount = false) => {
         try {
-            let count = visibleCount; // Default to current visibleCount
+            let count = visibleCount; 
             if (query) {
                 const data = await getData(`/workouts?${query}&sort=start_date&page_size=20`);
                 setWorkouts(data);
-                count = data.length; // Set count based on fetched data length
+                count = data.length; 
             } else {
                 const data = await getData(`/workouts?sort=start_date&page_size=${visibleCount}`);
                 setWorkouts(data);
@@ -34,10 +34,6 @@ const WorkoutList = forwardRef((props, ref) => {
             fetchWorkouts();
         }
     }, [visibleCount]);
-
-    useImperativeHandle(ref, () => ({
-        fetchDefaultWorkouts: () => fetchWorkouts('', true)
-    }));
 
     const loadMore = () => setVisibleCount(prevCount => prevCount + 3);
 
@@ -76,6 +72,6 @@ const WorkoutList = forwardRef((props, ref) => {
             )}
         </div>
     );
-});
+};
 
 export default WorkoutList;

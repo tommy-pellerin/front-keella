@@ -50,11 +50,13 @@ function SearchWorkout() {
     return (
         <div className='pt-8'>
             <form className="max-w-2xl mx-auto" onSubmit={handleSubmit}>
-                <div className="relative flex">
+                <div className="relative flex flex-col md:flex-row gap-4">
+                {/* Colonne 1 */}
+                <div className="flex-1">
                     <input
                         type="search"
                         id="city-search"
-                        className="block w-1/4 p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50"
+                        className="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50 mb-4"
                         placeholder="Ville"
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
@@ -62,14 +64,17 @@ function SearchWorkout() {
                     <input
                         type="date"
                         id="date-search"
-                        className="block w-1/3 p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50"
+                        className="block w-full p-4 text-sm text-gray-400 border border-gray-300 rounded-md bg-gray-50"
                         placeholder="Date"
                         value={date}
                         onChange={(e) => setDate(e.target.value)}
                     />
+                </div>
+                {/* Colonne 2 */}
+                <div className="flex-1">
                     <select
                         id="time-search"
-                        className="block w-1/4 p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50"
+                        className="block w-full p-4 text-sm text-gray-400 border border-gray-300 rounded-md bg-gray-50 mb-4"
                         value={time}
                         onChange={(e) => setTime(e.target.value)}
                     >
@@ -87,8 +92,8 @@ function SearchWorkout() {
                     </select>
                     <select
                         id="tags-search"
-                        className="block w-1/3 p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50"
-                        placeholder="Categories"
+                        className="block w-full p-4 text-sm text-gray-400 border border-gray-300 rounded-md bg-gray-50"
+                        placeholder="Choisir la categorie"
                         value={category_id}
                         onChange={(e) => setCategorie(e.target.value)}
                     >
@@ -97,19 +102,35 @@ function SearchWorkout() {
                             <option key={category.id} value={category.id}>{category.name}</option>
                         ))}
                     </select>
+                </div>
+                {/* Colonne 3 */}
+                <div className='flex-1'>
                     <input
                         type="number"
                         min="1"
                         id="participants-search"
-                        className="block w-1/4 p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50"
+                        className="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50 mb-4"
                         placeholder="Places minimum"
                         value={participants}
                         onChange={(e) => setParticipants(e.target.value)}
                     />
+                    <div className="mt-4 flex items-center">
+                        <input
+                            type="checkbox"
+                            id="hide-full-checkbox"
+                            className="mr-2"
+                            onChange={participants === ''? () => setParticipants(1): null}
+                        />
+                        <label htmlFor="hide-full-checkbox" className="text-m text-gray-700">Cacher les entrainements sans places disponibles</label>
+                    </div>
+                </div>
+            </div>
+                {/* Bouton de recherche */}
+                <div className="flex justify-center mt-6">
                     <button
                         type="submit"
-                        className="button-primary-small">
-                        Loupe
+                        className="button-primary-large">
+                        🔍
                     </button>
                 </div>
             </form>
