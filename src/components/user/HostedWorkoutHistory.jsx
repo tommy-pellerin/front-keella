@@ -118,7 +118,7 @@ function HostedWorkoutHistory() {
             <div className="p-5">
               <button onClick={() => toggleAccordion(workout.id)} className="text-xl font-semibold mb-2 w-full text-left">
                 {workout.title}<br/>
-                Crée le: {new Date(workout.created_at).toLocaleString('fr-FR', { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                Crée le: {formatDate(workout.created_at) +" à "+ formatTime(workout.created_at)}
               </button>
         
           
@@ -126,14 +126,14 @@ function HostedWorkoutHistory() {
                 <>
                   
                   <p className="text-gray-600 mb-4">
-                  Date et heure de création du workout: {new Date(workout.created_at).toLocaleString('fr-FR', { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                  Date et heure de création du workout: {formatDate(workout.created_at) +" à "+ formatTime(workout.created_at)}
                   </p>
                   <p className="text-gray-600 mb-4">Prix: {parseFloat(workout.price).toFixed(2)}€</p>
                   <p className="text-gray-600 mb-4">Ville: {(workout.city)}</p>
                   <p className="text-gray-600 mb-4">Code Postal: {(workout.zip_code)}</p>
                   <p className="text-gray-600 mb-4">Nombre de participants maximum: {(workout.max_participants)}</p>
                   <p className="text-gray-600 mb-4">Durée: {formatDuration(workout.duration)}</p>
-                  <p className="text-gray-600 mb-4">Date et heure de début: {new Date(workout.start_date).toLocaleString('fr-FR', { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                  <p className="text-gray-600 mb-4">Date et heure de début: {formatDate(workout.start_date) +" à "+ formatTime(workout.start_date)}
                   </p>
                   <p className="text-gray-600 mb-4">Places disponibles: {workout.available_places}</p>
                   <p className="text-gray-600 mb-4">Catégorie: {workout.category.name}</p>
