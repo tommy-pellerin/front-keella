@@ -29,17 +29,17 @@ export default function Navbar() {
 
   let navigation = [
     { name: 'Trouver une séance', href: '/workouts', current: false },
-    { name: 'Kit UI', href: '/kit-ui', current: false },
-    { name: 'Gérer les categories', href: '/categories', current: false },
+    // { name: 'Kit UI', href: '/kit-ui', current: false },
+    // { name: 'Gérer les categories', href: '/categories', current: false },
   ]
   // navbar available only if is admin
-  // if (user.isAdmin) {
-  //   navigation = [
-  //     ...navigation,
-  //     { name: 'Kit UI', href: '/kit-ui', current: false },
-  //     { name: 'Gérer les catégories', href: '/categories', current: false },
-  //   ];
-  // }
+  if (profile && profile.isAdmin) {
+    navigation = [
+      ...navigation,
+      { name: 'Kit UI', href: '/kit-ui', current: false },
+      { name: 'Gérer les catégories', href: '/categories', current: false },
+    ];
+  }
   
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ')

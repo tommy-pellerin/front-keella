@@ -27,6 +27,7 @@ import { useEffect } from "react";
 import PrivateRoute from "../../services/privateRoute";
 import OwnerRoute from "./OwnerRoute";
 import checkTokenAndLocalStorage from "../../services/checkTokenAndLocalStorage";
+import AdminRoute from "../../services/adminRoute";
 
 //Style
 import KitUI from "../KitUI/KitUI";
@@ -59,7 +60,6 @@ export default function AppRoutes() {
       <Route path="/my-account/:user_id/hosted_workouts" element={<PrivateRoute><HostedWorkoutHistory/></PrivateRoute>} />
       <Route path="/workouts" element={<WorkoutIndex />} />
       <Route path="/workouts/:workout_id" element={<WorkoutShow />} />
-
       <Route path="/workouts/create" element={<PrivateRoute><FormWorkout /></PrivateRoute>} />
       <Route path="/workouts/:workout_id/edit" element={<PrivateRoute><OwnerRoute><FormWorkout /></OwnerRoute></PrivateRoute>}/>
       
@@ -73,8 +73,8 @@ export default function AppRoutes() {
       <Route path="/help" element={<Help />} />
 
       {/* Il faut etre admin pour utiliser ses pages */}
-      <Route path="/categories" element={<PrivateRoute><Category/></PrivateRoute>} />
-      <Route path="/kit-ui" element={<PrivateRoute><KitUI/></PrivateRoute>} />
+      <Route path="/categories" element={<AdminRoute><Category/></AdminRoute>} />
+      <Route path="/kit-ui" element={<AdminRoute><KitUI/></AdminRoute>} />
     </Routes>
   );
 }
