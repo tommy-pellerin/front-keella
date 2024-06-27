@@ -49,6 +49,7 @@ const WorkoutShow = () => {
       }
     };
     getWorkouts();
+
   }, [workout_id]);
 
   //manage quantity
@@ -131,7 +132,7 @@ const WorkoutShow = () => {
     };
     bookPlaces();
   }
-
+    
   function formatDuration(minutes) {
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
@@ -223,13 +224,17 @@ const WorkoutShow = () => {
                 </div>
               </div>
             </div>
+            
+            {/* Check condition to active reservation button */}
+            {/* if places available */}
             {quantity > workout.available_places ?
-            <button className="button-primary-large" disabled={quantity > workout.available_places}>Il n&apos;y a plus de place</button>
+              <button className="button-primary-large" disabled={quantity > workout.available_places}>Il n&apos;y a plus de place</button>
             :
+              // if user is host
               (workout.host && workout.host.id === user.id ?
-                <button className="button-primary-large" disabled={true}>Vous etes hote de ce workout</button>
+                <button className="button-primary-large" disabled={true}>Vous êtes hôte de ce workout</button>
               :
-              <button className="button-primary-large" onClick={handleReservation} disabled={quantity > workout.available_places}>Envoyer une demande de réservation</button>
+                <button className="button-primary-large" onClick={handleReservation} disabled={quantity > workout.available_places}>Envoyer une demande de réservation</button>
               )
             }
 
