@@ -22,6 +22,7 @@ import Help from "./help";
 import ProfileReservation from '../user/profileReservation'
 import Category from "../category/category";
 import { useEffect } from "react";
+import PageNotFound from "./pageNotFound";
 
 //protection
 import PrivateRoute from "../../services/privateRoute";
@@ -35,6 +36,7 @@ import KitUI from "../KitUI/KitUI";
 import { useAtom } from "jotai";
 import { alertAtom } from "../../store/alert";
 import { userAtom } from "../../store/user";
+
 
 export default function AppRoutes() {
   const navigate = useNavigate();
@@ -75,6 +77,8 @@ export default function AppRoutes() {
       {/* Il faut etre admin pour utiliser ses pages */}
       <Route path="/categories" element={<AdminRoute><Category/></AdminRoute>} />
       <Route path="/kit-ui" element={<AdminRoute><KitUI/></AdminRoute>} />
+
+      <Route path="*" element={<PageNotFound />}/>
     </Routes>
   );
 }
