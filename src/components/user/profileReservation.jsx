@@ -5,13 +5,11 @@ import { useParams } from 'react-router-dom';
 import { getData, updateData } from '../../services/data-fetch';
 import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
-import { alertAtom } from '../../store/alert';
-import Alert from '../../styles/Alert';
+import { toast } from 'react-toastify';
 
 function ProfileReservation() {
     const [user] = useAtom(userAtom);
     const [profile, setProfile] = useState(null);
-    const [alertState, setAlertState] = useAtom(alertAtom);
 
     const { user_id } = useParams();
 
@@ -36,18 +34,10 @@ function ProfileReservation() {
                 const response = await updateData(`/reservations/${reservationId}`, { status: newStatus });
                 const data = await getData(`/users/${user_id}`);
                 setProfile(data);
-                setAlertState({
-                    showAlert: true,
-                    message: "Merci d'avoir confirmer la fin de la séance, nous allons proceder au paiement de l'hote",
-                    alertType: 'success'
-                });
+                toast.success("Merci d'avoir confirmer la fin de la séance, nous allons proceder au paiement de l'hote");
             } catch (error) {
                 console.error('Erreur lors de la mise à jour du statut de la réservation:', error);
-                setAlertState({
-                    showAlert: true,
-                    message: 'Erreur lors de la mise à jour du statut de la réservation',
-                    alertType: 'error'
-                });
+                toast.error("Erreur lors de la mise à jour du statut de la réservation");
             }
             }
     };
@@ -60,18 +50,10 @@ function ProfileReservation() {
             const response = await updateData(`/reservations/${reservationId}`, { status: newStatus });
             const data = await getData(`/users/${user_id}`);
             setProfile(data);
-            setAlertState({
-                showAlert: true,
-                message: 'Vous avez bien annulé votre réservation',
-                alertType: 'success'
-              });
+            toast.success("Vous avez bien annulé votre réservation");
         } catch (error) {
             console.error('Erreur lors de la mise à jour du statut de la réservation:', error);
-            setAlertState({
-              showAlert: true,
-              message: 'Erreur lors de la mise à jour du statut de la réservation',
-              alertType: 'error'
-            });
+            toast.error("Erreur lors de la mise à jour du statut de la réservation");
         }
         }
     };
@@ -96,12 +78,6 @@ function ProfileReservation() {
 
     return (
         <div className='mx-auto'>
-        <Alert
-          showAlert={alertState.showAlert}
-          setShowAlert={(show) => setAlertState((prevState) => ({ ...prevState, showAlert: show }))}
-          message={alertState.message}
-          type={alertState.alertType}
-        />
             <div className='bg-blue-500 text-white text-center py-10 mb-8'>
                 <h2 className='text-4xl'>Mes Réservations</h2>
             </div>

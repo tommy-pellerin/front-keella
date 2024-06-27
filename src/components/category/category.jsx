@@ -2,10 +2,7 @@ import { useEffect,useState } from 'react';
 import { getData, deleteData } from '../../services/data-fetch'
 import CategoryForm from './catagory-form';
 import LoadingSpinner from '../static/LoadingSpinner.jsx'
-
-//atom
-import { useAtom } from "jotai";
-import { alertAtom } from "../../store/alert";
+import { toast } from 'react-toastify';
 
 const Category = () => {
   const [categories,setCategories] = useState([])
@@ -13,7 +10,6 @@ const Category = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [isWorkoutsLoading, setIsWorkoutsLoading] = useState(true); //just for using category ther are attached to category
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [,setAlert] = useAtom(alertAtom);
 
   const getCategories = async () => {
     setIsLoading(true);
@@ -39,6 +35,7 @@ const Category = () => {
     try {
       const data = await deleteData(`/categories/${id}`);
       console.log(data);
+      toast.success("Catégorie supprimée");
       getCategories();
     } catch (error) {
       console.error('Error caught in calling function:', error);
@@ -46,11 +43,7 @@ const Category = () => {
           console.log(error.response);
           error.response.json().then((body) => {
             console.error('Erreur du serveur:', body.errors);
-            setAlert({
-              showAlert:true,
-              message: `${body.errors.join(', ')}`,
-              alertType:"error"
-            })
+            toast.success(`${body.errors.join(', ')}`);
           });
         }
     }

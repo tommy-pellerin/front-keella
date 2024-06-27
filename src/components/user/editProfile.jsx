@@ -4,7 +4,7 @@ import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
 import { useNavigate } from "react-router-dom";
 import { updateData } from "../../services/data-fetch";
-import { alertAtom } from "../../store/alert";
+import { toast } from 'react-toastify';
 
 export default function EditProfile({}) {
   const [user,setUser] = useAtom(userAtom);
@@ -13,7 +13,6 @@ export default function EditProfile({}) {
   const [avatar, setAvatar] = useState(null)
   const [username, setUsername] = useState("");
   const navigate = useNavigate();
-  const [,setAlert] = useAtom(alertAtom);
 
   useEffect(() => {
     const profileData = async () => {
@@ -45,9 +44,6 @@ export default function EditProfile({}) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(username);
-    // console.log(email);
-    // console.log(avatar);
     try {
       const updatedUser = await updateData(`/users`, {
         user: { 
@@ -62,11 +58,7 @@ export default function EditProfile({}) {
       }));
       if(updatedUser){
         console.log("updated");
-        setAlert({
-          showAlert:true,
-          message:"Profil mise à jour",
-          alertType:"success"
-        })
+        toast.success("Profil mise à jour");
       }
       navigate(`/profile/${user.id}`);
     } catch (error) {
@@ -75,11 +67,7 @@ export default function EditProfile({}) {
         console.log(error.response);
         error.response.json().then((body) => {
           console.error('Erreur du serveur:', body.errors);
-          setAlert({
-            showAlert:true,
-            message: `${body.errors.join(', ')}`,
-            alertType:"error"
-          })
+          toast.error( `${body.errors.join(', ')}`);
         });
       }
       

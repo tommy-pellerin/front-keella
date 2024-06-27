@@ -1,27 +1,21 @@
 import { useLocation, Navigate } from "react-router-dom";
 import TokenExpirationCheck from "./tokenExpired";
 import { useEffect } from "react";
+import { toast } from 'react-toastify';
 //Atom
 import { useAtomValue } from 'jotai';
 import { userAtom } from "../store/user";
-import { useAtom } from "jotai";
-import { alertAtom } from "../store/alert";
 
 const PrivateRoute = ({ children }) => {
   const currentUser = useAtomValue(userAtom);
   const location = useLocation();
-  const [,setAlert] = useAtom(alertAtom);
   
   console.log("isloged?", currentUser.isLogged);
   useEffect(() => {
     if (!currentUser.isLogged) {
-      setAlert({
-        showAlert: true,
-        message: "Vous devez etre connecté pour pouvoir poursuivre",
-        alertType: "warning"
-      });
+      toast.warning("Vous devez etre connecté pour pouvoir poursuivre");
     }
-  }, [currentUser.isLogged, setAlert]);
+  }, [currentUser.isLogged]);
 
   if (currentUser.isLogged) {
     return (
