@@ -159,19 +159,14 @@ function ProfileReservation() {
                                     <p>Quantité : {reservation.quantity}</p>
                                     <p>Status : {reservation.status}</p>
                                     <p className="prix-total clearfix">Prix Total : {reservation.total} €</p>
-                                    <div className="ratings-container">
-                                    {reservation.is_closed && (
-                                        <CreateWorkoutRatings workoutId={reservation.workout_id} />
-                                        )}
-                                    
-                                    
-                                    </div>
-                                    {reservation.status === "accepted" ?
+                                                                                                         
+                                                                        
+                                    {reservation.status === "accepted" ? 
                                     <>
                                         <button className='button-green-small' onClick={() => handlePay(reservation.id)}>Confirmer fin séance</button>
                                         <button className='button-red-small' onClick={() => handleCancel(reservation.id)}>annuler</button>
                                     </>
-                                    :
+                                     : 
                                     <></>
                                     }
                                     {reservation.status === "pending" ?
@@ -203,17 +198,16 @@ function ProfileReservation() {
                                     :
                                     <></>
                                     }
-                                    {reservation.is_closed ? (
-                                            
-                                        
-                                    <>
-                                    <button className='button-red-small'>L'évènement est fini</button>
-                                    
-                                    
-                                    </>
+                                    {reservation.is_closed && (
+                                        <>
+                                            <p className='text-red-500'>L'évènement est fini</p>
+                                            <CreateWorkoutRatings workoutId={reservation.workout_id} />
+                                        </>
+                                        )}
                                     
                                     <></>
-                                
+                                    
+                                    
                                     {reservation.status === "relaunched" ?
                                     <>
                                         <button className='button-red-small'>l'évènement est relancer</button>
