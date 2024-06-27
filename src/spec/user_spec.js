@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import ky from "ky";
-import { authSignInUp, authSignOut } from "../services/auth-fetch.js"; // Adjust the path as necessary
+import { authSignInUp, authSignOut } from "../services/auth-fetch.js";
 
 describe('authSignInUp', () => {
   beforeEach(() => {
@@ -36,7 +36,6 @@ describe('authSignInUp', () => {
     expect(response).toEqual({ success: true });
   });
 
-  // Add other tests as required
 });
 
 // Ensure this is at the top level of your test file or in a setup file that runs before your tests
@@ -49,7 +48,7 @@ beforeAll(() => {
   };
 
   global.window = { localStorage: localStorageMock };
-  global.localStorage = localStorageMock; // This line is crucial
+  global.localStorage = localStorageMock;
 });
 
 describe('authSignOut', () => {
@@ -57,7 +56,7 @@ describe('authSignOut', () => {
     spyOn(Cookies, 'remove');
     spyOn(ky, 'delete').and.callFake(() => Promise.resolve({
       ok: true,
-      json: () => Promise.resolve({ success: true }) // Ensure this matches the expected response structure
+      json: () => Promise.resolve({ success: true })
     }));
   });
 

@@ -9,7 +9,7 @@ describe('checkTokenExpiration', () => {
   beforeEach(() => {
     dependencies = {
       jwtDecode: jasmine.createSpy().and.callFake(() => ({
-        exp: Math.floor(Date.now() / 1000) + 3600 // Assurez-vous que cette valeur simule correctement un token non expiré
+        exp: Math.floor(Date.now() / 1000) + 3600
       })),
       Cookies: {
         get: jasmine.createSpy().and.callFake(cookiesGetMock),
@@ -17,7 +17,7 @@ describe('checkTokenExpiration', () => {
     };
   });
 
-  // Use the dependencies object in your tests
+  // Use the dependencies object
   it('isValid should return false if token is expired', () => {
     // Setup
     const expiredToken = 'expiredToken';
