@@ -22,6 +22,7 @@ const checkTokenAndLocalStorage = (user, setUser, setAlert, navigate) =>{
       }
     } else {
       // For expired or invalid token
+      setUser({ id: "", email: "", isLogged: false });
       console.log("token expired or invalid");
       setAlert({
         showAlert: true,
