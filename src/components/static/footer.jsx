@@ -16,7 +16,7 @@ export default function Footer() {
       <div>
         <ul>
           <li><Link to="/help">Questions fréquentes</Link></li>
-          <li><Link to="#">Contact</Link></li>
+          <li><a href="mailto:contact@keella.fr?subject=Contact depuis le site web Keella">Contact</a></li>
         </ul>
       </div>
       <div className="flex flex-row">

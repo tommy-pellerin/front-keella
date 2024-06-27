@@ -47,16 +47,21 @@ export default function Navbar() {
 
 
   useEffect(() => {
-      const profileData = async () => {
-          try {
-              const data = await getData(`/users/${user.id}`);
-              console.log("user: ", data);
-              setProfile(data);
-          } catch (error) {
-              console.error(error);
-          }
+    if (!user.isLogged) {
+      setProfile(null); // Reset profile state when user logs out
+    } else if (user.isLogged) {
+      // Fetch and set profile data if user is logged in
+      const fetchProfileData = async () => {
+        try {
+          const data = await getData(`/users/${user.id}`);
+          console.log("user: ", data);
+          setProfile(data);
+        } catch (error) {
+          console.error(error);
+        }
       };
-      profileData();
+      fetchProfileData();
+    }
   }, [user]);
 
   return (

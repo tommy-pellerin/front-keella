@@ -181,7 +181,7 @@ const closeWorkout = async (workoutId) => {
           type={alertState.alertType}
         />
 
-      <div className="bg-blue-500">
+      <div className="background-blue-500">
         <h1 className="text-4xl">Mes Annonces</h1>
       </div>
       <div className="flex flex-col gap-4 p-4">
