@@ -160,7 +160,10 @@ function ProfileReservation() {
                                     <p>Status : {reservation.status}</p>
                                     <p className="prix-total clearfix">Prix Total : {reservation.total} €</p>
                                     <div className="ratings-container">
-                                    <CreateWorkoutRatings className="rating-component" workoutId={reservation.workout_id} />
+                                    {reservation.is_closed && (
+                                        <CreateWorkoutRatings workoutId={reservation.workout_id} />
+                                        )}
+                                    
                                     
                                     </div>
                                     {reservation.status === "accepted" ?
@@ -200,15 +203,17 @@ function ProfileReservation() {
                                     :
                                     <></>
                                     }
-                                    {reservation.is_closed ?
+                                    {reservation.is_closed ? (
+                                            
+                                        
                                     <>
                                     <button className='button-red-small'>L'évènement est fini</button>
                                     
                                     
                                     </>
-                                    :
+                                    
                                     <></>
-                                    }
+                                
                                     {reservation.status === "relaunched" ?
                                     <>
                                         <button className='button-red-small'>l'évènement est relancer</button>
