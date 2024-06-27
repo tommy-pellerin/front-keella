@@ -185,6 +185,7 @@ const closeWorkout = async (workoutId) => {
       <div className="background-blue-500">
         <h1 className="text-4xl">Mes Annonces</h1>
       </div>
+      {workoutData && workoutData.length > 0 ? (
       <div className="flex flex-col gap-4 p-4">
         {workoutData && workoutData.map((workout) => (
           <div key={workout.id} className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -278,8 +279,15 @@ const closeWorkout = async (workoutId) => {
               </div>
             ))}
           </div>
-        </>
-      );
-    }
-    
+             ) : (
+              <div className="bg-gray-100 flex items-center justify-center min-h-screen">
+              <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+                  <h3 className="text-2xl font-bold text-red-600 mb-4">Vous n'avez pas encore d'Annonce</h3>
+              </div>
+          </div>
+            )}
+          </>
+        );
+      }
+       
     export default HostedWorkoutHistory;
