@@ -34,17 +34,15 @@ import AdminRoute from "../../services/adminRoute";
 import KitUI from "../KitUI/KitUI";
 
 import { useAtom } from "jotai";
-import { alertAtom } from "../../store/alert";
 import { userAtom } from "../../store/user";
 
 
 export default function AppRoutes() {
   const navigate = useNavigate();
-  const [,setAlert] = useAtom(alertAtom);
   const [user, setUser] = useAtom(userAtom);
   
   useEffect(() => {
-    checkTokenAndLocalStorage(user, setUser, setAlert, navigate)
+    checkTokenAndLocalStorage(user, setUser, navigate)
   }, []);
 
   return (
@@ -54,12 +52,13 @@ export default function AppRoutes() {
       <Route path="/sign-up" element={<SignUp />} />
       <Route path="/users/password/edit" element={<ResetPassword />} />
       <Route path="/users/forget-password" element={<ForgetPassword />} />
+
       <Route path="/profile/:user_id" element={<PrivateRoute><Profile/></PrivateRoute>} />
       <Route path="/profile/:user_id/edit" element={<PrivateRoute><OwnerRoute><EditProfile/></OwnerRoute></PrivateRoute>} />
       <Route path="/my-account" element={<PrivateRoute><MyAccount /></PrivateRoute>} />
-      <Route path="/my-reservation/:user_id" element={<PrivateRoute><ProfileReservation /></PrivateRoute>} />
-
+      <Route path="/my-account/:user_id/my-reservation" element={<PrivateRoute><OwnerRoute><ProfileReservation /></OwnerRoute></PrivateRoute>} />
       <Route path="/my-account/:user_id/hosted_workouts" element={<PrivateRoute><HostedWorkoutHistory/></PrivateRoute>} />
+
       <Route path="/workouts" element={<WorkoutIndex />} />
       <Route path="/workouts/:workout_id" element={<WorkoutShow />} />
       <Route path="/workouts/create" element={<PrivateRoute><FormWorkout /></PrivateRoute>} />

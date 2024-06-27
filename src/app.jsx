@@ -6,6 +6,8 @@ import Footer from "./components/static/footer";
 import Alert from "./styles/Alert"; 
 import LoadingSpinner from "./components/static/LoadingSpinner";
 import AskCookiesConsent from "./store/cookieConsent";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 //Atom
 import { useAtom } from 'jotai';
@@ -35,6 +37,7 @@ export default function App() {
     <BrowserRouter>
       <header>
         <Navbar />
+        <ToastContainer/>
         <Alert 
           showAlert={alert.showAlert} 
           setShowAlert={setAlert} 

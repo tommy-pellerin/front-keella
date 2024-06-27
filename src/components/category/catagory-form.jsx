@@ -1,21 +1,17 @@
 import { useState, useEffect } from "react";
 import { postData, updateData } from "../../services/data-fetch";
-
-//atom
-import { useAtom } from "jotai";
-import { alertAtom } from "../../store/alert";
+import { toast } from 'react-toastify';
 
 const CategoryForm = (props) => {
   const [name,setName] = useState("");
   const [previewUrl, setPreviewUrl] = useState(null);
   const [image,setImage] = useState(null)
-  const [,setAlert] = useAtom(alertAtom);
 
   // Set form fields when category prop changes
   useEffect(() => {
     if (props.category) {
       setName(props.category.name);
-      setPreviewUrl(props.category.category_image);
+      // setPreviewUrl(props.category.category_image);
       // Note: You can't set the image file from a URL, so we leave it as null
     }
   }, [props.category]);
@@ -57,11 +53,7 @@ const CategoryForm = (props) => {
           });
         }
         if(category){
-          setAlert({
-            showAlert:true,
-            message:"Categorie créé",
-            alertType:"success"
-          })
+          toast.success("Catégorie enregistrée");
           props.onCategorySaved();
         }
         
@@ -71,11 +63,7 @@ const CategoryForm = (props) => {
           console.log(error.response);
           error.response.json().then((body) => {
             console.error('Erreur du serveur:', body.errors);
-            setAlert({
-              showAlert:true,
-              message: `${body.errors.join(', ')}`,
-              alertType:"error"
-            })
+            toast.error(`${body.errors.join(', ')}`);
           });
         }
         
