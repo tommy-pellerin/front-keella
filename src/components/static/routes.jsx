@@ -22,11 +22,13 @@ import Help from "./help";
 import ProfileReservation from '../user/profileReservation'
 import Category from "../category/category";
 import { useEffect } from "react";
+import PageNotFound from "./pageNotFound";
 
 //protection
 import PrivateRoute from "../../services/privateRoute";
 import OwnerRoute from "./OwnerRoute";
 import checkTokenAndLocalStorage from "../../services/checkTokenAndLocalStorage";
+import AdminRoute from "../../services/adminRoute";
 
 //Style
 import KitUI from "../KitUI/KitUI";
@@ -34,6 +36,7 @@ import KitUI from "../KitUI/KitUI";
 import { useAtom } from "jotai";
 import { alertAtom } from "../../store/alert";
 import { userAtom } from "../../store/user";
+
 
 export default function AppRoutes() {
   const navigate = useNavigate();
@@ -59,7 +62,6 @@ export default function AppRoutes() {
       <Route path="/my-account/:user_id/hosted_workouts" element={<PrivateRoute><HostedWorkoutHistory/></PrivateRoute>} />
       <Route path="/workouts" element={<WorkoutIndex />} />
       <Route path="/workouts/:workout_id" element={<WorkoutShow />} />
-
       <Route path="/workouts/create" element={<PrivateRoute><FormWorkout /></PrivateRoute>} />
       <Route path="/workouts/:workout_id/edit" element={<PrivateRoute><OwnerRoute><FormWorkout /></OwnerRoute></PrivateRoute>}/>
       
@@ -73,8 +75,10 @@ export default function AppRoutes() {
       <Route path="/help" element={<Help />} />
 
       {/* Il faut etre admin pour utiliser ses pages */}
-      <Route path="/categories" element={<PrivateRoute><Category/></PrivateRoute>} />
-      <Route path="/kit-ui" element={<PrivateRoute><KitUI/></PrivateRoute>} />
+      <Route path="/categories" element={<AdminRoute><Category/></AdminRoute>} />
+      <Route path="/kit-ui" element={<AdminRoute><KitUI/></AdminRoute>} />
+
+      <Route path="*" element={<PageNotFound />}/>
     </Routes>
   );
 }
