@@ -11,27 +11,9 @@ export default function CreateWorkoutRatings({ workoutId }) {
   const [success, setSuccess] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [hasCommented, setHasCommented] = useState(false);
-  const [user, setUser] = useAtom(userAtom);
+  const [user] = useAtom(userAtom);
 
-  useEffect(() => {
-    const checkCommentExistence = async () => {
-      try {
-        
-        const response = await getData(`/ratings?workoutId=${workoutId}`);
-        if (response.length > 0) {
-          setHasCommented(response.some(rating => rating.user.id === user.id));
-        }
-      } catch (err) {
-        console.error('Error checking rating existence:', err);
-        setError('Unable to check if you have already rated this workout.');
-      }
-    };
-    if (user.isLogged) {
-      checkCommentExistence();
-    }
-
-    checkCommentExistence();
-  }, [workoutId, user.isLogged, user.id]);
+  
   
   
   
@@ -80,6 +62,30 @@ export default function CreateWorkoutRatings({ workoutId }) {
     }
   };
 
+  useEffect(() => {
+    const checkIfCommented = async () => {
+      if (user.isLogged) {
+        try {
+          const response = await getData(`/ratings?workoutId=${workoutId}`);
+          console.log('Response:', response); // Affiche la réponse complète
+          const userHasCommented = response.some(rating => {
+            console.log('Rating:', rating); // Affiche les détails du rating
+            return rating.rateable_id === workoutId && rating.user_id === user.id;
+          });
+          console.log('Has the user already commented:', userHasCommented); // Affiche si l'utilisateur a déjà commenté
+          setHasCommented(userHasCommented);
+        } catch (err) {
+          console.error('Error fetching ratings:', err);
+          setError('Unable to verify previous comments.');
+        }
+      }
+    };
+  
+    checkIfCommented();
+  }, [workoutId, user]);
+
+
+
   // Fonction pour basculer l'état de l'accordéon
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
@@ -87,6 +93,7 @@ export default function CreateWorkoutRatings({ workoutId }) {
 
   return (
     <div className="create-rating">
+      
       <h2 onClick={toggleAccordion} style={{ cursor: 'pointer' }}>
         Note et commente ta séance !
       </h2>
@@ -115,9 +122,11 @@ export default function CreateWorkoutRatings({ workoutId }) {
               />
               <button type="submit">Envoyer</button>
             </form>
-          ) : (
-            <p className="error">Vous avez déjà noté cette séance.</p>
-          )}
+            ) : (
+              <p className="error">Vous avez déjà noté cette séance.</p>
+            )}
+            
+            
         </>
       )}
     </div>

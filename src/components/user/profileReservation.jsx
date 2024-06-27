@@ -1,51 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import LoadingSpinner from '../static/LoadingSpinner';
-import CreateWorkoutRatings from '../rating/CreateWorkoutRatings';
+import CreateWorkoutRatings from '../rating/CreateWorkoutRatings'
 import { useParams } from 'react-router-dom';
 import { getData, updateData } from '../../services/data-fetch';
 import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
 import { alertAtom } from '../../store/alert';
 import Alert from '../../styles/Alert';
-import '../rating/RatingStars.css';
 
 function ProfileReservation() {
     const [user] = useAtom(userAtom);
     const [profile, setProfile] = useState(null);
     const [alertState, setAlertState] = useAtom(alertAtom);
-    
+
     const { user_id } = useParams();
 
     useEffect(() => {
         const profileData = async () => {
             try {
                 const data = await getData(`/users/${user_id}`);
-                const updatedReservations = [];
-                let hostedWorkout = null;
-    
-                for (const reservation of data.reservations) {
-                    const workoutData = await getData(`/workouts/${reservation.workout_id}`);
-                updatedReservations.push({ 
-                    ...reservation, 
-                    is_closed: workoutData.is_closed,
-                    host_id: workoutData.host_id 
-                });
-                    // Si la réservation est fermée et que c'est un workout hébergé, enregistrez les détails
-                    if (workoutData.is_closed && workoutData.host_id === user_id) {
-                        hostedWorkout = workoutData;
-                    }
-                }
-    
-                // Mettez à jour le profil avec les réservations et le workout hébergé
-                setProfile({ ...data, reservations: updatedReservations, hostedWorkout });
+                console.log("user: ", data);
+                setProfile(data);
             } catch (error) {
                 console.error(error);
             }
         };
         profileData();
     }, [user, user_id]);
-
-            
 
     const handlePay = async(reservationId) => {
         console.log(`Paying host for reservation ${reservationId}`);
@@ -70,8 +51,6 @@ function ProfileReservation() {
             }
             }
     };
-
-   
 
     const handleCancel = async(reservationId) => {
         console.log(`Cancelling reservation ${reservationId}`);
@@ -115,7 +94,6 @@ function ProfileReservation() {
         return <div><LoadingSpinner /></div>;
     }
 
-
     return (
         <div className='mx-auto'>
         <Alert
@@ -133,7 +111,7 @@ function ProfileReservation() {
                         {profile.participated_workouts?.length > 0 ? (
                             profile.participated_workouts.map(reservation => (
                                 <div key={reservation.id} className="p-4 rounded-lg">
-                                    <p className="text-description">{reservation.title}<br />{reservation.description}</p>
+                                    <p>{reservation.title}<br />{reservation.description}</p>
                                     <p>Date : {formatDate(reservation.start_date)} à {formatTime(reservation.start_date)}</p>
                                     <p>Ville : {reservation.city}</p>
                                     <p>Durée : {reservation.duration} minutes</p>
@@ -152,21 +130,18 @@ function ProfileReservation() {
                     <div className="space-y-4 text-end">
                         {profile.reservations?.length > 0 ? (
                             profile.reservations.map(reservation =>{
-                                
                                 const canRelaunch = new Date(reservation.created_at) <= new Date(Date.now() - 12 * 60 * 60 * 1000);
                             return (
                                 <div key={reservation.id} className="p-4 rounded-lg">
                                     <p>Quantité : {reservation.quantity}</p>
                                     <p>Status : {reservation.status}</p>
-                                    <p className="prix-total clearfix">Prix Total : {reservation.total} €</p>
-                                                                                                         
-                                                                        
-                                    {reservation.status === "accepted" ? 
+                                    <p>Prix Total : {reservation.total} €</p>
+                                    {reservation.status === "accepted" ?
                                     <>
                                         <button className='button-green-small' onClick={() => handlePay(reservation.id)}>Confirmer fin séance</button>
                                         <button className='button-red-small' onClick={() => handleCancel(reservation.id)}>annuler</button>
                                     </>
-                                     : 
+                                    :
                                     <></>
                                     }
                                     {reservation.status === "pending" ?
@@ -198,16 +173,16 @@ function ProfileReservation() {
                                     :
                                     <></>
                                     }
-                                    {reservation.is_closed && (
-                                        <>
-                                            <p className='text-red-500'>L'évènement est fini</p>
-                                            <CreateWorkoutRatings workoutId={reservation.workout_id} />
-                                        </>
-                                        )}
-                                    
+                                    {reservation.status === "closed" &&
+                                    <CreateWorkoutRatings workoutId={reservation.workout_id} />
+                                    }
+                                    {reservation.status === "closed" ?
+                                    <>
+                                        <button className='button-red-small'>L'évènement est fini</button>
+                                    </>
+                                    :
                                     <></>
-                                    
-                                    
+                                    }
                                     {reservation.status === "relaunched" ?
                                     <>
                                         <button className='button-red-small'>l'évènement est relancer</button>
@@ -224,7 +199,6 @@ function ProfileReservation() {
                         )}
                     </div>
                 </div>
-                
             </div>
         </div>
     );
