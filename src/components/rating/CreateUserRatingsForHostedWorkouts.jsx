@@ -65,7 +65,7 @@ export default function CreateUserRatings({ workoutId, participantId }) {
         const response = await getData(`/ratings?participantId=${participantId}&workoutId=${workoutId}`);
         if (response.length > 0) {
           // Vérifiez si l'utilisateur actuel a déjà noté le participant spécifié
-          setHasCommented(response.some(rating => rating.user.id === user.id && rating.rateable_id === participantId));
+          setHasCommented(response.some(rating => rating.user.id === user.id && rating.rateable_id === participantId && rating.workout_id === workoutId));
         }
       } catch (err) {
         console.error('Error checking rating existence:', err);

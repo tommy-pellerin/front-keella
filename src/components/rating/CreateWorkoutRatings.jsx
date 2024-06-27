@@ -116,7 +116,7 @@ export default function CreateWorkoutRatings({ workoutId }) {
               <button type="submit">Envoyer</button>
             </form>
           ) : (
-            <p className="error">Vous avez déjà noté ce participant.</p>
+            <p className="error">Vous avez déjà noté cette séance.</p>
           )}
         </>
       )}
