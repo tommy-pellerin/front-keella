@@ -57,14 +57,14 @@ function SearchWorkout() {
                         type="search"
                         id="city-search"
                         className="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50 mb-4"
-                        placeholder="Ville"
+                        placeholder="Sélectionner la Ville"
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
                     />
                     <input
                         type="date"
                         id="date-search"
-                        className="block w-full p-4 text-sm text-gray-400 border border-gray-300 rounded-md bg-gray-50"
+                        className="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50"
                         placeholder="Date"
                         value={date}
                         onChange={(e) => setDate(e.target.value)}
@@ -74,11 +74,11 @@ function SearchWorkout() {
                 <div className="flex-1">
                     <select
                         id="time-search"
-                        className="block w-full p-4 text-sm text-gray-400 border border-gray-300 rounded-md bg-gray-50 mb-4"
+                        className="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50 mb-4"
                         value={time}
                         onChange={(e) => setTime(e.target.value)}
                     >
-                        <option value="">Durée</option>
+                        <option value="" className='text-gray-400'>Sélectionner la durée</option>
                         {[...Array(16)].map((_, index) => {
                             const value = (index + 1) * 30;
                             const hours = Math.floor(value / 60);
@@ -92,12 +92,12 @@ function SearchWorkout() {
                     </select>
                     <select
                         id="tags-search"
-                        className="block w-full p-4 text-sm text-gray-400 border border-gray-300 rounded-md bg-gray-50"
+                        className="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50"
                         placeholder="Choisir la categorie"
                         value={category_id}
                         onChange={(e) => setCategorie(e.target.value)}
                     >
-                        <option value="">Catégorie</option>
+                        <option value="">Choisir la categorie</option>
                         {categories.map((category) => (
                             <option key={category.id} value={category.id}>{category.name}</option>
                         ))}
@@ -110,7 +110,7 @@ function SearchWorkout() {
                         min="1"
                         id="participants-search"
                         className="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-50 mb-4"
-                        placeholder="Places minimum"
+                        placeholder="Places minimums"
                         value={participants}
                         onChange={(e) => setParticipants(e.target.value)}
                     />
