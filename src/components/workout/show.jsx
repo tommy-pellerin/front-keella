@@ -105,11 +105,12 @@ const WorkoutShow = () => {
               message:"Votre demande a bien été envoyée !",
               alertType:"success"
             })
+            //update display data
             setWorkout(prevWorkout => ({
               ...prevWorkout,
               available_places: prevWorkout.available_places - quantity
             }));
-            setQuantity(1)
+            setQuantity(1) //reset quantity to 1 in the browser
           }
         } catch (error) {
           console.error('Error caught in calling function:', error);
@@ -225,9 +226,11 @@ const WorkoutShow = () => {
             {quantity > workout.available_places ?
             <button className="button-primary-large" disabled={quantity > workout.available_places}>Il n&apos;y a plus de place</button>
             :
-            <>
-            <button className="button-primary-large" onClick={handleReservation} disabled={quantity > workout.available_places}>Envoyer une demande de réservation</button>
-            </>
+              (workout.host && workout.host.id === user.id ?
+                <button className="button-primary-large" disabled={true}>Vous etes hote de ce workout</button>
+              :
+              <button className="button-primary-large" onClick={handleReservation} disabled={quantity > workout.available_places}>Envoyer une demande de réservation</button>
+              )
             }
 
           </div>
