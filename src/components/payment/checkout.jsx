@@ -1,9 +1,14 @@
 import Cookies from "js-cookie";
+import { toast } from 'react-toastify';
 
 const Checkout = ({creditToBuy}) => {
   const token = Cookies.get("keellauth");
 
   const handleCheckout = async () => {
+    if(creditToBuy < 1){
+      toast.error("La somme à recharger doit être au moins de 1€.")
+      return
+    }
     // Ask for confirmation
     const isConfirmed = window.confirm("Are you sure you want to proceed with the checkout?");
     if (!isConfirmed) {
@@ -24,6 +29,7 @@ const Checkout = ({creditToBuy}) => {
         if (response.status === 401) {
           // Use React Router for redirection
           console.error('User must be signed in');
+          toast.error('Vous devez etre connecté');
         } else {
           throw new Error('Network response was not ok');
         }
@@ -38,6 +44,7 @@ const Checkout = ({creditToBuy}) => {
           console.log(error.response);
           error.response.json().then((body) => {
             console.error('Erreur du serveur:', body.error);
+            toast.error(body.error);
           });
         }
     }
