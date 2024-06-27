@@ -1,14 +1,14 @@
-import React from 'react'
+import React from 'react';
 import WorkoutList from './workoutList';
+import SearchWorkout from './searchWorkout';
 
 function WorkoutIndex() {
-
-  return (
-    <div className='max-w-screen-lg mx-auto p-4'>
-        <WorkoutList/>
-    </div>
-
-  )
+    return (
+        <div>
+            <SearchWorkout />
+            <WorkoutList />
+        </div>
+    );
 }
 
-export default WorkoutIndex
+export default WorkoutIndex;
