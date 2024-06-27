@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { postData } from '../../services/data-fetch';
+import React, { useState, useEffect } from 'react';
+import { postData, getData } from '../../services/data-fetch';
 import './RatingStars.css';
+import { useAtom } from 'jotai';
+import { userAtom } from '../../store/user';
 
 export default function CreateWorkoutRatings({ workoutId }) {
   const [rating, setRating] = useState(0);
@@ -8,7 +10,32 @@ export default function CreateWorkoutRatings({ workoutId }) {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [hasCommented, setHasCommented] = useState(false);
+  const [user, setUser] = useAtom(userAtom);
 
+  useEffect(() => {
+    const checkCommentExistence = async () => {
+      try {
+        
+        const response = await getData(`/ratings?workoutId=${workoutId}`);
+        if (response.length > 0) {
+          setHasCommented(response.some(rating => rating.user.id === user.id));
+        }
+      } catch (err) {
+        console.error('Error checking rating existence:', err);
+        setError('Unable to check if you have already rated this workout.');
+      }
+    };
+    if (user.isLogged) {
+      checkCommentExistence();
+    }
+
+    checkCommentExistence();
+  }, [workoutId, user.isLogged, user.id]);
+  
+  
+  
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -19,6 +46,11 @@ export default function CreateWorkoutRatings({ workoutId }) {
 
     if (comment.length > 500) {
       setError('Comment cannot be longer than 500 characters.');
+      return;
+    }
+
+    if (hasCommented) {
+      setError('You have already commented on this workout.');
       return;
     }
 
@@ -39,6 +71,7 @@ export default function CreateWorkoutRatings({ workoutId }) {
       setSuccess(true);
       setRating(0);
       setComment('');
+      setHasCommented(true);
     } catch (err) {
       console.error('Error creating rating:', err);
       const errorMsg = err.response ? await err.response.json() : 'Error creating rating.';
@@ -61,6 +94,7 @@ export default function CreateWorkoutRatings({ workoutId }) {
         <>
       {error && <p className="error">{error}</p>}
       {success && <p className="success">Rating created successfully!</p>}
+      {!hasCommented ? (
       <form onSubmit={handleSubmit} className="form-container">
         <div className="stars">
           {Array.from({ length: 5 }, (_, i) => (
@@ -81,7 +115,10 @@ export default function CreateWorkoutRatings({ workoutId }) {
         />
         <button type="submit">Submit Rating</button>
       </form>
-      </>
+      ) : (
+        <p className="error">You have already rated this workout.</p>
+          )}
+        </>
       )}
     </div>
   );
