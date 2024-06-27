@@ -1,14 +1,14 @@
-import { jwtDecode } from "jwt-decode";
-import Cookies from "js-cookie";
+import { jwtDecode as realJwtDecode } from "jwt-decode";
+import realCookies from "js-cookie";
 
-export default function checkTokenExpiration() {
+export default function checkTokenExpiration(dependencies = { jwtDecode: realJwtDecode, Cookies: realCookies }) {
   console.log("token check");
-  let token = Cookies.get("keellauth"); // replace with your JWT token
+  let token = dependencies.Cookies.get("keellauth"); // replace with your JWT token
   if (token) {
     token = token.replace("Bearer ", ""); // remove "Bearer " from the token
     try {
       // console.log(token);
-      const decodedToken = jwtDecode(token);
+      const decodedToken = dependencies.jwtDecode(token); // Use dependency injection
       // console.log(decodedToken);
       const dateNow = new Date();
       // const expirationDate = new Date(decodedToken.exp * 1000); // convert to milliseconds
