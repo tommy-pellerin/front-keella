@@ -1,11 +1,10 @@
-import { useLocation, Navigate, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { getData } from "../../services/data-fetch";
+import { toast } from 'react-toastify';
 //Atom
 import { useAtomValue } from 'jotai';
 import { userAtom } from "../../store/user";
 import { useEffect, useState } from "react";
-import { useAtom } from "jotai";
-import { alertAtom } from "../../store/alert";
 
 function checkOwner(currentUser, objectToCompare) {
   console.log("object à comparer:",objectToCompare, currentUser);
@@ -17,10 +16,7 @@ const OwnerRoute = ({ children }) => {
   const currentUser = useAtomValue(userAtom);
   const { workout_id } = useParams();
   const { user_id } = useParams();
-  const { reservation_id } = useParams();
-  const location = useLocation();
   const [isOwner, setIsOwner] = useState(null);
-  const [,setAlert] = useAtom(alertAtom);
 
   useEffect(() => {
     //check if currentUser is the owner of the workout
@@ -36,7 +32,7 @@ const OwnerRoute = ({ children }) => {
       };
       getWorkout();
     }
-    //check if currentUser is the owner of the profile
+    //check if currentUser is the owner of the profile and check if currentUser is the owner of the reservations
     if(user_id){
       const getUser = async () => {
         try {
@@ -49,29 +45,12 @@ const OwnerRoute = ({ children }) => {
       };
       getUser();
     }
-    //check if currentUser is the owner of the reservation
-    if(reservation_id){
-      const getReservation = async () => {
-        try {
-          const data = await getData(`/reservations/${reservation_id}`);
-          console.log(data);
-          setIsOwner(checkOwner(currentUser, data.user));
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      getReservation();
-    }
     
-  }, [reservation_id, user_id, workout_id]);
+  }, [user_id, workout_id]);
   
   useEffect(() => {
     if (isOwner === false) {
-      setAlert({
-        showAlert: true,
-        message: "Vous n'etre pas autorisé à rentrer car vous n'etes pas l'auteur de la page",
-        alertType: "error"
-      });
+      toast.error("Vous n'etre pas autorisé à rentrer car vous n'etes pas l'auteur de la page");
     }
   }, [isOwner]);
   

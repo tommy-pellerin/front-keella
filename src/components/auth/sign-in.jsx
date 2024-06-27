@@ -1,17 +1,16 @@
 import { authSignInUp } from "../../services/auth-fetch";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import AuthForm from "./auth-form";
+import { toast } from 'react-toastify';
 
 //atom
 import { useAtom } from "jotai";
 import { userAtom } from "../../store/user";
-import { alertAtom } from "../../store/alert";
 
 export default function SignIn() {
   const navigate = useNavigate();
   const [, setUser] = useAtom(userAtom);
-  const [,setAlert] = useAtom(alertAtom);
 
   useEffect(() => {
     document.title = "Keella | Connection";
@@ -23,11 +22,7 @@ export default function SignIn() {
         user: { email, password },
       });
       if(user){
-        setAlert({
-          showAlert:true,
-          message:"Bonjour, nous somme ravis de vous revoir !",
-          alertType:"success"
-        })
+        toast.success("Bonjour, nous somme ravis de vous voir !");
       }
       setUser({
         id: user.user.id,
@@ -37,11 +32,7 @@ export default function SignIn() {
       navigate("/");
     } catch (error) {
       console.error(error); 
-      setAlert({
-        showAlert:true,
-        message:"Une erreur est survenue. Veuillez vérifier votre email et mot de passe",
-        alertType:"error"
-      })
+      toast.error("Une erreur est survenue. Veuillez vérifier votre email et mot de passe");
     }
   };
 

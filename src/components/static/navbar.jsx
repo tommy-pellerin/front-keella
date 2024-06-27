@@ -182,9 +182,9 @@ export default function Navbar() {
                       </MenuItem>
                       <MenuItem>
                         {({ focus }) => (
-                          <button className={classNames(focus ? 'bg-gray-100' : '', 'block w-full px-4 py-2 text-sm text-gray-700')}>
+                          <div className={classNames(focus ? 'bg-gray-100' : '', 'block text-center px-4 py-2 text-sm text-gray-700')}>
                             <SignOut />
-                          </button>
+                          </div>
                         )}
                       </MenuItem>
                       <MenuItem>

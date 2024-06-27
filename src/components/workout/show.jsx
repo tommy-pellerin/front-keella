@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react"
 import { getData, postData } from "../../services/data-fetch";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 //atom
 import { useAtom } from "jotai";
 import { userAtom } from "../../store/user";
-import { alertAtom } from "../../store/alert";
 import ImageCarrousel from "./ImageCarrousel";
 //security
 import checkTokenAndLocalStorage from "../../services/checkTokenAndLocalStorage";
@@ -19,7 +19,6 @@ const WorkoutShow = () => {
   const navigate = useNavigate();
 
   //use atom
-  const [,setAlert] = useAtom(alertAtom);
   const [user, setUser] = useAtom(userAtom);
 
   function formatDate(dateString) {
@@ -71,16 +70,12 @@ const WorkoutShow = () => {
 
     //check authentication
     if (!user.isLogged){
-      setAlert({
-        showAlert: true,
-        message: "Vous devez etre connecté pour pouvoir réserver",
-        alertType: "warning"
-      });
+      toast.error("Vous devez etre connecté pour pouvoir réserver");
       navigate("/sign-in");
       return
     }
     //check token expiration
-    const tokenStatus = checkTokenAndLocalStorage(user, setUser, setAlert, navigate);
+    const tokenStatus = checkTokenAndLocalStorage(user, setUser, navigate);
     //if tokenStatus = true means token is not expired or invalid
     if (!tokenStatus) {
       return;
@@ -97,14 +92,10 @@ const WorkoutShow = () => {
     const bookPlaces = async () => {
       if(window.confirm("Vous allez etre débité du montant indiqué, etes vous sure de vouloir continuer ?")) {
         try {
-          const data = await postData(`/reservations`,body);
+          const data = await postData(`/reservations`, body);
           console.log(data);
           if(data){
-            setAlert({
-              showAlert:true,
-              message:"Votre demande a bien été envoyée !",
-              alertType:"success"
-            })
+            toast.success("Votre demande a bien été envoyée !");
             setWorkout(prevWorkout => ({
               ...prevWorkout,
               available_places: prevWorkout.available_places - quantity
@@ -117,11 +108,7 @@ const WorkoutShow = () => {
             console.log(error.response);
             error.response.json().then((body) => {
               console.error('Erreur du serveur:', body.error);
-              setAlert({
-                showAlert:true,
-                message: `${body.error}`,
-                alertType:"error"
-              })
+              toast.error(`${body.error}`);
             });
           }
           

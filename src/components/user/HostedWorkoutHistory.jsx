@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate  } from 'react-router-dom';
 import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
-import { alertAtom } from '../../store/alert';
-import Alert from '../../styles/Alert';
 import { getData, deleteData, updateData } from '../../services/data-fetch';
 
 function HostedWorkoutHistory() {
@@ -13,7 +11,6 @@ function HostedWorkoutHistory() {
     const [workoutIdToDelete, setWorkoutIdToDelete] = useState(null);
     const [openWorkoutId, setOpenWorkoutId] = useState(null);
     const [workoutData, setWorkoutData] = useState([]); // État pour stocker les données des workouts
-    const [alertState, setAlertState] = useAtom(alertAtom);
 
     useEffect(() => {
         
@@ -38,11 +35,7 @@ function HostedWorkoutHistory() {
           }
         } catch (error) {
           console.error('Erreur lors de la récupération des données:', error);
-          setAlertState({
-            showAlert: true,
-            message: 'Erreur lors de la récupération des données',
-            alertType: 'error'
-          });
+          toast.error("Erreur lors de la récupération des données");
         }
       };
   
@@ -61,19 +54,11 @@ function HostedWorkoutHistory() {
             if (response === null) {
               console.log("Deletion succeeded, updating state");
               setWorkoutData(prevWorkouts => prevWorkouts.filter(workout => workout.id !== workoutId));
-              setAlertState({
-                showAlert: true,
-                message: 'Séance d\'entraînement supprimée avec succès',
-                alertType: 'success'
-              });
+              toast.success("Séance d\'entraînement supprimée avec succès");
             }
           } catch (error) {
             console.error('Erreur lors de la suppression de la séance d\'entraînement:', error);
-            setAlertState({
-              showAlert: true,
-              message: 'Erreur lors de la suppression de la séance d\'entraînement',
-              alertType: 'error'
-            });
+            toast.error("Erreur lors de la suppression de la séance d\'entraînement");
           }
         }
       };
@@ -120,19 +105,11 @@ const updateReservationStatus = async (workoutId, reservationId, newStatus) => {
         }
         return workout;
       }));
-      setAlertState({
-        showAlert: true,
-        message: 'Statut de réservation mis à jour avec succès',
-        alertType: 'success'
-      });
+      toast.success("Statut de réservation mis à jour avec succès");
     }
   } catch (error) {
     console.error('Erreur lors de la mise à jour du statut de la réservation:', error);
-    setAlertState({
-      showAlert: true,
-      message: 'Erreur lors de la mise à jour du statut de la réservation',
-      alertType: 'error'
-    });
+    toast.error("Erreur lors de la mise à jour du statut de la réservation");
   }
 };
 
@@ -143,14 +120,6 @@ const updateReservationStatus = async (workoutId, reservationId, newStatus) => {
 
   return (
     <>
-    {/* Alert Component */}
-    <Alert
-          showAlert={alertState.showAlert}
-          setShowAlert={(show) => setAlertState((prevState) => ({ ...prevState, showAlert: show }))}
-          message={alertState.message}
-          type={alertState.alertType}
-        />
-
       <div className="background-blue-500">
         <h1 className="text-4xl">Mes Annonces</h1>
       </div>

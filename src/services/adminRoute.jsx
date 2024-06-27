@@ -2,6 +2,7 @@ import { getData } from "./data-fetch";
 import { useLocation, Navigate } from "react-router-dom";
 import TokenExpirationCheck from "./tokenExpired";
 import { useEffect, useState } from "react";
+import { toast } from 'react-toastify';
 //Atom
 import { useAtom } from 'jotai';
 import { userAtom } from "../store/user";
@@ -33,13 +34,15 @@ const AdminRoute = ({ children }) => {
 
   useEffect(() => {
     if (!user.isLogged) {
-      setAlert({
-        showAlert: true,
-        message: "Vous devez etre connecté pour pouvoir poursuivre",
-        alertType: "warning"
-      });
+      toast.warning("Vous devez etre connecté pour pouvoir poursuivre");
     }
   }, [user.isLogged]);
+
+  useEffect(() => {
+    if (user.isLogged && profile && !profile.isAdmin) {
+      toast.error("Vous n'etes pas administrateur");
+    }
+  }, [user.isLogged, profile]);
 
   if (user.isLogged) {
     if(profile && profile.isAdmin){
@@ -50,11 +53,6 @@ const AdminRoute = ({ children }) => {
       )
     } else if (profile && !profile.isAdmin) {
       console.log("is not admin");
-      // setAlert({
-      //   showAlert: true,
-      //   message: "Vous n'etes pas administrateur",
-      //   alertType: "error"
-      // });
       return <Navigate to="/" />;
     }
   } else {

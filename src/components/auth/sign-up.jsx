@@ -4,6 +4,7 @@ import { userAtom } from "../../store/user";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import AuthForm from "./auth-form";
+import { toast } from 'react-toastify';
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -23,9 +24,11 @@ export default function SignIn() {
         email: user.user.email,
         isLogged: true,
       });
+      toast.success("Bonjour et Bienvenue !");
       navigate("/");
     } catch (error) {
       console.error(error);
+      toast.error("Une erreur est survenue. Veuillez vérifier votre email et mot de passe");
     }
   };
 

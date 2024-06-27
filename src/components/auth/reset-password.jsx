@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-// import { updateData } from "../../services/data-fetch.js";
 import { authPatch } from "../../services/auth-fetch.js";
-import Alert from "../../styles/Alert.jsx";
+import { toast } from 'react-toastify';
 
 export default function ResetPassword() {
   const navigate = useNavigate();
@@ -11,9 +10,6 @@ export default function ResetPassword() {
   const resetPasswordToken = queryParams.get("reset_password_token");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
-
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertType, setAlertType] = useState('success');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,20 +22,17 @@ export default function ResetPassword() {
         },
       });
       if(data){
-        setShowAlert(true);
-        setAlertType('success'); // Set alert type to 'success'
+        toast.success("Votre mot de passe a été enregistré avec success !");
       }
       navigate("/sign-in");
     } catch (error) {
       console.error("Error:", error);
-      setShowAlert(true);
-      setAlertType('error'); // Set alert type to 'error'
+      toast.error("Une erreur est survenue. Veuillez recommencer");
     }
   };
 
   return (
     <>
-    <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={alertType === 'success' ? "Votre mot de passe a été changé" : "Erreur dans le changement de mot de passe. Veuillez recommencer"} type={alertType} />
     <div className="text-center my-5">
       <h1>Changement de mot de passe</h1>
       <div className="container bg-gray-200 mx-auto lg:w-3/5 my-5 border border-gray rounded-lg">
