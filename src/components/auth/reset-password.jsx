@@ -38,7 +38,7 @@ export default function ResetPassword() {
       <div className="container bg-gray-200 mx-auto lg:w-3/5 my-5 border border-gray rounded-lg">
         <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-5 my-5">
           <div className="sm:w-full lg:w-3/5">
-            <label>Nouveau mot de pass</label>
+            <label>Nouveau mot de passe</label>
             <br />
             <input
               type="password"
