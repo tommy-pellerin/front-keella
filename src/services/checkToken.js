@@ -1,14 +1,14 @@
-import { jwtDecode } from "jwt-decode";
-import Cookies from "js-cookie";
+import { jwtDecode as realJwtDecode } from "jwt-decode";
+import realCookies from "js-cookie";
 
-export default function checkTokenExpiration() {
+export default function checkTokenExpiration(dependencies = { jwtDecode: realJwtDecode, Cookies: realCookies }) {
   console.log("token check");
-  let token = Cookies.get("keellauth"); // replace with your JWT token
+  let token = dependencies.Cookies.get("keellauth"); // replace with your JWT token
   if (token) {
     token = token.replace("Bearer ", ""); // remove "Bearer " from the token
     try {
       // console.log(token);
-      const decodedToken = jwtDecode(token);
+      const decodedToken = dependencies.jwtDecode(token); // Use dependency injection
       // console.log(decodedToken);
       const dateNow = new Date();
       // const expirationDate = new Date(decodedToken.exp * 1000); // convert to milliseconds
@@ -22,16 +22,15 @@ export default function checkTokenExpiration() {
         // if(local){
         //   localStorage.removeItem("user")
         // }
-        return true
+        return { isValid: false, reason: "expired" };
       }
     } catch (e) {
       console.error("Invalid JWT token");
-      return true
+      return { isValid: false, reason: "invalid" };
     }
+    return { isValid: true };
   } else {
     console.error("No JWT token found");
-    return true //i manage the case when token is not found like the token is expired
-    // setIsTokenExpired(true); // I mute this because if there is no token does not mean that the token expired
+    return { isValid: false, reason: "notFound" };
   }
-  return false
 }

@@ -1,7 +1,7 @@
 const Help = () => {
   return (
     <div className="container mx-auto my-5">
-      <div className="bg-blue-500">
+      <div className="background-blue-500">
         <h1 className="text-center">Aide</h1>
       </div>
       <div className="flex flex-wrap mt-1 mb-5">
@@ -85,7 +85,7 @@ const Help = () => {
           </div>
         </div>
       </div>
-      <div className="bg-blue-500">
+      <div className="background-blue-500">
         <h1 className="text-center">F.A.Q</h1>
       </div>
       <h3 className="text-center m-4">Quelques questions qui reviennent souvent</h3>

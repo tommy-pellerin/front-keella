@@ -171,7 +171,7 @@ p {
 }
 
 /*bandeau bleu*/
-.bg-blue-500 {
+.background-blue-500 {
   background-color: #4299e1; /* Cette couleur correspond à la classe bg-blue-500 de Tailwind */
   color: white; /* text-white */
   text-align: center; /* text-center */

@@ -2,17 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { UsersIcon, CurrencyDollarIcon, CalendarIcon, ClockIcon, RocketLaunchIcon, MapPinIcon, MapIcon, IdentificationIcon, PencilSquareIcon } from '@heroicons/react/24/solid';
 import { postData, getData, updateData } from '../../services/data-fetch';
-
-import Alert from '../../styles/Alert';
+import { toast } from 'react-toastify';
 
 const FormWorkout = () => {
     
     const [successMessage, setSuccessMessage] = useState('');
     const { workout_id } = useParams();
-    // const navigate = useNavigate();
-    const [showAlert, setShowAlert] = useState(false); 
+    const navigate = useNavigate();
     const [validationErrors, setValidationErrors] = useState([]);
-    const [alertType, setAlertType] = useState('success');
     const [categories, setCategories] = useState([]);
     const [category_id, setCategoryId] = useState('');
     const [previewImages, setPreviewImages] = useState([]);
@@ -127,8 +124,7 @@ const FormWorkout = () => {
         // Si des erreurs de validation sont trouvées
         if (errors.length > 0) {
             setValidationErrors(errors);
-            setShowAlert(true);
-            setAlertType('error');
+            toast.error("Erreur");
             return; 
           }
 
@@ -160,18 +156,15 @@ const FormWorkout = () => {
                 // Gérer la réponse ici
                 if (response && response.id) {
                   setValidationErrors([]); // Réinitialisez les erreurs de validation
-                  setShowAlert(true);
-                  setAlertType('success');
-                  // navigate('/'); 
+                  toast.success("Success");
+                  navigate('/'); 
                 } else {
-                  setShowAlert(true);
-                  setAlertType('error');
+                  toast.error("Erreur");
                   setValidationErrors(['Une erreur est survenue lors de la soumission des données.']);
                 }
               } catch (error) {
                 // Gérez les erreurs ici
-                setShowAlert(true);
-                setAlertType('error');
+                toast.error("Erreur");
                 setValidationErrors(['Une erreur est survenue lors de la soumission des données.']);
                 console.error("Erreur lors de la soumission du formulaire :", error);
               }
@@ -254,28 +247,9 @@ const FormWorkout = () => {
 
     return (
         <>
-            <Alert 
-                showAlert={showAlert} 
-                setShowAlert={setShowAlert} 
-                message={
-                    <div>
-                        {alertType === 'success' ? 
-                        successMessage : 
-                        validationErrors.map((error, index) => (
-                            <React.Fragment key={index}>
-                                {error}
-                                <br />
-                            </React.Fragment>
-                        ))
-                        }
-                    </div>
-                } 
-                type={alertType} 
-            />
-        
-        
+
       {/* Bandeau bleu avec un titre */}
-        <div className="bg-blue-500">
+        <div className="background-blue-500">
         <h1 className="text-4xl">
             {workout_id ? 'Éditer votre séance' : 'Proposer une nouvelle séance'}
         </h1>

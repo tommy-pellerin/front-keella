@@ -1,13 +1,10 @@
 import { useState } from "react";
 import { authSignInUp } from "../../services/auth-fetch.js";
-// import { postData } from "../../services/data-fetch.js";
 import { Link } from "react-router-dom";
-import Alert from "../../styles/Alert.jsx";
+import { toast } from 'react-toastify';
 
 export default function ForgetPassword() {
   const [email, setEmail] = useState("");
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertType, setAlertType] = useState('success');
   
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,19 +12,16 @@ export default function ForgetPassword() {
     try {
       const data = await authSignInUp("/users/password", { user: { email:email } });
       if(data){
-        setShowAlert(true);
-        setAlertType('success'); // Set alert type to 'success'
+        toast.success("Nous avons envoyé un email avec un lien de changement de mot de passe !");
       }
     } catch (error) {
       console.error("Error:", error);
-      setShowAlert(true);
-      setAlertType('error'); // Set alert type to 'error'
+      toast.error("Une erreur est survenue. Veuillez recommencer");
     }
   };
 
   return (
     <>
-    <Alert showAlert={showAlert} setShowAlert={setShowAlert} message={alertType === 'success' ? "Vous allez recevoir un email avec un lien pour changer votre mot de pass" : "Une erreur est survenue. Veuillez recommencer"} type={alertType} />
     <div className="text-center my-5">
       <h1>Mot de passe oublié ?</h1>
       <div className="container bg-gray-200 mx-auto lg:w-3/5 my-5 border border-gray rounded-lg">

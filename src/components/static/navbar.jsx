@@ -29,17 +29,17 @@ export default function Navbar() {
 
   let navigation = [
     { name: 'Trouver une séance', href: '/workouts', current: false },
-    { name: 'Kit UI', href: '/kit-ui', current: false },
-    { name: 'Gérer les categories', href: '/categories', current: false },
+    // { name: 'Kit UI', href: '/kit-ui', current: false },
+    // { name: 'Gérer les categories', href: '/categories', current: false },
   ]
   // navbar available only if is admin
-  // if (user.isAdmin) {
-  //   navigation = [
-  //     ...navigation,
-  //     { name: 'Kit UI', href: '/kit-ui', current: false },
-  //     { name: 'Gérer les catégories', href: '/categories', current: false },
-  //   ];
-  // }
+  if (profile && profile.isAdmin) {
+    navigation = [
+      ...navigation,
+      { name: 'Kit UI', href: '/kit-ui', current: false },
+      { name: 'Gérer les catégories', href: '/categories', current: false },
+    ];
+  }
   
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -47,16 +47,21 @@ export default function Navbar() {
 
 
   useEffect(() => {
-      const profileData = async () => {
-          try {
-              const data = await getData(`/users/${user.id}`);
-              console.log("user: ", data);
-              setProfile(data);
-          } catch (error) {
-              console.error(error);
-          }
+    if (!user.isLogged) {
+      setProfile(null); // Reset profile state when user logs out
+    } else if (user.isLogged) {
+      // Fetch and set profile data if user is logged in
+      const fetchProfileData = async () => {
+        try {
+          const data = await getData(`/users/${user.id}`);
+          console.log("user: ", data);
+          setProfile(data);
+        } catch (error) {
+          console.error(error);
+        }
       };
-      profileData();
+      fetchProfileData();
+    }
   }, [user]);
 
   return (
@@ -177,9 +182,9 @@ export default function Navbar() {
                       </MenuItem>
                       <MenuItem>
                         {({ focus }) => (
-                          <button className={classNames(focus ? 'bg-gray-100' : '', 'block w-full px-4 py-2 text-sm text-gray-700')}>
+                          <div className={classNames(focus ? 'bg-gray-100' : '', 'block text-center px-4 py-2 text-sm text-gray-700')}>
                             <SignOut />
-                          </button>
+                          </div>
                         )}
                       </MenuItem>
                       <MenuItem>

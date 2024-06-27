@@ -2,14 +2,12 @@ import { Link, useNavigate } from "react-router-dom"
 import LoadingSpinner from "../static/LoadingSpinner";
 import { useEffect, useState } from 'react';
 import Cookies from "js-cookie";
-import { useAtom } from "jotai";
-import { alertAtom } from "../../store/alert";
+import { toast } from 'react-toastify';
 
 const Success = () => {
   const [session, setSession] = useState(null);
   const token = Cookies.get("keellauth");
   const navigate = useNavigate();
-  const [,setAlert] = useAtom(alertAtom);
   useEffect(() => {
     
     const fetchCreditUser = async () => {
@@ -44,18 +42,14 @@ const Success = () => {
         const data = await response.json();
         console.log(data);
         setSession(data);
-        console.log();
+        toast.success("Merci !");
       } catch (error) {
         console.log('Fetch error: ', error);
         if (error.response) {
           console.log(error.response);
           error.response.json().then((body) => {
             console.error('Erreur du serveur:', body.error);
-            setAlert({
-              showAlert:true,
-              message: `${body.error}`,
-              alertType:"error"
-            })
+            toast.error(`${body.error}`);
           });
         }
         navigate("/payment/credit");
