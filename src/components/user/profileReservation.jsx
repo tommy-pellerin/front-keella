@@ -106,7 +106,6 @@ function ProfileReservation() {
                     <div className="space-y-4 text-end">
                         {profile.reservations?.length > 0 ? (
                             profile.reservations.map(reservation =>{
-                                const canRelaunch = new Date(reservation.created_at) <= new Date(Date.now() - 12 * 60 * 60 * 1000);
                             return (
                                 <div key={reservation.id} className="p-4 rounded-lg">
                                     <p>Quantité : {reservation.quantity}</p>
@@ -114,7 +113,7 @@ function ProfileReservation() {
                                     <p>Prix Total : {reservation.total} €</p>
                                     {reservation.status === "accepted" ?
                                     <>
-                                        <button className='button-green-small' onClick={() => handlePay(reservation.id)}>Confirmer fin séance</button>
+                                        <button className='button-green-small' onClick={() => handlePay(reservation.id)}>Fin de Séance</button>
                                         <button className='button-red-small' onClick={() => handleCancel(reservation.id)}>annuler</button>
                                     </>
                                     :
@@ -122,7 +121,7 @@ function ProfileReservation() {
                                     }
                                     {reservation.status === "pending" ?
                                     <>
-                                        <button className='button-primary-small' onClick={() => handleRelaunch(reservation.id)} disabled={!canRelaunch}>relancer l'hote</button>
+                                        <button className='button-primary-small' onClick={() => handleRelaunch(reservation.id)} disabled={true}>En attente de l'hote</button>
                                         <button className='button-red-small' onClick={() => handleCancel(reservation.id)}>annuler</button>
                                     </>
                                     :
