@@ -216,12 +216,12 @@ const closeWorkout = async (workoutId) => {
                               </button>
                               
                           </div>
-                          {workout.is_closed && (
-                                    <CreateUserRatings
-                                        workoutId={workout.id}
-                                        participantId={reservation.id} // Passez l'ID du participant ici
-                                    />
-                                )}
+                          {workout.is_closed && reservation.status === 'closed' && (
+                              <CreateUserRatings
+                                workoutId={workout.id}
+                                participantId={reservation.id} // Passez l'ID du participant ici
+                              />
+                            )}
                           </li>
                       ))}
                       </ul>
