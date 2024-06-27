@@ -1,7 +1,7 @@
 const LegalNotices = () => {
   return (
     <div className="container mx-auto my-5">
-      <div className="bg-blue-500">
+      <div className="background-blue-500">
         <h1 className="text-center">Conditions d&apos;utilisation</h1>
       </div>
       <p>

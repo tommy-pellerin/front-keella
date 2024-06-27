@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import Cookies from "js-cookie";
 import { useAtom } from "jotai";
 import { userAtom } from '../store/user';
 import { alertAtom } from "../store/alert";
@@ -12,11 +11,25 @@ const TokenExpirationCheck = ({ children }) => {
   const [redirectToSignIn, setRedirectToSignIn] = useState(false);
   const location = useLocation();
   const [,setAlert] = useAtom(alertAtom);
-  const [, setUser] = useAtom(userAtom);
+  const [user, setUser] = useAtom(userAtom);
 
   useEffect(() => {
-    if(checkTokenExpiration()){
-      setIsTokenExpired(true);
+    //if token expired redirect to sign-in
+    const tokenStatus = checkTokenExpiration();
+    if(tokenStatus.isValid){
+      console.log("Token is valid");
+    } else {
+      if (tokenStatus.reason === "notFound") {
+        // Check if user data is in local storage and seems valid
+        const localUserData = localStorage.getItem("user");
+        if (!localUserData) {
+          setIsTokenExpired(true);
+        }
+        // Additional checks can be added here to validate localUserData
+      } else {
+        // For expired or invalid token
+        setIsTokenExpired(true);
+      }
     }
   }, []);
 
