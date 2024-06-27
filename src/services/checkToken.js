@@ -22,16 +22,15 @@ export default function checkTokenExpiration() {
         // if(local){
         //   localStorage.removeItem("user")
         // }
-        return true
+        return { isValid: false, reason: "expired" };
       }
     } catch (e) {
       console.error("Invalid JWT token");
-      return true
+      return { isValid: false, reason: "invalid" };
     }
+    return { isValid: true };
   } else {
     console.error("No JWT token found");
-    return true //i manage the case when token is not found like the token is expired
-    // setIsTokenExpired(true); // I mute this because if there is no token does not mean that the token expired
+    return { isValid: false, reason: "notFound" };
   }
-  return false
 }

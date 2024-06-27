@@ -36,7 +36,7 @@ function Profile() {
 
     return (
         <div className="">
-        <div className='bg-blue-500'>
+        <div className='background-blue-500'>
             <h2 className='md-4'>Profil</h2>
         </div>
         <div className="container mx-auto p-4">

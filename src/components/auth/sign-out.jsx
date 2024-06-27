@@ -3,23 +3,18 @@ import { useAtom } from "jotai";
 import { userAtom } from "../../store/user";
 import { authSignOut } from "../../services/auth-fetch";
 import { alertAtom } from "../../store/alert";
-import checkTokenExpiration from "../../services/checkToken";
+import checkTokenAndLocalStorage from "../../services/checkTokenAndLocalStorage";
 
 export default function SignOut() {
   const navigate = useNavigate();
-  const [, setUser] = useAtom(userAtom);
+  const [user, setUser] = useAtom(userAtom);
   const [,setAlert] = useAtom(alertAtom);
 
   const handleSignOut = async () => {
-    if (checkTokenExpiration()) {
-      setAlert({
-        showAlert: true,
-        message: "Votre session a expiré. Veuillez vous reconnecter.",
-        alertType: "warning"
-      });
-      setUser({ id: "", email: "", isLogged: false });
-      navigate("/sign-in");
-    } else {
+
+    const tokenStatus = checkTokenAndLocalStorage(user, setUser, setAlert, navigate);
+    //if tokenStatus = true means token is not expired or invalid
+    if (tokenStatus) {
       try {
         await authSignOut("/users/sign_out");
         setUser({ id: "", email: "", isLogged: false });

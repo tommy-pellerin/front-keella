@@ -13,12 +13,11 @@ import { userAtom } from "./store/user";
 import { isLoadingAtom } from "./store/isLoading";
 import { alertAtom } from "./store/alert";
 
-
 export default function App() {
   const [isLoading, setIsLoading] = useAtom(isLoadingAtom);
   const [, setUser] = useAtom(userAtom);
   const [alert, setAlert] = useAtom(alertAtom);
-
+  
   // When the component mounts, read the persisted state from localStorage
   useEffect(() => {
     const persistedState = localStorage.getItem('user');
@@ -26,7 +25,6 @@ export default function App() {
       setUser(JSON.parse(persistedState));
     }
     setIsLoading(false);
-
   }, []);
 
   if (isLoading) {

@@ -275,7 +275,7 @@ const FormWorkout = () => {
         
         
       {/* Bandeau bleu avec un titre */}
-        <div className="bg-blue-500">
+        <div className="background-blue-500">
         <h1 className="text-4xl">
             {workout_id ? 'Éditer votre séance' : 'Proposer une nouvelle séance'}
         </h1>

@@ -2,7 +2,7 @@ const KitUI = () => {
   return(
     <>
     {/* Bandeau bleu avec un titre */}
-    <div className="bg-blue-500">
+    <div className="background-blue-500">
       <h1 className="text-4xl">Mon compte</h1>
     </div>
 
