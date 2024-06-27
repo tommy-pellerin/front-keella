@@ -41,9 +41,9 @@ export default function WorkoutRating({ workoutId }) {
           <div className="md:flex">
             <div className="p-8">
             <div className="tracking-wide text-sm text-indigo-500 font-semibold">
-                <p>Rated by: {rating.user ? 
-                  <Link to={`/profile/${rating.user_id}`}>{rating.user.username}</Link> 
-                  : 'Unknown'}</p>
+                <p> {rating.user ? 
+                  <Link to={`/profile/${rating.user_id}`}className="text-blue-500 hover:underline">{rating.user.username}</Link> 
+                  : 'Unknown'} a laissé son avis :</p>
                 </div>
               <div className="stars text-yellow-600">
                   {renderStars(rating.rating)}
