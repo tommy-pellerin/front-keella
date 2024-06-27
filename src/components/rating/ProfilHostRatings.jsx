@@ -11,33 +11,32 @@ export default function RatingStars({ ratings }) {
     return stars;
   };
 
+ 
+
   return (
     <div>
-      {ratings.map((rating) => {
-        // Ajout d'un log pour déboguer
-        console.log('Rating data:', rating);
-
-        return (
-          <div key={rating.id} className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+      {ratings.map((rating, index) => (
+        <div
+          key={rating.id}
+          className={`max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl ${index !== ratings.length - 1 ? 'mb-4' : ''}`}
+        >
             <div className="md:flex">
               <div className="p-8">
+              <div className="tracking-wide text-sm text-indigo-500 font-semibold">
+                   {rating.user && rating.user.username ? 
+                    <Link to={`/profile/${rating.user_id}`} className="text-blue-500 hover:underline">{rating.user.username}</Link> 
+                    : 'Unknown'} vous a laissé un avis
+                </div>
                 <div className="stars text-yellow-600">
                   {renderStars(rating.rating)}
                 </div>
-                <div className="tracking-wide text-sm text-indigo-500 font-semibold">
-                  Rated by User of workout ID: {rating.user && rating.user.username ? 
-                    <Link to={`/profile/${rating.user_id}`} className="text-blue-500 hover:underline">{rating.user.username}</Link> 
-                    : 'Unknown'}
-                </div>
-                <p className="block mt-1 text-lg leading-tight font-medium text-black">Rateable Type: {rating.rateable_type}</p>
-                <p className="mt-2 text-gray-500">Rateable ID: {rating.rateable_id}</p>
-                <p className="mt-2 text-gray-500">Workout ID: {rating.workout_id}</p>
-                <p className="mt-2 text-gray-500">{rating.comment}</p>
+                
+                <p className="block mt-1 text-lg leading-tight font-light text-black">{rating.comment}</p>
               </div>
             </div>
           </div>
-        );
-      })}
+        
+      ))}
     </div>
   );
 }

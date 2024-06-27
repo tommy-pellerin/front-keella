@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import LoadingSpinner from '../static/LoadingSpinner';
 import CreateWorkoutRatings from '../rating/CreateWorkoutRatings';
-import CreateUserRatings from '../rating/CreateUserRatingsForHostedWorkouts.jsx';
 import { useParams } from 'react-router-dom';
 import { getData, updateData } from '../../services/data-fetch';
 import { useAtom } from 'jotai';
@@ -162,11 +161,7 @@ function ProfileReservation() {
                                     <p className="prix-total clearfix">Prix Total : {reservation.total} €</p>
                                     <div className="ratings-container">
                                     <CreateWorkoutRatings className="rating-component" workoutId={reservation.workout_id} />
-                                    <CreateUserRatings 
-                                        className="rating-component"
-                                        hostId={reservation.host_id} 
-                                        workoutId={reservation.workout_id}  
-                                    />
+                                    
                                     </div>
                                     {reservation.status === "accepted" ?
                                     <>

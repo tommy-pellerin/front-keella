@@ -47,14 +47,9 @@ export default function WorkoutRating({ workoutId }) {
                 </div>
               <div className="stars text-yellow-600">
                   {renderStars(rating.rating)}
-                </div>
-                
-                
-                <p className="mt-2 text-gray-500">{rating.comment}</p>
-                {/* Vérification des valeurs avant de les afficher */}
-                  <p>Rateable Type: {rating.rateable_type}</p>
-                  <p>Rateable ID: {rating.rateable_id}</p>
-                  <p>Workout ID: {rating.workout_id}</p>
+                </div>                     
+                <p className="block mt-1 text-lg leading-tight font-light text-black">{rating.comment}</p>
+                                  
               </div>
             </div>
           </div>

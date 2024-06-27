@@ -88,35 +88,35 @@ export default function CreateWorkoutRatings({ workoutId }) {
   return (
     <div className="create-rating">
       <h2 onClick={toggleAccordion} style={{ cursor: 'pointer' }}>
-        Note et commente ton workout
+        Note et commente ta séance !
       </h2>
-      {isOpen && ( // Afficher le contenu de l'accordéon si isOpen est vrai
+      {isOpen && (
         <>
-      {error && <p className="error">{error}</p>}
-      {success && <p className="success">Rating created successfully!</p>}
-      {!hasCommented ? (
-      <form onSubmit={handleSubmit} className="form-container">
-        <div className="stars">
-          {Array.from({ length: 5 }, (_, i) => (
-            <span
-              key={i}
-              className={`star ${i < rating ? 'selected' : ''}`}
-              onClick={() => setRating(i + 1)}
-            >
-              ★
-            </span>
-          ))}
-        </div>
-        <textarea
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          maxLength="500"
-          placeholder="Leave a comment (max 500 characters)"
-        />
-        <button type="submit">Submit Rating</button>
-      </form>
-      ) : (
-        <p className="error">You have already rated this workout.</p>
+          {error && <p className="error">{error}</p>}
+          {success && <p className="success">Commentaire crée avec succès!</p>}
+          {!hasCommented ? (
+            <form onSubmit={handleSubmit} className="form-container">
+              <div className="stars">
+                {Array.from({ length: 5 }, (_, i) => (
+                  <span
+                    key={i}
+                    className={`star ${i < rating ? 'selected' : ''}`}
+                    onClick={() => setRating(i + 1)}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
+              <textarea
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                maxLength="500"
+                placeholder="Leave a comment (max 500 characters)"
+              />
+              <button type="submit">Envoyer</button>
+            </form>
+          ) : (
+            <p className="error">Vous avez déjà noté ce participant.</p>
           )}
         </>
       )}

@@ -5,6 +5,7 @@ import { userAtom } from '../../store/user';
 import { alertAtom } from '../../store/alert';
 import Alert from '../../styles/Alert';
 import { getData, deleteData, updateData } from '../../services/data-fetch';
+import CreateUserRatings from '../rating/CreateUserRatingsForHostedWorkouts.jsx';
 
 function HostedWorkoutHistory() {
     const [user] = useAtom(userAtom);
@@ -212,12 +213,12 @@ const closeWorkout = async (workoutId) => {
                   
                   
                   <ul className="mb-4">
-                      {workout.reservations && workout.reservations.map(reservation => (
-                          <li key={reservation.id} className="flex justify-between items-center mb-2">
-                          <span>Client: 
-                              <Link to={`/profile/${reservation.id}`} className="text-blue-600 hover:text-blue-800 ml-2">
-                                  {reservation.username}
-                              </Link>
+                        {workout.reservations.map(reservation => (
+                            <li key={reservation.reservationId} className="flex justify-between items-center mb-2">
+                                <span>Client: 
+                                    <Link to={`/profile/${reservation.id}`} className="text-blue-600 hover:text-blue-800 ml-2">
+                                        {reservation.username}
+                                    </Link>
                           </span>
                           <span>Statut: {reservation.status}</span>
                                                 
@@ -243,7 +244,14 @@ const closeWorkout = async (workoutId) => {
                               >
                                 Clôturer la séance
                               </button>
+                              
                           </div>
+                          {workout.is_closed && (
+                                    <CreateUserRatings
+                                        workoutId={workout.id}
+                                        participantId={reservation.id} // Passez l'ID du participant ici
+                                    />
+                                )}
                           </li>
                       ))}
                       </ul>
