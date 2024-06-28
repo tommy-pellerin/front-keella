@@ -4,6 +4,7 @@ import { useAtom } from "jotai";
 import { userAtom } from '../store/user';
 import { toast } from 'react-toastify';
 import checkTokenExpiration from './checkToken';
+import Cookies from "js-cookie";
 
 const TokenExpirationCheck = ({ children }) => {
   const [isTokenExpired, setIsTokenExpired] = useState(false);
@@ -36,6 +37,7 @@ const TokenExpirationCheck = ({ children }) => {
       console.log("token expired or not found or invalid");
       toast.warning("Votre connection a expiré, veuillez vous reconnecter");
       setUser({ id: "", email: "", isLogged: false });
+      Cookies.remove("keellauth");
       setRedirectToSignIn(true);
     }
   }, [isTokenExpired]);
