@@ -182,7 +182,7 @@ const FormWorkout = () => {
     const handleImageChange = (event) => {
         if (filesToUpload.length < 3) {
           const file = event.target.files[0];
-          if (file) {
+          if (file && file.type.startsWith('image/')) { // Vérifiez que le fichier est une image
             const newPreviewImage = URL.createObjectURL(file);
             const newFilesToUpload = [...filesToUpload, file];
       
@@ -191,7 +191,8 @@ const FormWorkout = () => {
             setFilesToUpload(newFilesToUpload);
           }
         } else {
-          console.log("Vous ne pouvez pas ajouter plus de 3 images.");
+          console.log("Le fichier sélectionné n'est pas une image.");
+          toast.error("Veuillez sélectionner un fichier image.");
         }
       };
 

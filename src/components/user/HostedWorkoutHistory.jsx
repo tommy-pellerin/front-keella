@@ -214,7 +214,7 @@ const closeWorkout = async (workoutId) => {
                               >
                                 Clôturer la séance
                               </button>
-                              
+                              // boutton annuler =>workout.isclosed && reservation.status === "host_cancelled"
                           </div>
                           {workout.is_closed && reservation.status === 'closed' && (
                               <CreateUserRatings
