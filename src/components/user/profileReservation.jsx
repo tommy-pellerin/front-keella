@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import LoadingSpinner from '../static/LoadingSpinner';
-
 import { useParams } from 'react-router-dom';
 import { getData, updateData } from '../../services/data-fetch';
 import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
+
+import { formatDate, formatTime, formatDuration } from '../../services/time-fixes';
 import { toast } from 'react-toastify';
 
 function ProfileReservation() {
@@ -26,12 +27,12 @@ function ProfileReservation() {
         profileData();
     }, [user, user_id]);
 
-    const handlePay = async(reservationId) => {
+    const handlePay = async (reservationId) => {
         console.log(`Paying host for reservation ${reservationId}`);
-        if(window.confirm("Vous confirmez que la séance est terminé ?")) {
+        if (window.confirm("Vous confirmez que la séance est terminé ?")) {
             try {
-                const newStatus = "closed"; // Status for user_cancelled
-                const response = await updateData(`/reservations/${reservationId}`, { status: newStatus });
+                const newStatus = "closed";
+                await updateData(`/reservations/${reservationId}`, { status: newStatus });
                 const data = await getData(`/users/${user_id}`);
                 setProfile(data);
                 toast.success("Merci d'avoir confirmer la fin de la séance, nous allons proceder au paiement de l'hote");
@@ -39,10 +40,10 @@ function ProfileReservation() {
                 console.error('Erreur lors de la mise à jour du statut de la réservation:', error);
                 toast.error("Erreur lors de la mise à jour du statut de la réservation");
             }
-            }
+        }
     };
 
-    const handleCancel = async(reservationId) => {
+    const handleCancel = async (reservationId) => {
         console.log(`Cancelling reservation ${reservationId}`);
         if(window.confirm("Are you sure you want to delete this reservation?")) {
         try {
@@ -62,16 +63,6 @@ function ProfileReservation() {
         console.log(`Relaunching host for reservation ${reservationId}`);
     };
 
-    function formatDate(dateString) {
-        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-        return new Date(dateString).toLocaleDateString('fr-FR', options);
-    }
-
-    function formatTime(dateString) {
-        const options = { hour: '2-digit', minute: '2-digit' };
-        return new Date(dateString).toLocaleTimeString('fr-FR', options);
-    }
-
     if (!profile) {
         return <div><LoadingSpinner /></div>;
     }
@@ -90,85 +81,60 @@ function ProfileReservation() {
                                     <p>{reservation.title}<br />{reservation.description}</p>
                                     <p>Date : {formatDate(reservation.start_date)} à {formatTime(reservation.start_date)}</p>
                                     <p>Ville : {reservation.city}</p>
-                                    <p>Durée : {reservation.duration} minutes</p>
+                                    <p>Durée : {formatDuration(reservation.duration)}</p>
                                 </div>
                             ))
                         ) : (
-                    <div className="bg-gray-100 flex items-center justify-center min-h-screen">
-                        <div className="bg-white p-8 rounded-lg shadow-lg text-center">
-                            <h3 className="text-2xl font-bold text-red-600 mb-4">Vous n'avez pas de Réservation</h3>
-                        </div>
-                    </div>
+                            <div className="bg-gray-100 flex items-center justify-center min-h-screen">
+                                <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+                                    <h3 className="text-2xl font-bold text-red-600 mb-4">Vous n'avez pas de Réservation</h3>
+                                </div>
+                            </div>
                         )}
                     </div>
                 </div>
                 <div className="w-full lg:w-1/2 p-2">
                     <div className="space-y-4 text-end">
                         {profile.reservations?.length > 0 ? (
-                            profile.reservations.map(reservation =>{
+                            profile.reservations.map(reservation => {
                                 const canRelaunch = new Date(reservation.created_at) <= new Date(Date.now() - 12 * 60 * 60 * 1000);
-                            return (
-                                <div key={reservation.id} className="p-4 rounded-lg">
-                                    <p>Quantité : {reservation.quantity}</p>
-                                    <p>Status : {reservation.status}</p>
-                                    <p>Prix Total : {reservation.total} €</p>
-                                    {reservation.status === "accepted" ?
-                                    <>
-                                        <button className='button-green-small' onClick={() => handlePay(reservation.id)}>Confirmer fin séance</button>
-                                        <button className='button-red-small' onClick={() => handleCancel(reservation.id)}>annuler</button>
-                                    </>
-                                    :
-                                    <></>
-                                    }
-                                    {reservation.status === "pending" ?
-                                    <>
-                                        <button className='button-primary-small' onClick={() => handleRelaunch(reservation.id)} disabled={!canRelaunch}>relancer l'hote</button>
-                                        <button className='button-red-small' onClick={() => handleCancel(reservation.id)}>annuler</button>
-                                    </>
-                                    :
-                                    <></>
-                                    }
-                                    {reservation.status === "refused" ?
-                                    <>
-                                        <button className='button-red-small'>L'hote n'as pas accepter votre réservation</button>
-                                    </>
-                                    :
-                                    <></>
-                                    }
-                                    {reservation.status === "host_cancelled" ?
-                                    <>
-                                        <button className='button-red-small'>L'hote a annulé sa réservation</button>
-                                    </>
-                                    :
-                                    <></>
-                                    }
-                                    {reservation.status === "user_cancelled" ?
-                                    <>
-                                        <button className='button-red-small disable'>Vous avez annulé votre réservation</button>
-                                    </>
-                                    :
-                                    <></>
-                                    }
-                                    {reservation.status === "closed" ?
-                                    <>
-                                        <button className='button-red-small'>L'évènement est fini</button>
-                                    </>
-                                    :
-                                    <></>
-                                    }
-                                    {reservation.status === "relaunched" ?
-                                    <>
-                                        <button className='button-red-small'>l'évènement est relancer</button>
-                                    </>
-                                    :
-                                    <></>
-                                    }
-                                </div>
-                            );
-                        })
+                                return (
+                                    <div key={reservation.id} className="p-4 rounded-lg">
+                                        <p>Quantité : {reservation.quantity}</p>
+                                        <p>Status : {reservation.status}</p>
+                                        <p>Prix Total : {reservation.total} €</p>
+                                        {reservation.status === "accepted" && (
+                                            <>
+                                                <button className='button-green-small' onClick={() => handlePay(reservation.id)}>Confirmer fin séance</button>
+                                                <button className='button-red-small' onClick={() => handleCancel(reservation.id)}>Annuler</button>
+                                            </>
+                                        )}
+                                        {reservation.status === "pending" && (
+                                            <>
+                                                <button className='button-primary-small' onClick={() => handleRelaunch(reservation.id)} disabled={!canRelaunch}>Relancer l'hote</button>
+                                                <button className='button-red-small' onClick={() => handleCancel(reservation.id)}>Annuler</button>
+                                            </>
+                                        )}
+                                        {reservation.status === "refused" && (
+                                            <button className='button-red-small'>L'hote n'a pas accepté votre réservation</button>
+                                        )}
+                                        {reservation.status === "host_cancelled" && (
+                                            <button className='button-red-small'>L'hote a annulé sa réservation</button>
+                                        )}
+                                        {reservation.status === "user_cancelled" && (
+                                            <button className='button-red-small disable'>Vous avez annulé votre réservation</button>
+                                        )}
+                                        {reservation.status === "closed" && (
+                                            <button className='button-red-small'>L'évènement est fini</button>
+                                        )}
+                                        {reservation.status === "relaunched" && (
+                                            <button className='button-red-small'>L'évènement est relancé</button>
+                                        )}
+                                    </div>
+                                );
+                            })
                         ) : (
-                            <div>
-                            </div>
+                            <div />
                         )}
                     </div>
                 </div>

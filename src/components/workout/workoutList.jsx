@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { getData } from '../../services/data-fetch';
+import { formatDate, formatTime, formatDuration } from '../../services/time-fixes';
 
 function WorkoutList() {
     const [workouts, setWorkouts] = useState([]);
@@ -37,9 +38,6 @@ function WorkoutList() {
 
     const loadMore = () => setVisibleCount(prevCount => prevCount + 3);
 
-    const formatDate = dateString => new Date(dateString).toLocaleDateString('fr-FR', { year: 'numeric', month: '2-digit', day: '2-digit' });
-    const formatTime = dateString => new Date(dateString).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-
     return (
         <div className='max-w-screen-lg mx-auto p-4'>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-5">
@@ -51,7 +49,7 @@ function WorkoutList() {
                             <p className="mt-1 text-gray-500 text-description">{workout.description}</p>
                             <ul>
                                 <li className="mt-1 text-gray-500">Prix : {workout.price} €</li>
-                                <li className="mt-1 text-gray-500">Durée : {workout.duration} Mins</li>
+                                <li className="mt-1 text-gray-500">Durée : {formatDuration(workout.duration)}</li>
                                 <li className="mt-1 text-gray-500">Nombre de place total : {workout.max_participants}</li>
                                 <li className="mt-1 text-gray-500">Date : {formatDate(workout.start_date)}</li>
                                 <li className="mt-1 text-gray-500">Heure : {formatTime(workout.start_date)}</li>
