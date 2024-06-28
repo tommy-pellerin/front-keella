@@ -55,7 +55,7 @@ const FormWorkout = () => {
                   // ... autres champs si nécessaire ...
                 });
                 setCategoryId(workoutData.category_id.toString());
-                setPreviewImages(workoutData.image_urls || []);
+                setPreviewImages([]);
                 console.log(workoutData.image_urls);
               }
             } catch (error) {
@@ -124,8 +124,10 @@ const FormWorkout = () => {
         // Si des erreurs de validation sont trouvées
         if (errors.length > 0) {
             setValidationErrors(errors);
-            toast.error("Erreur");
-            return; 
+            // Join the errors array into a single string with line breaks and display it in the toast
+            const errorMessage = errors.join('\n');
+            toast.error(errorMessage);
+            return;
           }
 
           // Vérifiez s'il y a des images ajoutées
@@ -159,7 +161,7 @@ const FormWorkout = () => {
                   toast.success("Success");
                   navigate('/'); 
                 } else {
-                  toast.error("Erreur");
+                  toast.error("Une erreur est survenue lors de la soumission des données.");
                   setValidationErrors(['Une erreur est survenue lors de la soumission des données.']);
                 }
               } catch (error) {
