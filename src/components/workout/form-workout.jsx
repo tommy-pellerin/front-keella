@@ -4,6 +4,7 @@ import { UsersIcon, CurrencyDollarIcon, CalendarIcon, ClockIcon, RocketLaunchIco
 import { postData, getData, updateData } from '../../services/data-fetch';
 import { toast } from 'react-toastify';
 
+
 const FormWorkout = () => {
     
     const [successMessage, setSuccessMessage] = useState('');
@@ -36,7 +37,9 @@ const FormWorkout = () => {
 
         const loadWorkoutData = async () => {
             try {
+              console.log(workout_id);
               const workoutData = await getData(`/workouts/${workout_id}`);
+              console.log(workoutData);
               if (workoutData) {
                 const startDate = new Date(workoutData.start_date);
                 const date = startDate.toISOString().split('T')[0];
@@ -67,10 +70,13 @@ const FormWorkout = () => {
             loadWorkoutData();
           }
           loadCategories();
+          console.log(workout_id);
         }, [workout_id]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        console.log(workout);
+        console.log(filesToUpload);
         const startDateTime = workout.start_date + 'T' + workout.start_time + ':00'; // Combining date and time
         const workoutData = { 
             ...workout, 
@@ -85,10 +91,12 @@ const FormWorkout = () => {
         // Validation de la description
           if (!workout.description) {
             errors.push('La description est requise.');
+            toast.error('La description est requise.');
           } else {
             const letterCount = workout.description.replace(/\s/g, '').length;
             if (letterCount < 10 || letterCount > 1000) {
                 errors.push('La description doit contenir entre 10 et 1000 charactères.');
+                toast.error('La description doit contenir entre 10 et 1000 charactères.');
             }
           }
         // if (!workout.city) errors.push('La ville est requise.');
@@ -97,27 +105,32 @@ const FormWorkout = () => {
         const price = parseFloat(workout.price);
         if (isNaN(price) || price < 0 || price > 100) {
             errors.push('Le prix doit être compris entre 0 et 100€.');
+            toast.error('Le prix doit être compris entre 0 et 100€.');
         }
         // Validation de la date de début
             const workoutStartDate = new Date(workoutData.start_date);
             const now = new Date();
             const fourHoursLater = new Date(now.getTime() + 4 * 60 * 60 * 1000); // 4 heures plus tard
             if (workoutStartDate < fourHoursLater) {
-                errors.push('La date de début doit être supérieure à 4h avant le début du workout.');
+                errors.push('La date de début ne peut être anterieur à la date du jour.');
+                toast.error('La date de début ne peut être anterieur à la date du jour.');
             }
         // Validation du code postal
           if (!/^\d{5}$/.test(workout.zip_code)) {
             errors.push('Le code postal doit contenir exactement 5 chiffres.');
+            toast.error('Vérifiez que le code postal est correct.');
   }
         // Validation de la ville
             if (workout.city.length < 3 || workout.city.length > 50) {
               errors.push('La ville doit contenir entre 3 et 50 charactères.');
+              toast.error('La ville doit contenir entre 3 et 50 charactères.');
           }
 
           // Validation du titre
           const letterCount = workout.title.replace(/\s/g, '').length;
           if (letterCount < 3 || letterCount > 50) {
               errors.push('Le titre doit contenir entre 3 et 50 charactères.');
+              toast.error('Le titre doit contenir entre 3 et 50 charactères.');
           }
         
 
@@ -142,6 +155,7 @@ const FormWorkout = () => {
                 if (workout_id) {
                   // Logique pour l'édition d'un workout existant
                   response = await updateData(`/workouts/${workout_id}`, workoutData, filesToUpload);
+                  console.log(response);
                   if (response && response.id) {
                     setSuccessMessage('Le workout a été mis à jour avec succès !'); // Message personnalisé pour l'édition
                   }
@@ -159,7 +173,8 @@ const FormWorkout = () => {
                   toast.success("Success");
                   navigate('/'); 
                 } else {
-                  toast.error("Erreur");
+                  toast.error("Erreur lors de la soumission des données.");
+
                   setValidationErrors(['Une erreur est survenue lors de la soumission des données.']);
                 }
               } catch (error) {
@@ -180,36 +195,45 @@ const FormWorkout = () => {
       };
 
     const handleImageChange = (event) => {
+        console.log(event.target.files);
         if (filesToUpload.length < 3) {
           const file = event.target.files[0];
           if (file) {
+            console.log(file);
             const newPreviewImage = URL.createObjectURL(file);
             const newFilesToUpload = [...filesToUpload, file];
+            console.log(newFilesToUpload);
+            console.log(newPreviewImage);
       
             // Mettre à jour l'état pour la prévisualisation et les fichiers à envoyer
             setPreviewImages([...previewImages, newPreviewImage]);
             setFilesToUpload(newFilesToUpload);
+            console.log(newFilesToUpload);
           }
         } else {
           console.log("Vous ne pouvez pas ajouter plus de 3 images.");
         }
+        console.log(filesToUpload);
       };
 
-    const renderImagesPreview = () => {
-        return previewImages.map((imageUrl, index) => {
-            return (
-                <div key={index} className="border border-gray-300 shadow-lg p-2 relative">
-                    <img src={imageUrl} alt={`Aperçu ${index}`} className="max-w-xs" />
-                    <button
-                        onClick={() => handleRemoveImage(index)}
-                        className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full"
-                    >
-                        &times;
-                    </button>
-                </div>
-            );
-        });
-    };
+      const renderImagesPreview = () => {
+        return (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {previewImages.map((imageUrl, index) => (
+              <div key={index} className="relative">
+                <img src={imageUrl} alt={`Aperçu ${index}`} className="w-full h-auto" />
+                <button
+                  onClick={() => handleRemoveImage(index)}
+                  className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full"
+                >
+                  &times;
+                </button>
+              </div>
+            ))}
+            {renderEmptySlots()}
+          </div>
+        );
+      };
 
     const handleRemoveImage = (index) => {
         const updatedPreviewImages = previewImages.filter((_, i) => i !== index);
@@ -220,29 +244,29 @@ const FormWorkout = () => {
     };
 
     const renderEmptySlots = () => {
-        const emptySlots = [];
-        for (let i = previewImages.length; i < 3; i++) {
-            emptySlots.push(
-                <div key={i} className="border border-gray-300 shadow-lg p-2 h-32 flex justify-center items-center relative">
-                    <span className="text-gray-500">Ajouter une image</span>
-                    <button
-                        onClick={() => document.getElementById(`imageUpload${i}`).click()}
-                        className="absolute bottom-0 right-0 bg-blue-400 text-white p-2 rounded-full"
-                    >
-                        +
-                    </button>
-                    <input
-                        type="file"
-                        id={`imageUpload${i}`}
-                        style={{ display: 'none' }}
-                        onChange={handleImageChange}
-                    />
-                </div>
-            );
-        }
-        return emptySlots;
+      const emptySlots = [];
+      const emptySlotsNeeded = 3 - previewImages.length;
+      for (let i = 0; i < emptySlotsNeeded; i++) {
+        emptySlots.push(
+          <div key={`empty-${i}`} className="border border-gray-300 shadow-lg p-2 h-32 flex justify-center items-center relative">
+            <span className="text-gray-500">Ajouter une image</span>
+            <button
+              onClick={() => document.getElementById(`imageUpload${i}`).click()}
+              className="absolute bottom-0 right-0 bg-blue-400 text-white p-2 rounded-full"
+            >
+              +
+            </button>
+            <input
+              type="file"
+              id={`imageUpload${i}`}
+              style={{ display: 'none' }}
+              onChange={handleImageChange}
+            />
+          </div>
+        );
+      }
+      return emptySlots;
     };
-    
   
 
     return (
@@ -254,11 +278,11 @@ const FormWorkout = () => {
             {workout_id ? 'Éditer votre séance' : 'Proposer une nouvelle séance'}
         </h1>
         </div>
-  
+        <div className="flex flex-col items-center mt-8 mb-16">
             <div className="flex flex-col items-center mt-8 mb-16">
-                <div className="grid grid-cols-3 gap-4 mb-16">
+                <div className="w-full max-w-4xl">
                     {renderImagesPreview()}
-                    {renderEmptySlots()}
+                    
                 </div>
 
                 <div className="w-full max-w-4xl mb-8 border p-4 rounded">
@@ -358,10 +382,17 @@ const FormWorkout = () => {
                             <ClockIcon className="h-6 text-blue-500 mr-2" />
                             <select id="start_time" name="start_time" value={workout.start_time} onChange={handleChange} required className="w-full mb-4">
                               {[...Array(48)].map((_, index) => {
+                                 const now = new Date();
+                                 const fourHoursLater = new Date(now.getTime() + 5 * 60 * 60 * 1000);
                                 const hours = String(Math.floor(index / 2)).padStart(2, '0');
                                 const minutes = index % 2 === 0 ? '00' : '30';
                                 const timeValue = `${hours}:${minutes}`;
-                                return <option key={timeValue} value={timeValue}>{timeValue}</option>;
+                                const optionTime = new Date(now.toDateString() + ' ' + timeValue);
+                                // Afficher uniquement les options qui sont 4 heures après l'heure actuelle
+                                if (optionTime >= fourHoursLater) {
+                                  return <option key={timeValue} value={timeValue}>{timeValue}</option>;
+                                }
+                                return null; // Ne pas afficher les options qui sont moins de 4 heures après l'heure actuelle
                               })}
                             </select>
                           </div>
@@ -393,7 +424,9 @@ const FormWorkout = () => {
                     </div>
                 </form>
             </div>
+        </div>
         </>
+
     );
 };
 
