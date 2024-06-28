@@ -112,7 +112,6 @@ function ProfileReservation() {
                                     )}
                                     {reservation.status === "pending" && (
                                         <>
-                                            <button className='button-primary-small' onClick={() => handleRelaunch(reservation.id)} disabled={true}>Relancer l'hote</button>
                                             <button className='button-red-small' onClick={() => handleCancel(reservation.id)}>Annuler</button>
                                         </>
                                     )}
