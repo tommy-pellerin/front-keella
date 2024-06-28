@@ -13,7 +13,9 @@ export async function authSignInUp(objectUrl, body) {
     json: body,
   });
   console.log(response);
-  Cookies.set("keellauth", response.headers.get("Authorization"));
+  if(response.headers.get("Authorization") !== null){
+    Cookies.set("keellauth", response.headers.get("Authorization"));
+  }
   if (response) {
     const contentType = response.headers.get("content-type");
     if (contentType && contentType.includes("application/json")){
