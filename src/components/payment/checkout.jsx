@@ -1,13 +1,29 @@
 import Cookies from "js-cookie";
 import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
+//atom
+import { useAtom } from "jotai";
+import { userAtom } from "../../store/user";
+
+//security
+import checkTokenAndLocalStorage from "../../services/checkTokenAndLocalStorage";
 
 const Checkout = ({creditToBuy}) => {
+  //use atom
+  const [user, setUser] = useAtom(userAtom);
   const token = Cookies.get("keellauth");
-
+  const navigate = useNavigate();
+  
   const handleCheckout = async () => {
     if(creditToBuy < 1){
       toast.error("La somme à recharger doit être au moins de 1€.")
       return
+    }
+    //check token expiration
+    const tokenStatus = checkTokenAndLocalStorage(user, setUser, navigate);
+    //if tokenStatus = true means token is not expired or invalid
+    if (!tokenStatus) {
+      return;
     }
     // Ask for confirmation
     const isConfirmed = window.confirm("Are you sure you want to proceed with the checkout?");
