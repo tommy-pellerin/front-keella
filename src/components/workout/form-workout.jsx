@@ -5,6 +5,7 @@ import { postData, getData, updateData } from '../../services/data-fetch';
 import { toast } from 'react-toastify';
 
 
+
 const FormWorkout = () => {
     
     const [successMessage, setSuccessMessage] = useState('');
@@ -58,7 +59,7 @@ const FormWorkout = () => {
                   // ... autres champs si nécessaire ...
                 });
                 setCategoryId(workoutData.category_id.toString());
-                setPreviewImages(workoutData.image_urls || []);
+                // setPreviewImages(workoutData.image_urls || []);
                 console.log(workoutData.image_urls);
               }
             } catch (error) {
@@ -109,7 +110,7 @@ const FormWorkout = () => {
         }
         // Validation de la date de début
             const workoutStartDate = new Date(workoutData.start_date);
-            const now = new Date();
+            const now = new Date(Date.now());
             const fourHoursLater = new Date(now.getTime() + 4 * 60 * 60 * 1000); // 4 heures plus tard
             if (workoutStartDate < fourHoursLater) {
                 errors.push('La date de début ne peut être anterieur à la date du jour.');
@@ -118,7 +119,7 @@ const FormWorkout = () => {
         // Validation du code postal
           if (!/^\d{5}$/.test(workout.zip_code)) {
             errors.push('Le code postal doit contenir exactement 5 chiffres.');
-            toast.error('Vérifiez que le code postal est correct.');
+            toast.error('Vérifiez votre code postal .');
   }
         // Validation de la ville
             if (workout.city.length < 3 || workout.city.length > 50) {
@@ -303,33 +304,33 @@ const FormWorkout = () => {
                     </div>
                 </div>
 
-                <form onSubmit={handleSubmit} className="w-full max-w-4xl mb-8">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-  <div className="mb-6">
-    <label htmlFor="max_participants" className="text-blue-500 font-semibold mb-2">Nombre de participants</label>
-    <div className="flex items-center mb-4 border p-2 rounded">
-      <UsersIcon className="h-6 text-blue-500 mr-2" />
-      <input type="number" id="max_participants" name="max_participants" value={workout.max_participants} placeholder="Entre 1 et 1000" onChange={handleChange} required className="w-full" />
-    </div>
+                                        <form onSubmit={handleSubmit} className="w-full max-w-4xl mb-8">
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                          <div className="mb-6">
+                            <label htmlFor="max_participants" className="text-blue-500 font-semibold mb-2">Nombre de participants</label>
+                            <div className="flex items-center mb-4 border p-2 rounded">
+                              <UsersIcon className="h-6 text-blue-500 mr-2" />
+                              <input type="number" id="max_participants" name="max_participants" value={workout.max_participants} placeholder="Entre 1 et 1000" onChange={handleChange} required className="w-full" />
+                            </div>
 
-    <label htmlFor="zip_code" className="text-blue-500 font-semibold mb-2">Code postal</label>
-    <div className="flex items-center mb-4 border p-2 rounded">
-      <MapPinIcon className="h-6 text-blue-500 mr-2" />
-      <input type="text" id="zip_code" name="zip_code" placeholder="5 chiffres" value={workout.zip_code} onChange={handleChange} required className="w-full" />
-    </div>
-    <label htmlFor="city" className="text-blue-500 font-semibold mb-2">Ville</label>
-    <div className="flex items-center mb-4 border p-2 rounded">
-      <MapIcon className="h-6 text-blue-500 mr-2" />
-      <input type="text" id="city" name="city" placeholder="Ville" value={workout.city} onChange={handleChange} required className="w-full" />
-    </div>
-  </div>
+                            <label htmlFor="zip_code" className="text-blue-500 font-semibold mb-2">Code postal</label>
+                            <div className="flex items-center mb-4 border p-2 rounded">
+                              <MapPinIcon className="h-6 text-blue-500 mr-2" />
+                              <input type="text" id="zip_code" name="zip_code" placeholder="5 chiffres" value={workout.zip_code} onChange={handleChange} required className="w-full" />
+                            </div>
+                            <label htmlFor="city" className="text-blue-500 font-semibold mb-2">Ville</label>
+                            <div className="flex items-center mb-4 border p-2 rounded">
+                              <MapIcon className="h-6 text-blue-500 mr-2" />
+                              <input type="text" id="city" name="city" placeholder="Ville" value={workout.city} onChange={handleChange} required className="w-full" />
+                            </div>
+                          </div>
 
-  <div className="mb-6">
-    <label htmlFor="title" className="text-blue-500 font-semibold mb-2">Titre</label>
-    <div className="flex items-center mb-4 border p-2 rounded">
-      <IdentificationIcon className="h-6 text-blue-500 mr-2" />
-      <input type="text" id="title" name="title" placeholder="3 à 50 charactères" value={workout.title} onChange={handleChange} required className="w-full" />
-    </div>
+                          <div className="mb-6">
+                            <label htmlFor="title" className="text-blue-500 font-semibold mb-2">Titre</label>
+                            <div className="flex items-center mb-4 border p-2 rounded">
+                              <IdentificationIcon className="h-6 text-blue-500 mr-2" />
+                              <input type="text" id="title" name="title" placeholder="3 à 50 charactères" value={workout.title} onChange={handleChange} required className="w-full" />
+                            </div>
 
                             <div className="flex flex-col mb-4 ">
                               <label htmlFor="price" className="text-blue-500 font-semibold mb-2">
@@ -382,17 +383,10 @@ const FormWorkout = () => {
                             <ClockIcon className="h-6 text-blue-500 mr-2" />
                             <select id="start_time" name="start_time" value={workout.start_time} onChange={handleChange} required className="w-full mb-4">
                               {[...Array(48)].map((_, index) => {
-                                 const now = new Date();
-                                 const fourHoursLater = new Date(now.getTime() + 5 * 60 * 60 * 1000);
                                 const hours = String(Math.floor(index / 2)).padStart(2, '0');
                                 const minutes = index % 2 === 0 ? '00' : '30';
                                 const timeValue = `${hours}:${minutes}`;
-                                const optionTime = new Date(now.toDateString() + ' ' + timeValue);
-                                // Afficher uniquement les options qui sont 4 heures après l'heure actuelle
-                                if (optionTime >= fourHoursLater) {
-                                  return <option key={timeValue} value={timeValue}>{timeValue}</option>;
-                                }
-                                return null; // Ne pas afficher les options qui sont moins de 4 heures après l'heure actuelle
+                                return <option key={timeValue} value={timeValue}>{timeValue}</option>;
                               })}
                             </select>
                           </div>

@@ -3,7 +3,8 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
 import { getData, deleteData, updateData } from '../../services/data-fetch';
-import { formatDate, formatTime, formatDuration } from '../../services/time-fixes';
+import { formatDate, formatTime, formatDuration, formatTimeToLocalTime } from '../../services/time-fixes';
+import {toast} from 'react-toastify';
 
 function HostedWorkoutHistory() {
     const [user] = useAtom(userAtom);
@@ -118,7 +119,7 @@ function HostedWorkoutHistory() {
             <div className="p-5">
               <button onClick={() => toggleAccordion(workout.id)} className="text-xl font-semibold mb-2 w-full text-left">
                 {workout.title}<br/>
-                Crée le: {formatDate(workout.created_at) +" à "+ formatTime(workout.created_at)}
+                Crée le: {formatDate(workout.created_at) +" à "+ formatTimeToLocalTime(workout.created_at)}
               </button>
         
           
