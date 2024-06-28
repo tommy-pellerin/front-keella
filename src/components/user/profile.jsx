@@ -9,6 +9,8 @@ import RatingStars from '../rating/ProfilHostRatings';
 import UserAverageRating from '../rating/UserAverageRating';
 
 
+import { formatDate, formatTime, formatDuration } from '../../services/time-fixes';
+
 function Profile() {
     const [user] = useAtom(userAtom);
     const [profile, setProfile] = useState(null);
@@ -28,10 +30,6 @@ function Profile() {
         profileData();
     }, [user,user_id]);
     
-    function formatDate(dateString) {
-        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-        return new Date(dateString).toLocaleDateString('fr-FR', options);
-    }
 
     if (!profile) {
         return <div><LoadingSpinner/></div>;

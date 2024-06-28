@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate  } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
 import { getData, deleteData, updateData } from '../../services/data-fetch';
 import CreateUserRatings from '../rating/CreateUserRatingsForHostedWorkouts.jsx';
+import { formatDate, formatTime, formatDuration } from '../../services/time-fixes';
 
 function HostedWorkoutHistory() {
     const [user] = useAtom(userAtom);
@@ -14,6 +15,38 @@ function HostedWorkoutHistory() {
     const [workoutData, setWorkoutData] = useState([]); // État pour stocker les données des workouts
 
     useEffect(() => {
+        const fetchHostedWorkouts = async () => {
+            try {
+                const userData = await getData(`/users/${user_id}`);
+                if (userData && userData.hosted_workouts) {
+                    const fetchedWorkoutData = await Promise.all(userData.hosted_workouts.map(async (workout) => {
+                        try {
+                            const workoutDetails = await getData(`/workouts/${workout.id}`);
+                            return {
+                                ...workout,
+                                category: workoutDetails.category,
+                                available_places: workoutDetails.available_places,
+                                reservations: workoutDetails.reservations.map(reservation => ({
+                                    ...reservation.user,
+                                    reservationId: reservation.id,
+                                    status: reservation.status
+                                }))
+                            };
+                        } catch (error) {
+                            console.error('Erreur lors de la récupération des détails de l\'entraînement:', error);
+                            throw error; // Re-lancer l'erreur pour la gestion par le bloc catch externe si nécessaire
+                        }
+                    }));
+                    setWorkoutData(fetchedWorkoutData); // Mettre à jour l'état avec les données récupérées
+                }
+            } catch (error) {
+                console.error('Erreur lors de la récupération des données de l\'utilisateur:', error);
+                toast.error("Erreur lors de la récupération des données");
+            }
+        };
+    
+        fetchHostedWorkouts(); // Appeler la fonction de récupération des entraînements hébergés
+    
         
       const fetchHostedWorkouts = async () => {
         try {
@@ -45,7 +78,7 @@ function HostedWorkoutHistory() {
         fetchHostedWorkouts();
       }
     }, [user, user_id]);
-
+    
 
     useEffect(() => {
       const deleteWorkout = async (workoutId) => {
@@ -65,46 +98,36 @@ function HostedWorkoutHistory() {
         }
       };
 
-      if (workoutIdToDelete !== null) {
-        deleteWorkout(workoutIdToDelete);
-        setWorkoutIdToDelete(null); // Reset the state variable to ensure the useEffect doesn't run again inadvertently
-      }
+        if (workoutIdToDelete !== null) {
+            deleteWorkout(workoutIdToDelete);
+            setWorkoutIdToDelete(null);
+        }
     }, [workoutIdToDelete]);
 
     const handleDeleteWorkout = (workoutId) => {
-      setWorkoutIdToDelete(workoutId);
+        setWorkoutIdToDelete(workoutId);
     };
 
-  const toggleAccordion = (id) => {
-    setOpenWorkoutId(openWorkoutId === id ? null : id); // Toggle l'accordéon ouvert/fermé
-  };
+    const toggleAccordion = (id) => {
+        setOpenWorkoutId(openWorkoutId === id ? null : id);
+    };
 
-//   fonction pour la duation du workout
-  function formatDuration(duration) {
-    const hours = Math.floor(duration / 60);
-    const minutes = duration % 60;
-    return `${hours}h ${minutes}min`;
-  }
-
-
-  // Fonction pour mettre à jour le statut d'une réservation
-const updateReservationStatus = async (workoutId, reservationId, newStatus) => {
-  try {
-    const response = await updateData(`/reservations/${reservationId}`, { status: newStatus });
-    if (response) {
-      // Mettre à jour l'état local pour refléter le changement de statut
-      setWorkoutData(workoutData.map(workout => {
-        if (workout.id === workoutId) {
-          return {
-            ...workout,
-            reservations: workout.reservations.map(reservation => {
-              if (reservation.reservationId === reservationId) {
-                return { ...reservation, status: newStatus };
-              }
-              return reservation;
-            })
-          };
-        }
+    const updateReservationStatus = async (workoutId, reservationId, newStatus) => {
+        try {
+            const response = await updateData(`/reservations/${reservationId}`, { status: newStatus });
+            if (response) {
+                setWorkoutData(workoutData.map(workout => {
+                    if (workout.id === workoutId) {
+                        return {
+                            ...workout,
+                            reservations: workout.reservations.map(reservation => {
+                                if (reservation.reservationId === reservationId) {
+                                    return { ...reservation, status: newStatus };
+                                }
+                                return reservation;
+                            })
+                        };
+                    }
         return workout;
       }));
       toast.success("Statut de réservation mis à jour avec succès");
@@ -161,7 +184,7 @@ const closeWorkout = async (workoutId) => {
             <div className="p-5">
               <button onClick={() => toggleAccordion(workout.id)} className="text-xl font-semibold mb-2 w-full text-left">
                 {workout.title}<br/>
-                Crée le: {new Date(workout.created_at).toLocaleString('fr-FR', { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                Crée le: {formatDate(workout.created_at) +" à "+ formatTime(workout.created_at)}
               </button>
         
           
@@ -169,14 +192,14 @@ const closeWorkout = async (workoutId) => {
                 <>
                   
                   <p className="text-gray-600 mb-4">
-                  Date et heure de création du workout: {new Date(workout.created_at).toLocaleString('fr-FR', { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                  Date et heure de création du workout: {formatDate(workout.created_at) +" à "+ formatTime(workout.created_at)}
                   </p>
                   <p className="text-gray-600 mb-4">Prix: {parseFloat(workout.price).toFixed(2)}€</p>
                   <p className="text-gray-600 mb-4">Ville: {(workout.city)}</p>
                   <p className="text-gray-600 mb-4">Code Postal: {(workout.zip_code)}</p>
                   <p className="text-gray-600 mb-4">Nombre de participants maximum: {(workout.max_participants)}</p>
                   <p className="text-gray-600 mb-4">Durée: {formatDuration(workout.duration)}</p>
-                  <p className="text-gray-600 mb-4">Date et heure de début: {new Date(workout.start_date).toLocaleString('fr-FR', { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                  <p className="text-gray-600 mb-4">Date et heure de début: {formatDate(workout.start_date) +" à "+ formatTime(workout.start_date)}
                   </p>
                   <p className="text-gray-600 mb-4">Places disponibles: {workout.available_places}</p>
                   <p className="text-gray-600 mb-4">Catégorie: {workout.category.name}</p>

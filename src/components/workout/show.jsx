@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { useAtom } from "jotai";
 import { userAtom } from "../../store/user";
 import ImageCarrousel from "./ImageCarrousel";
+import { formatDate, formatTime, formatDuration } from '../../services/time-fixes';
 //security
 import checkTokenAndLocalStorage from "../../services/checkTokenAndLocalStorage";
 //rating
@@ -24,14 +25,6 @@ const WorkoutShow = () => {
   //use atom
   const [user, setUser] = useAtom(userAtom);
 
-  function formatDate(dateString) {
-    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-    return new Date(dateString).toLocaleDateString('fr-FR', options);
-  }
-  function formatTime(dateString) {
-    const options = { hour: '2-digit', minute: '2-digit' };
-    return new Date(dateString).toLocaleTimeString('fr-FR', options);
-  }
   //loading data to show
   useEffect(() => {
     // setWorkoutCategoryLoading(true)
@@ -120,18 +113,6 @@ const WorkoutShow = () => {
       }
     };
     bookPlaces();
-  }
-    
-  function formatDuration(minutes) {
-    const hours = Math.floor(minutes / 60);
-    const remainingMinutes = minutes % 60;
-    if (hours === 0) {
-      return `${remainingMinutes} minutes`;
-    } else if (remainingMinutes === 0) {
-      return `${hours}h`;
-    } else {
-      return `${hours}h${remainingMinutes}`;
-    }
   }
 
   return(
