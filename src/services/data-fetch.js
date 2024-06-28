@@ -1,7 +1,6 @@
 import ky from "ky";
 import { BASE_URL, getHeaders } from "./config-fetch";
 
-
 // Fonction pour recuperer les donnees
 export async function getData(objectUrl) {
   try {
@@ -23,40 +22,42 @@ export async function postData(objectUrl, body, filesToUpload) {
     for (const key in body.rating) {
       formData.append(`rating[${key}]`, body.rating[key]);
     }
-  } else if(body.price) {
+  } else if (body.price) {
     for (const key in body) {
-      if (body.hasOwnProperty(key) && key !== 'workout_images') {
+      if (body.hasOwnProperty(key) && key !== "workout_images") {
         console.log(`Ajout de ${key}:`, body[key]);
         formData.append(`workout[${key}]`, body[key]);
       }
     }
     filesToUpload.forEach((imageFile, index) => {
       console.log(`Ajout de l'image à l'index ${index}:`, imageFile);
-      formData.append('workout[workout_images][]', imageFile); // Utilisez la clé 'workout[workout_images][]'
+      formData.append("workout[workout_images][]", imageFile); // Utilisez la clé 'workout[workout_images][]'
     });
-  } else if(body.reservation) {
+  } else if (body.reservation) {
     for (const key in body.reservation) {
-        formData.append(`reservation[${key}]`, body.reservation[key]);
+      formData.append(`reservation[${key}]`, body.reservation[key]);
     }
   } else if (body.category) {
     for (const key in body.category) {
-      if (body.category.hasOwnProperty(key) && key !== 'category_image') {
+      if (body.category.hasOwnProperty(key) && key !== "category_image") {
         console.log(`Ajout de ${key}:`, body.category[key]);
         formData.append(`category[${key}]`, body.category[key]);
       }
     }
     if (body.category.category_image) {
-      formData.append('category[category_image]', body.category.category_image);
+      formData.append("category[category_image]", body.category.category_image);
     }
   }
 
   // try {
-    const response = await ky.post(BASE_URL + objectUrl, {
+  const response = await ky
+    .post(BASE_URL + objectUrl, {
       headers: getHeaders(),
       body: formData,
-    }).json();
-    console.log('Réponse reçue de l\'API:', response);
-    return response;
+    })
+    .json();
+  console.log("Réponse reçue de l'API:", response);
+  return response;
   // } catch (error) {
   //   console.error("Erreur lors de la récupération des données :", error);
   //   //To get personalized message form the server
@@ -73,7 +74,9 @@ export async function postData(objectUrl, body, filesToUpload) {
 export async function deleteData(objectUrl) {
   try {
     // No need to parse JSON for a 204 No Content response
-    const response = await ky.delete(BASE_URL + objectUrl, { headers: getHeaders() });
+    const response = await ky.delete(BASE_URL + objectUrl, {
+      headers: getHeaders(),
+    });
     if (response.status === 204) {
       return null;
     } else {
@@ -91,58 +94,61 @@ export async function updateData(objectUrl, body, filesToUpload) {
   console.log(body);
 
   // Déterminez si la mise à jour concerne un workout
-  const isWorkoutUpdate = 'is_closed' in body || 'price' in body;
+  const isWorkoutUpdate = "is_closed" in body || "price" in body;
   // Wrap the body in the 'reservation' key
   for (const key in body) {
     if (body.hasOwnProperty(key)) {
-      const formKey = isWorkoutUpdate ? `workout[${key}]` : `reservation[${key}]`;
+      const formKey = isWorkoutUpdate
+        ? `workout[${key}]`
+        : `reservation[${key}]`;
       formData.append(formKey, body[key]);
     }
   }
-  if(body.price) {
+  if (body.price) {
     for (const key in body) {
       if (body.hasOwnProperty(key)) {
         formData.append(`workout[${key}]`, body[key]);
       }
     }
     // Ajoutez les fichiers d'images pour les workouts si nécessaire
-  if (isWorkoutUpdate && Array.isArray(filesToUpload)) {
-    filesToUpload.forEach((file) => {
-      formData.append('workout[workout_images][]', file);
-    });
-  }
-  } else if(body.category) {
+    if (isWorkoutUpdate && Array.isArray(filesToUpload)) {
+      filesToUpload.forEach((file) => {
+        formData.append("workout[workout_images][]", file);
+      });
+    }
+  } else if (body.category) {
     for (const key in body.category) {
-      if (body.category.hasOwnProperty(key) && key !== 'category_image') {
+      if (body.category.hasOwnProperty(key) && key !== "category_image") {
         console.log(`Ajout de ${key}:`, body.category[key]);
         formData.append(`category[${key}]`, body.category[key]);
       }
     }
     if (body.category.category_image) {
-      formData.append('category[category_image]', body.category.category_image);
+      formData.append("category[category_image]", body.category.category_image);
     }
-  } else if(body.user) {
+  } else if (body.user) {
     for (const key in body.user) {
-      if (body.user.hasOwnProperty(key) && key !== 'avatar') {
+      if (body.user.hasOwnProperty(key) && key !== "avatar") {
         console.log(`Ajout de ${key}:`, body.user[key]);
         formData.append(`user[${key}]`, body.user[key]);
       }
     }
     if (body.user.avatar) {
-      formData.append('user[avatar]', body.user.avatar);
+      formData.append("user[avatar]", body.user.avatar);
     }
   }
-    if (body.status) { 
-      formData.append('reservation[status]', body.status);
-      
-    }
+  if (body.status) {
+    formData.append("reservation[status]", body.status);
+  }
 
   try {
-    const response = await ky.patch(BASE_URL + objectUrl, {
-      headers: getHeaders(),
-      body: formData,
-    }).json();
-    console.log('Réponse du serveur:', response);
+    const response = await ky
+      .patch(BASE_URL + objectUrl, {
+        headers: getHeaders(),
+        body: formData,
+      })
+      .json();
+    console.log("Réponse du serveur:", response);
     return response;
   } catch (error) {
     console.error("Erreur lors de la mise à jour des données :", error);
