@@ -5,6 +5,7 @@ import { userAtom } from '../../store/user';
 import { getData, deleteData, updateData } from '../../services/data-fetch';
 import CreateUserRatings from '../rating/CreateUserRatingsForHostedWorkouts.jsx';
 import { formatDate, formatTime, formatDuration } from '../../services/time-fixes';
+import { toast } from 'react-toastify';
 
 function HostedWorkoutHistory() {
     const [user] = useAtom(userAtom);
@@ -15,39 +16,7 @@ function HostedWorkoutHistory() {
     const [workoutData, setWorkoutData] = useState([]); // État pour stocker les données des workouts
 
     useEffect(() => {
-        const fetchHostedWorkouts = async () => {
-            try {
-                const userData = await getData(`/users/${user_id}`);
-                if (userData && userData.hosted_workouts) {
-                    const fetchedWorkoutData = await Promise.all(userData.hosted_workouts.map(async (workout) => {
-                        try {
-                            const workoutDetails = await getData(`/workouts/${workout.id}`);
-                            return {
-                                ...workout,
-                                category: workoutDetails.category,
-                                available_places: workoutDetails.available_places,
-                                reservations: workoutDetails.reservations.map(reservation => ({
-                                    ...reservation.user,
-                                    reservationId: reservation.id,
-                                    status: reservation.status
-                                }))
-                            };
-                        } catch (error) {
-                            console.error('Erreur lors de la récupération des détails de l\'entraînement:', error);
-                            throw error; // Re-lancer l'erreur pour la gestion par le bloc catch externe si nécessaire
-                        }
-                    }));
-                    setWorkoutData(fetchedWorkoutData); // Mettre à jour l'état avec les données récupérées
-                }
-            } catch (error) {
-                console.error('Erreur lors de la récupération des données de l\'utilisateur:', error);
-                toast.error("Erreur lors de la récupération des données");
-            }
-        };
-    
-        fetchHostedWorkouts(); // Appeler la fonction de récupération des entraînements hébergés
-    
-        
+         
       const fetchHostedWorkouts = async () => {
         try {
           const data = await getData(`/users/${user_id}`);
@@ -155,19 +124,11 @@ const closeWorkout = async (workoutId) => {
         }
         return workout;
       }));
-      setAlertState({
-        showAlert: true,
-        message: 'La séance a été marquée comme terminée',
-        alertType: 'success'
-      });
+      toast.success('La séance a été marquée comme terminée');
     }
   } catch (error) {
     console.error('Erreur lors de la fermeture de la séance:', error);
-    setAlertState({
-      showAlert: true,
-      message: 'Erreur lors de la fermeture de la séance',
-      alertType: 'error'
-    });
+    toast.error('Erreur lors de la fermeture de la séance');
   }
 };
 
@@ -237,7 +198,7 @@ const closeWorkout = async (workoutId) => {
                               >
                                 Clôturer la séance
                               </button>
-                              // boutton annuler =>workout.isclosed && reservation.status === "host_cancelled"
+                              {/* boutton annuler =>workout.isclosed && reservation.status === "host_cancelled" */}
                           </div>
                           {workout.is_closed && reservation.status === 'closed' && (
                               <CreateUserRatings
