@@ -124,7 +124,7 @@ const FormWorkout = () => {
         // Si des erreurs de validation sont trouvées
         if (errors.length > 0) {
             setValidationErrors(errors);
-            toast.error("Erreur de validation");
+            toast.error("Erreur");
             return; 
           }
 
@@ -159,7 +159,7 @@ const FormWorkout = () => {
                   toast.success("Success");
                   navigate('/'); 
                 } else {
-                  toast.error("Une erreur est survenue lors de la soumission des données.");
+                  toast.error("Erreur");
                   setValidationErrors(['Une erreur est survenue lors de la soumission des données.']);
                 }
               } catch (error) {
