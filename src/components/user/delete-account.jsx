@@ -1,10 +1,12 @@
 import { useAtom } from "jotai";
-import { useNavigate } from "react-router-dom";
 import { userAtom } from "../../store/user";
+import { useNavigate } from "react-router-dom";
 import { deleteData } from "../../services/data-fetch";
+import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 
 const DeleteAccount = () => {
-  const [user] = useAtom(userAtom);
+  const [user,setUser] = useAtom(userAtom);
   const navigate = useNavigate();
 
   const handleDeleteAccount = async () => {
@@ -21,8 +23,13 @@ const DeleteAccount = () => {
     try {
       const data = await deleteData(`/users/${user.id}`);
       console.log(data);
+      // reset local storage and cookies
+      setUser({ id: "", email: "", isLogged: false });
+      Cookies.remove("keellauth");
+      toast.success("Votre compte a bien été supprimé ainsi que vos données personnelles");
       navigate("/");
     } catch (error) {
+      toast.error("Une erreur s'est produite lors de la suppression du compte.");
       console.error("Une erreur s'est produite lors de la suppression du compte.");
     }
   };
