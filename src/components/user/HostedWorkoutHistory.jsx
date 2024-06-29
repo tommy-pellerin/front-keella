@@ -108,23 +108,23 @@ function HostedWorkoutHistory() {
           toast.error("Erreur lors de la mise à jour du statut de la réservation");
         }
     };
-    
+    //Cette fonction n'est pas utilisé pour l'instant car nous n'avons pas de colonne annulation
     //on ne peut annuler une réservation que si la réservation n'est pas closed
-    const handleReservationCancel = (workout) => {
-      console.log("reservation cancel", workout);
-      console.log(workout.reservations);
-      //passer toutes les réservations en "host_cancelled"
-      workout.reservations.map(reservation => {
-        if(reservation.status === "closed"){
-          toast.error("Vous ne pouvez pas annuler un workout don't les réservation sont cloturés");
-          return
-        }
-        console.log(reservation);
-        updateReservationStatus(workout.id, reservation.reservationId, "host_cancelled")
-      })
-      //ensuite passe workout.is_closed === true
+    // const handleReservationCancel = (workout) => {
+    //   console.log("reservation cancel", workout);
+    //   console.log(workout.reservations);
+    //   //passer toutes les réservations en "host_cancelled"
+    //   workout.reservations.map(reservation => {
+    //     if(reservation.status === "closed"){
+    //       toast.error("Vous ne pouvez pas annuler un workout don't les réservation sont cloturés");
+    //       return
+    //     }
+    //     console.log(reservation);
+    //     updateReservationStatus(workout.id, reservation.reservationId, "host_cancelled")
+    //   })
+    //   //ensuite passe workout.is_closed === true and workout.is_cancelled == true (colonne à faire)
 
-    }
+    // }
 
   return (
     <>
@@ -197,37 +197,37 @@ function HostedWorkoutHistory() {
                   )}
                   <div>
                      {/* Annulation button visible only if there is a workout if not modification and delete is visible */}
-                    {workout.reservations.length <= 0 ?
+                    {!workout.reservations.some(reservation => reservation.status === 'pending' || reservation.status === 'accepted') &&
                     <>
                     <Link to={`/workouts/${workout.id}/edit`}>
                       <button 
-                        className={`text-white font-medium rounded-lg text-sm px-3 py-1 mx-1 ${workout.reservations.length === 0 ? 'bg-yellow-500 hover:bg-yellow-700' : 'bg-gray-500 cursor-not-allowed'}`}
-                        disabled={workout.reservations.length > 0}
+                        className={`text-white font-medium rounded-lg text-sm px-3 py-1 mx-1 ${!workout.reservations.some(reservation => reservation.status === 'pending' || reservation.status === 'accepted' || reservation.status === 'closed' || reservation.status === 'host_cancelled') ? 'bg-yellow-500 hover:bg-yellow-700' : 'bg-gray-500 cursor-not-allowed'}`}
+                        disabled={workout.reservations.some(reservation => reservation.status === 'pending' || reservation.status === 'accepted' || reservation.status === 'closed' || reservation.status === 'host_cancelled')}
                       >
                         Modifier votre séance
                       </button>
                     </Link>
                     <button 
                       onClick={() => handleDeleteWorkout(workout.id)}
-                      className={`text-white font-medium rounded-lg text-sm px-3 mx-1 py-1 ${workout.reservations.length === 0 ? 'bg-red-500 hover:bg-red-700' : 'bg-gray-500 cursor-not-allowed'}`}
-                      disabled={workout.reservations.length > 0}
+                      className={`text-white font-medium rounded-lg text-sm px-3 mx-1 py-1 ${!workout.reservations.some(reservation => reservation.status === 'pending' || reservation.status === 'accepted') ? 'bg-red-500 hover:bg-red-700' : 'bg-gray-500 cursor-not-allowed'}`}
+                      disabled={workout.reservations.some(reservation => reservation.status === 'pending' || reservation.status === 'accepted')}
                     >
                       Supprimer
                     </button>
                     </>
 
-                    :
-                    (!workout.is_closed && !workout.reservations.some(reservation => reservation.status === 'closed' || reservation.status === 'host_cancelled') &&
-                      <button 
-                        onClick={() => handleReservationCancel(workout)}
-                        className={`text-white font-medium rounded-lg text-sm px-3 mx-1 py-1 ${!workout.is_closed? 'bg-red-500 hover:bg-red-700' : 'bg-gray-500 cursor-not-allowed'}`}
-                        disabled={
-                          workout.is_closed || workout.reservations.some(reservation => reservation.status === 'closed' || reservation.status === 'host_cancelled')
-                        }
-                      >
-                        Annuler
-                      </button>
-                    )
+                    
+                    // (!workout.is_closed && !workout.reservations.some(reservation => reservation.status === 'closed' || reservation.status === 'host_cancelled') &&
+                    //   <button 
+                    //     onClick={() => handleReservationCancel(workout)}
+                    //     className={`text-white font-medium rounded-lg text-sm px-3 mx-1 py-1 ${!workout.is_closed? 'bg-red-500 hover:bg-red-700' : 'bg-gray-500 cursor-not-allowed'}`}
+                    //     disabled={
+                    //       workout.is_closed || workout.reservations.some(reservation => reservation.status === 'closed' || reservation.status === 'host_cancelled')
+                    //     }
+                    //   >
+                    //     Annuler
+                    //   </button>
+                    // )
                     }
                   </div>
                 </div>
