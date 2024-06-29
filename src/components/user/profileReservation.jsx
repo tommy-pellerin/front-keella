@@ -60,6 +60,7 @@ function ProfileReservation() {
     const handleRelaunch = (reservationId) => {
         console.log(`Relaunching host for reservation ${reservationId}`);
     };
+
     function truncateDescription(description, maxWords = 50) {
         const words = description.split(' ');
         return words.length > maxWords 
@@ -71,12 +72,12 @@ function ProfileReservation() {
         return <div><LoadingSpinner /></div>;
     }
 
-    const sortedParticipatedWorkouts = profile.participated_workouts?.sort((a, b) => a.id - b.id) || [];
-    const sortedReservations = profile.reservations?.sort((a, b) => a.workout_id - b.workout_id) || [];
+    const sortedParticipatedWorkouts = profile.participated_workouts?.sort((a, b) => new Date(a.start_date) - new Date(b.start_date)) || [];
+    const sortedReservations = profile.reservations?.sort((a, b) => new Date(a.created_at) - new Date(b.created_at)) || [];
 
-    const combinedReservations = sortedParticipatedWorkouts.map(workout => ({
-        workout,
-        reservation: sortedReservations.find(reservation => reservation.workout_id === workout.id)
+    const combinedReservations = sortedReservations.map(reservation => ({
+        workout: sortedParticipatedWorkouts.find(workout => workout.id === reservation.workout_id),
+        reservation
     }));
 
     return (
@@ -87,22 +88,22 @@ function ProfileReservation() {
             <div className="flex flex-col items-center">
                 {combinedReservations.length > 0 ? (
                     combinedReservations.map(({ workout, reservation }) => (
-                        <div key={`workout-${workout.id}`} className="w-full lg:w-3/4 p-2 flex justify-between rounded-lg shadow-md mb-4">
+                        <div key={`workout-${workout.id}-reservation-${reservation.id}`} className="w-full lg:w-3/4 p-2 flex justify-between rounded-lg shadow-md mb-4">
                             <div className="w-1/2 p-4 text-start">
                                 <h3>{workout.title}<br /></h3>
                                 <p>{truncateDescription(workout.description)}</p>
-                                <p> <strong>Date</strong> : {formatDate(workout.start_date)} à {formatTime(workout.start_date)}</p>
+                                <p><strong>Date</strong> : {formatDate(workout.start_date)} à {formatTime(workout.start_date)}</p>
                                 <p><strong>Ville</strong>  : {workout.city}</p>
                                 <p><strong>Durée</strong>  : {formatDuration(workout.duration)}</p>
                             </div>
                             {reservation && (
                                 <div className="w-1/2 p-4 text-end">
                                     <p>Quantité : {reservation.quantity}</p>
-                                    {reservation.status === "pending" ?<p>Status : En attente</p> : null}
-                                    {reservation.status === "accepted" ?<p>Status : Accepté</p> : null}
-                                    {reservation.status === "refused" ?<p>Status : Refusé</p> : null}
-                                    {reservation.status === "host_cancelled" ||reservation.status === "user_cancelled" ?<p>Status : Annulé</p> : null}
-                                    {reservation.status === "closed" ||reservation.status === "relaunched" ?<p>Status : Fermé</p> : null}
+                                    {reservation.status === "pending" && <p>Status : En attente</p>}
+                                    {reservation.status === "accepted" && <p>Status : Accepté</p>}
+                                    {reservation.status === "refused" && <p>Status : Refusé</p>}
+                                    {reservation.status === "host_cancelled" || reservation.status === "user_cancelled" && <p>Status : Annulé</p>}
+                                    {reservation.status === "closed" || reservation.status === "relaunched" && <p>Status : Fermé</p>}
                                     <p>Prix Total : {reservation.total} €</p>
                                     {reservation.status === "accepted" && (
                                         <>
@@ -135,9 +136,9 @@ function ProfileReservation() {
                         </div>
                     ))
                 ) : (
-                        <div className="bg-white p-8 rounded-lg shadow-lg text-center">
-                            <h3 className="text-2xl font-bold text-red-600 mb-4">Vous n'avez pas de Réservation</h3>
-                        </div>
+                    <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+                        <h3 className="text-2xl font-bold text-red-600 mb-4">Vous n'avez pas de Réservation</h3>
+                    </div>
                 )}
             </div>
         </div>
