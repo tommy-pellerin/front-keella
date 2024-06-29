@@ -16,13 +16,15 @@ const DeleteAccount = () => {
       }
       userInput = prompt("Entrée incorrecte. Pour confirmer, tapez 'je confirme'.");
     }
-  
-    // try {
-    //   await deleteData(`/users/${user.id}`);
-    //   navigate("/");
-    // } catch (error) {
-    //   console.error("Une erreur s'est produite lors de la suppression du compte.");
-    // }
+    
+    console.log("supprimer");
+    try {
+      const data = await deleteData(`/users/${user.id}`);
+      console.log(data);
+      navigate("/");
+    } catch (error) {
+      console.error("Une erreur s'est produite lors de la suppression du compte.");
+    }
   };
 
   return (
