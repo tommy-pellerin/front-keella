@@ -19,10 +19,8 @@ const DeleteAccount = () => {
       userInput = prompt("Entrée incorrecte. Pour confirmer, tapez 'je confirme'.");
     }
     
-    console.log("supprimer");
     try {
       const data = await deleteData(`/users/${user.id}`);
-      console.log(data);
       // reset local storage and cookies
       setUser({ id: "", email: "", isLogged: false });
       Cookies.remove("keellauth");
@@ -30,7 +28,7 @@ const DeleteAccount = () => {
       navigate("/");
     } catch (error) {
       toast.error("Une erreur s'est produite lors de la suppression du compte.");
-      console.error("Une erreur s'est produite lors de la suppression du compte.");
+      // console.error("Une erreur s'est produite lors de la suppression du compte.");
     }
   };
 

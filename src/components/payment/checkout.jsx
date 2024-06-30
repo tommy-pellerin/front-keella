@@ -28,11 +28,12 @@ const Checkout = ({creditToBuy}) => {
     // Ask for confirmation
     const isConfirmed = window.confirm("Are you sure you want to proceed with the checkout?");
     if (!isConfirmed) {
-      console.log("Checkout cancelled by user.");
       return; // Exit the function if the user cancels
     }
     try {
-      const response = await fetch("http://localhost:3000/checkout/create", {
+      const url = "https://back-keella.fly.dev/checkout/create"
+      // const url = "http://localhost:3000/checkout/create"
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -40,26 +41,22 @@ const Checkout = ({creditToBuy}) => {
         },
         body: JSON.stringify({ total: creditToBuy })
       });
-      console.log(response);
       if (!response.ok) {
         if (response.status === 401) {
           // Use React Router for redirection
-          console.error('User must be signed in');
           toast.error('Vous devez etre connecté');
         } else {
           throw new Error('Network response was not ok');
         }
       }
       const data = await response.json();
-      console.log(data);
       // Redirect to Stripe's payment page
       window.location.href = data.sessionUrl; // This should be the full URL provided by your server
     } catch (error) {
-      console.error('Error caught in calling function:', error);
+      // console.error('Error caught in calling function:', error);
         if (error.response) {
-          console.log(error.response);
           error.response.json().then((body) => {
-            console.error('Erreur du serveur:', body.error);
+            // console.error('Erreur du serveur:', body.error);
             toast.error(body.error);
           });
         }

@@ -28,7 +28,6 @@ const WorkoutShow = () => {
     const getWorkouts = async () => {
       try {
         const data = await getData(`/workouts/${workout_id}`);
-        console.log(data);
         setWorkout(data);
         if(data.image_urls){
           setWorkout_images(data.image_urls)
@@ -75,7 +74,6 @@ const WorkoutShow = () => {
       return;
     }
     
-    console.log(workout);
     const body = 
     {
       "reservation":{
@@ -87,7 +85,6 @@ const WorkoutShow = () => {
       if(window.confirm("Vous allez etre débité du montant indiqué, etes vous sure de vouloir continuer ?")) {
         try {
           const data = await postData(`/reservations`, body);
-          console.log(data);
           if(data){
             toast.success("Votre demande a bien été envoyée !");
             setWorkout(prevWorkout => ({
@@ -97,11 +94,10 @@ const WorkoutShow = () => {
             setQuantity(1) //reset quantity to 1 in the browser
           }
         } catch (error) {
-          console.error('Error caught in calling function:', error);
+          // console.error('Error caught in calling function:', error);
           if (error.response) {
-            console.log(error.response);
             error.response.json().then((body) => {
-              console.error('Erreur du serveur:', body.error);
+              // console.error('Erreur du serveur:', body.error);
               toast.error(`${body.error}`);
             });
           }

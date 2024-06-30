@@ -16,7 +16,6 @@ const Credit = () => {
       const profileData = async () => {
           try {
               const data = await getData(`/users/${user.id}`);
-              console.log("user: ", data);
               setProfile(data);
           } catch (error) {
               console.error(error);

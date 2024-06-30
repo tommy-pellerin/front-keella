@@ -37,11 +37,10 @@ function HostedWorkoutHistory() {
                             throw error; // Re-lancer l'erreur pour la gestion par le bloc catch externe si nécessaire
                         }
                     }));
-                    console.log(fetchedWorkoutData);
                     setWorkoutData(fetchedWorkoutData); // Mettre à jour l'état avec les données récupérées
                 }
             } catch (error) {
-                console.error('Erreur lors de la récupération des données de l\'utilisateur:', error);
+                // console.error('Erreur lors de la récupération des données de l\'utilisateur:', error);
                 toast.error("Erreur lors de la récupération des données");
             }
         };
@@ -53,17 +52,15 @@ function HostedWorkoutHistory() {
 
     useEffect(() => {
       const deleteWorkout = async (workoutId) => {
-        console.log("Delete workout called with ID:", workoutId);
         if (window.confirm('Êtes-vous sûr de vouloir supprimer cette séance d\'entraînement ?')) {
           try {
             const response = await deleteData(`/workouts/${workoutId}`);
             if (response === null) {
-              console.log("Deletion succeeded, updating state");
               setWorkoutData(prevWorkouts => prevWorkouts.filter(workout => workout.id !== workoutId));
               toast.success("Séance d\'entraînement supprimée avec succès");
             }
           } catch (error) {
-            console.error('Erreur lors de la suppression de la séance d\'entraînement:', error);
+            // console.error('Erreur lors de la suppression de la séance d\'entraînement:', error);
             toast.error("Erreur lors de la suppression de la séance d\'entraînement");
           }
         }
@@ -104,22 +101,19 @@ function HostedWorkoutHistory() {
                 toast.success("Statut de réservation mis à jour avec succès");
             }
         } catch (error) {
-          console.error('Erreur lors de la mise à jour du statut de la réservation:', error);
+          // console.error('Erreur lors de la mise à jour du statut de la réservation:', error);
           toast.error("Erreur lors de la mise à jour du statut de la réservation");
         }
     };
     //Cette fonction n'est pas utilisé pour l'instant car nous n'avons pas de colonne annulation
     //on ne peut annuler une réservation que si la réservation n'est pas closed
     // const handleReservationCancel = (workout) => {
-    //   console.log("reservation cancel", workout);
-    //   console.log(workout.reservations);
     //   //passer toutes les réservations en "host_cancelled"
     //   workout.reservations.map(reservation => {
     //     if(reservation.status === "closed"){
     //       toast.error("Vous ne pouvez pas annuler un workout don't les réservation sont cloturés");
     //       return
     //     }
-    //     console.log(reservation);
     //     updateReservationStatus(workout.id, reservation.reservationId, "host_cancelled")
     //   })
     //   //ensuite passe workout.is_closed === true and workout.is_cancelled == true (colonne à faire)

@@ -20,7 +20,6 @@ const AdminRoute = ({ children }) => {
       const fetchProfileData = async () => {
         try {
           const data = await getData(`/users/${user.id}`);
-          console.log("user: ", data);
           setProfile(data);
         } catch (error) {
           console.error(error);
@@ -30,8 +29,6 @@ const AdminRoute = ({ children }) => {
     }
   }, [user.id]);
   
-  console.log("isloged?", user.isLogged);
-
   useEffect(() => {
     if (!user.isLogged) {
       toast.warning("Vous devez etre connecté pour pouvoir poursuivre");
@@ -52,7 +49,6 @@ const AdminRoute = ({ children }) => {
         </TokenExpirationCheck>
       )
     } else if (profile && !profile.isAdmin) {
-      console.log("is not admin");
       return <Navigate to="/" />;
     }
   } else {

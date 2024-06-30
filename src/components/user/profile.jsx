@@ -19,7 +19,6 @@ function Profile() {
         const profileData = async () => {
             try {
                 const data = await getData(`/users/${user_id}`);
-                console.log("user: ", data);
                 setProfile(data);
             } catch (error) {
                 console.error(error);
@@ -41,7 +40,7 @@ function Profile() {
         <div className="container mx-auto p-4">
 
             <div className="flex justify-center">
-                <div className="bg-white rounded-lg shadow-lg p-6 w-2/5">
+                <div className="bg-white rounded-lg shadow-lg p-6 w-full lg:w-2/5">
                     <h1 className="mb-4 text-center">Compte de {profile.username}</h1>
                     <p className="text-center">Actif depuis le {formatDate(profile.created_at)}</p>
                     {profile.avatar?

@@ -14,10 +14,10 @@ const Success = () => {
       const urlParams = new URLSearchParams(window.location.search);
       const session_id = urlParams.get('session_id');
       const session_token = urlParams.get('session_token');
-      // console.log(session_id);
-      // console.log(session_token);
       try {
-        const response = await fetch(`http://localhost:3000/checkout/success`, {
+        const url = "https://back-keella.fly.dev/checkout/success"
+      // const url = "http://localhost:3000/checkout/success"
+        const response = await fetch(url, {
           method: "PATCH",
           headers: {
             'Content-Type': 'application/json',
@@ -38,15 +38,14 @@ const Success = () => {
           throw error;
         }
         const data = await response.json();
-        console.log(data);
         setSession(data);
         toast.success("Merci !");
       } catch (error) {
-        console.log('Fetch error: ', error);
+        // console.error('Fetch error: ', error);
         if (error.response) {
-          console.log(error.response);
+          // console.error(error.response);
           error.response.json().then((body) => {
-            console.error('Erreur du serveur:', body.error);
+            // console.error('Erreur du serveur:', body.error);
             toast.error(`${body.error}`);
           });
         }

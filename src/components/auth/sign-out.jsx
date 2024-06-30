@@ -22,9 +22,8 @@ export default function SignOut() {
       } catch (error) {
         console.error(error);
         if (error.response) {
-          console.log(error.response);
           error.response.json().then((body) => {
-            console.error('Erreur du serveur:', body.error);
+            // console.error('Erreur du serveur:', body.error);
             toast.error(`${body.error}`);
           });
         }

@@ -16,7 +16,6 @@ function ProfileReservation() {
         const profileData = async () => {
             try {
                 const data = await getData(`/users/${user_id}`);
-                console.log("user: ", data);
                 setProfile(data);
             } catch (error) {
                 console.error(error);
@@ -26,7 +25,6 @@ function ProfileReservation() {
     }, [user, user_id]);
 
     const handlePay = async (reservationId) => {
-        console.log(`Paying host for reservation ${reservationId}`);
         if (window.confirm("Vous confirmez que la séance est terminé ?")) {
             try {
                 const newStatus = "closed";
@@ -35,14 +33,13 @@ function ProfileReservation() {
                 setProfile(data);
                 toast.success("Merci d'avoir confirmer la fin de la séance, nous allons proceder au paiement de l'hote");
             } catch (error) {
-                console.error('Erreur lors de la mise à jour du statut de la réservation:', error);
+                // console.error('Erreur lors de la mise à jour du statut de la réservation:', error);
                 toast.error("Erreur lors de la mise à jour du statut de la réservation");
             }
         }
     };
 
     const handleCancel = async (reservationId) => {
-        console.log(`Cancelling reservation ${reservationId}`);
         if (window.confirm("Are you sure you want to delete this reservation?")) {
             try {
                 const newStatus = "user_cancelled";
@@ -51,14 +48,10 @@ function ProfileReservation() {
                 setProfile(data);
                 toast.success("Vous avez bien annulé votre réservation");
             } catch (error) {
-                console.error('Erreur lors de la mise à jour du statut de la réservation:', error);
+                // console.error('Erreur lors de la mise à jour du statut de la réservation:', error);
                 toast.error("Erreur lors de la mise à jour du statut de la réservation");
             }
         }
-    };
-
-    const handleRelaunch = (reservationId) => {
-        console.log(`Relaunching host for reservation ${reservationId}`);
     };
 
     function truncateDescription(description, maxWords = 50) {

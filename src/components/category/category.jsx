@@ -15,7 +15,6 @@ const Category = () => {
     setIsLoading(true);
     try {
       const data = await getData(`/categories?sort=name`);
-      console.log(data);
       setCategories(data);
       setIsWorkoutsLoading(false);
       setSelectedCategory(null); // Reset selected category
@@ -30,20 +29,17 @@ const Category = () => {
   }, []);
 
   const handleDelete = (id) => {
-    console.log("delete", id);
     const deleteCategory = async () => {
     try {
       const data = await deleteData(`/categories/${id}`);
-      console.log(data);
       toast.success("Catégorie supprimée");
       getCategories();
     } catch (error) {
-      console.error('Error caught in calling function:', error);
+      // console.error('Error caught in calling function:', error);
         if (error.response) {
-          console.log(error.response);
           error.response.json().then((body) => {
-            console.error('Erreur du serveur:', body.errors);
-            toast.success(`${body.errors.join(', ')}`);
+            // console.error('Erreur du serveur:', body.errors);
+            toast.error(`${body.errors.join(', ')}`);
           });
         }
     }
