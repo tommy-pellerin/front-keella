@@ -16,7 +16,6 @@ const TokenExpirationCheck = ({ children }) => {
     //if token expired redirect to sign-in
     const tokenStatus = checkTokenExpiration();
     if(tokenStatus.isValid){
-      console.log("Token is valid");
     } else {
       if (tokenStatus.reason === "notFound") {
         // Check if user data is in local storage and seems valid
