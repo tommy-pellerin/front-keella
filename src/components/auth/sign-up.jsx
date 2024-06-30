@@ -27,7 +27,7 @@ export default function SignIn() {
       toast.success("Bonjour et Bienvenue !");
       navigate("/");
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       toast.error("Une erreur est survenue. Veuillez vérifier votre email et mot de passe");
     }
   };

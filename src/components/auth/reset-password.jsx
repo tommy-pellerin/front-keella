@@ -26,7 +26,7 @@ export default function ResetPassword() {
       }
       navigate("/sign-in");
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
       toast.error("Une erreur est survenue. Veuillez recommencer");
     }
   };

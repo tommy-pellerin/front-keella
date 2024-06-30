@@ -15,7 +15,7 @@ export default function ForgetPassword() {
         toast.success("Nous avons envoyé un email avec un lien de changement de mot de passe !");
       }
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
       toast.error("Une erreur est survenue. Veuillez recommencer");
     }
   };

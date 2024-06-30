@@ -30,7 +30,6 @@ const FormWorkout = () => {
     });
 
     useEffect(() => {
-        console.log(workout_id);
         const loadCategories = async () => {
           const data = await getData('/categories');
           setCategories(data);
@@ -38,9 +37,7 @@ const FormWorkout = () => {
 
         const loadWorkoutData = async () => {
             try {
-              console.log(workout_id);
               const workoutData = await getData(`/workouts/${workout_id}`);
-              console.log(workoutData);
               if (workoutData) {
                 const startDate = new Date(workoutData.start_date);
                 const date = startDate.toISOString().split('T')[0];
@@ -60,7 +57,6 @@ const FormWorkout = () => {
                 });
                 setCategoryId(workoutData.category_id.toString());
                 // setPreviewImages(workoutData.image_urls || []);
-                console.log(workoutData.image_urls);
               }
             } catch (error) {
               console.error("Erreur lors du chargement des données du workout :", error);
@@ -71,13 +67,10 @@ const FormWorkout = () => {
             loadWorkoutData();
           }
           loadCategories();
-          console.log(workout_id);
         }, [workout_id]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(workout);
-        console.log(filesToUpload);
         const startDateTime = workout.start_date + 'T' + workout.start_time + ':00'; // Combining date and time
         const workoutData = { 
             ...workout, 
@@ -156,7 +149,6 @@ const FormWorkout = () => {
                 if (workout_id) {
                   // Logique pour l'édition d'un workout existant
                   response = await updateData(`/workouts/${workout_id}`, workoutData, filesToUpload);
-                  console.log(response);
                   if (response && response.id) {
                     setSuccessMessage('Le workout a été mis à jour avec succès !'); // Message personnalisé pour l'édition
                   }
@@ -182,7 +174,7 @@ const FormWorkout = () => {
                 // Gérez les erreurs ici
                 toast.error("Erreur");
                 setValidationErrors(['Une erreur est survenue lors de la soumission des données.']);
-                console.error("Erreur lors de la soumission du formulaire :", error);
+                // console.error("Erreur lors de la soumission du formulaire :", error);
               }
             };
 
@@ -196,25 +188,19 @@ const FormWorkout = () => {
       };
 
     const handleImageChange = (event) => {
-        console.log(event.target.files);
         if (filesToUpload.length < 3) {
           const file = event.target.files[0];
           if (file) {
-            console.log(file);
             const newPreviewImage = URL.createObjectURL(file);
             const newFilesToUpload = [...filesToUpload, file];
-            console.log(newFilesToUpload);
-            console.log(newPreviewImage);
       
             // Mettre à jour l'état pour la prévisualisation et les fichiers à envoyer
             setPreviewImages([...previewImages, newPreviewImage]);
             setFilesToUpload(newFilesToUpload);
-            console.log(newFilesToUpload);
           }
         } else {
-          console.log("Vous ne pouvez pas ajouter plus de 3 images.");
+          toast.warning("Vous ne pouvez pas ajouter plus de 3 images.");
         }
-        console.log(filesToUpload);
       };
 
       const renderImagesPreview = () => {
@@ -239,7 +225,6 @@ const FormWorkout = () => {
     const handleRemoveImage = (index) => {
         const updatedPreviewImages = previewImages.filter((_, i) => i !== index);
         const updatedFilesToUpload = filesToUpload.filter((_, i) => i !== index);
-        console.log(`Image à l'index ${index} supprimée`);
         setPreviewImages(updatedPreviewImages);
         setFilesToUpload(updatedFilesToUpload);
     };

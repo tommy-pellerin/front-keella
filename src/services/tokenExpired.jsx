@@ -34,7 +34,6 @@ const TokenExpirationCheck = ({ children }) => {
 
   useEffect(() => {
     if (isTokenExpired) {
-      console.log("token expired or not found or invalid");
       toast.warning("Votre connection a expiré, veuillez vous reconnecter");
       setUser({ id: "", email: "", isLogged: false });
       Cookies.remove("keellauth");
@@ -46,7 +45,6 @@ const TokenExpirationCheck = ({ children }) => {
     return <Navigate to="/sign-in" state={{ from: location }} />;
   }
 
-  console.log("token not expired");
   return children;
 };
 
