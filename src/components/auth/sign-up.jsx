@@ -2,17 +2,13 @@ import { authSignInUp } from "../../services/auth-fetch";
 import { useAtom } from "jotai";
 import { userAtom } from "../../store/user";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 import AuthForm from "./auth-form";
 import { toast } from 'react-toastify';
+import { Helmet } from "react-helmet";
 
 export default function SignIn() {
   const navigate = useNavigate();
   const [,setUser] = useAtom(userAtom);
-
-  useEffect(() => {
-    document.title = "Keella | Inscription";
-  }, []);
 
   const handleSignup = async ({ username, email, password }) => {
     try {
@@ -33,9 +29,15 @@ export default function SignIn() {
   };
 
   return (
-  <div className="text-center my-5">
-    <h1>Inscription</h1>
-    <AuthForm onSubmit={handleSignup} buttonText="Accepter et continuer" />
-  </div>
+  <>
+    <Helmet>
+      <title>Keella | Inscription</title>
+      <meta name="description" content="Inscription" />
+    </Helmet>
+    <div className="text-center my-5">
+      <h1>Inscription</h1>
+      <AuthForm onSubmit={handleSignup} buttonText="Accepter et continuer" />
+    </div>
+  </>
   )
 }

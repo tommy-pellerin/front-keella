@@ -2,6 +2,7 @@ import { useState } from "react";
 import { authSignInUp } from "../../services/auth-fetch.js";
 import { Link } from "react-router-dom";
 import { toast } from 'react-toastify';
+import { Helmet } from "react-helmet";
 
 export default function ForgetPassword() {
   const [email, setEmail] = useState("");
@@ -22,6 +23,11 @@ export default function ForgetPassword() {
 
   return (
     <>
+    <Helmet>
+      <title>Keella | Mot de passe oublié</title>
+      <meta name="description" content="Changement de mot de passe" />
+    </Helmet>
+    
     <div className="text-center my-5">
       <h1>Mot de passe oublié ?</h1>
       <div className="container bg-gray-200 mx-auto lg:w-3/5 my-5 border border-gray rounded-lg">

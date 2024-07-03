@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { authPatch } from "../../services/auth-fetch.js";
 import { toast } from 'react-toastify';
+import { Helmet } from "react-helmet";
 
 export default function ResetPassword() {
   const navigate = useNavigate();
@@ -33,6 +34,11 @@ export default function ResetPassword() {
 
   return (
     <>
+    <Helmet>
+      <title>Keella | Réinitialiser mon mot de passe</title>
+      <meta name="description" content="Changement de mot de passe" />
+    </Helmet>
+
     <div className="text-center my-5">
       <h1>Changement de mot de passe</h1>
       <div className="container bg-gray-200 mx-auto lg:w-3/5 my-5 border border-gray rounded-lg">

@@ -1,8 +1,8 @@
 import { authSignInUp } from "../../services/auth-fetch";
 import { useNavigate } from "react-router-dom";
-import { useEffect} from "react";
 import AuthForm from "./auth-form";
 import { toast } from 'react-toastify';
+import { Helmet } from "react-helmet";
 
 //atom
 import { useAtom } from "jotai";
@@ -11,10 +11,6 @@ import { userAtom } from "../../store/user";
 export default function SignIn() {
   const navigate = useNavigate();
   const [, setUser] = useAtom(userAtom);
-
-  useEffect(() => {
-    document.title = "Keella | Connection";
-  }, []);
 
   const handleLogin = async ({ email, password }) => {
     try {
@@ -37,10 +33,16 @@ export default function SignIn() {
   };
 
   return (
+    <>
+    <Helmet>
+      <title>Keella | Connection</title>
+      <meta name="description" content="Connection" />
+    </Helmet>
     
     <div className="text-center my-5">
       <h1>Connection</h1>
       <AuthForm onSubmit={handleLogin} buttonText="Login" />
     </div>
+    </>
     )
 }

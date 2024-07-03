@@ -3,6 +3,7 @@ import LoadingSpinner from "../static/LoadingSpinner";
 import { useEffect, useState } from 'react';
 import Cookies from "js-cookie";
 import { toast } from 'react-toastify';
+import { Helmet } from "react-helmet";
 
 const Success = () => {
   const [session, setSession] = useState(null);
@@ -62,6 +63,10 @@ const Success = () => {
 
   return(
     <>
+      <Helmet>
+        <title>Keella | Paiement réussie</title>
+        <meta name="description" content="Paiement réussie" />
+      </Helmet>
       <section className="bg-green-500 py-5 text-center">
         <h1 className="text-light">Succès</h1>
       </section>
