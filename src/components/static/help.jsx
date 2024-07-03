@@ -14,7 +14,7 @@ const Help = () => {
               <div>
                 <p>1. Je dépose mon annonce gratuitement sur la plateforme</p>
                 <p>
-                  Cliquez sur &quot;Proposer une séance&quot; (présent dans le menu) pour
+                  Cliquez sur &quot;Créer une annonce&quot; (présent dans le menu) pour
                   déposer votre annonce en un clic. Ajoutez les détails de vos
                   équipements et fixez vous-même le prix de la location.
                   N&apos;oubliez pas d&apos;y insérer quelques photos !
@@ -54,9 +54,14 @@ const Help = () => {
                 <p>1. Je cherche des équipements</p>
                 <p>
                   Entrez la localisation souhaitée dans la barre de recherche et
-                  sélectionnez les équipements dont vous avez toujours rêvé.
-                  Vous avez la possibilité de contacter le propriétaire afin de
-                  lui demander des informations supplémentaires.
+                  sélectionnez les équipements dont vous avez besoin.
+                  Vous avez la possibilité de voir le profil du propriétaire afin de voir
+                  des informations supplémentaires.
+                </p>
+                <p>2. Je recharge mes crédits</p>
+                <p>
+                  Dans la version actuelle, Keella utilise un systeme de crédits internes. 
+                  Les locataires doivent acheter les crédits pour pouvoir réserver.
                 </p>
                 <p>2. Je réserve en ligne</p>
                 <p>
@@ -120,6 +125,13 @@ const Help = () => {
                   plus tard dans un délai de 30 minutes à compter de l&apos;heure
                   convenue, aucun remboursement ne pourra être effectué.
                 </p>
+                <p>
+                  4. Comment contacter le locataire ?
+                </p>
+                <p>
+                  Dans la version actuelle de Keella, il n&apos;y a pas de messagerie, 
+                  vous pouvez contacter vos clients par mail via &ldquo;mon compte &gt; mes annonces &gt; contacter le client&ldquo;
+                </p>
               </div>
             </div>
           </div>
@@ -143,8 +155,7 @@ const Help = () => {
                 </p>
                 <p>2. Quand serai-je débité ?</p>
                 <p>
-                  Vous êtes débité dès que le propriétaire accepte votre demande
-                  de réservation.
+                  Vous êtes débité dès que le paiement est passé.
                 </p>
                 <p>3. Réservation : le propriétaire ne me répond pas/plus</p>
                 <p>
@@ -154,6 +165,13 @@ const Help = () => {
                   propriétaires différents avant de réserver pour s&apos;assurer de
                   leurs disponibilités avant d&apos;effectuer une demande de
                   réservation.
+                </p>
+                <p>
+                  4. Comment contacter l&apos;hote ?
+                </p>
+                <p>
+                  Dans la version actuelle de Keella, il n&apos;y a pas de messagerie, 
+                  vous pouvez contacter votre hote par mail via &ldquo;mon compte &gt; mes réservations &gt; contacter l&apos;hote&ldquo;
                 </p>
               </div>
             </div>

@@ -73,15 +73,10 @@ const PrivacyPolicy = () => {
           www.keella.com, les données suivantes sont collectées :
         </p>
 
-        <ul>
-          <li>Prénom</li>
-          <li>Nom</li>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>Nom de compte</li>
           <li>Email</li>
-          <li>Date de naissance</li>
           <li>Mot de passe</li>
-          <li>Téléphone</li>
-          <li>Pays</li>
-          <li>Possession d&apos;une piscine ou non</li>
           <li>
             N° SIRET et autres informations concernant les professionnels le cas
             échéant
@@ -110,7 +105,7 @@ const PrivacyPolicy = () => {
           Keella utilise vos données à caractère personnel collectées pour :
         </p>
 
-        <ul>
+        <ul className="list-disc pl-5 space-y-2">
           <li>
             Fourniture du service (gestion des Comptes, gestion des avis,
             gestion des annonces,…)
@@ -190,7 +185,7 @@ const PrivacyPolicy = () => {
           être les suivants :
         </p>
 
-        <ul>
+        <ul className="list-disc pl-5 space-y-2">
           <li>
             dans le cadre d&apos;une procédure de contrôle et/ou d&apos;une
             requête, Keella peut être tenue de divulguer certaines Données, sur
@@ -304,7 +299,7 @@ const PrivacyPolicy = () => {
           du RGPD :
         </p>
 
-        <ul>
+        <ul  className="list-disc pl-5 space-y-2">
           <li>
             du droit d&apos;obtenir la confirmation que des données personnelles
             vous concernant sont ou ne sont pas traitées et, lorsqu&apos;elles
@@ -392,7 +387,7 @@ const PrivacyPolicy = () => {
 
         <p>Les cookies déposés sur www.keella.com sont les suivants :</p>
 
-        <ul>
+        <ul  className="list-disc pl-5 space-y-2">
           <li>
             keellauth : cookie fonctionnel déposé pour vérifier qu&apos;il
             s&apos;agit d&apos;un utilisateur sécurisé (rétention : 1 journée)
@@ -422,40 +417,40 @@ const PrivacyPolicy = () => {
           de quelle manière modifier l&apos;enregistrement de cookies.
         </p>
 
-        <ul>
+        <ul  className="list-disc pl-5 space-y-2">
           <li>
             Microsoft Internet Explorer{" "}
-            <a href="http://windows.microsoft.com/fr-FR/windows-vista/Block-or-allow-cookies">
+            <a className="underline" href="http://windows.microsoft.com/fr-FR/windows-vista/Block-or-allow-cookies">
               http://windows.microsoft.com/fr-FR/windows-vista/Block-or-allow-cookies
             </a>
           </li>
           <li>
             Microsoft Edge{" "}
-            <a href="https://privacy.microsoft.com/fr-fr/windows-10-microsoft-edge-and-privacy">
+            <a className="underline" href="https://privacy.microsoft.com/fr-fr/windows-10-microsoft-edge-and-privacy">
               https://privacy.microsoft.com/fr-fr/windows-10-microsoft-edge-and-privacy
             </a>
           </li>
           <li>
             Apple Safari{" "}
-            <a href="http://docs.info.apple.com/article.html?path=Safari/3.0/fr/9277.html">
+            <a className="underline" href="http://docs.info.apple.com/article.html?path=Safari/3.0/fr/9277.html">
               http://docs.info.apple.com/article.html?path=Safari/3.0/fr/9277.html
             </a>
           </li>
           <li>
             Google Chrome{" "}
-            <a href="http://support.google.com/chrome/bin/answer.py?hl=fr&hlrm=en&answer=95647">
+            <a className="underline" href="http://support.google.com/chrome/bin/answer.py?hl=fr&hlrm=en&answer=95647">
               http://support.google.com/chrome/bin/answer.py?hl=fr&hlrm=en&answer=95647
             </a>
           </li>
           <li>
             Mozilla Firefox{" "}
-            <a href="https://support.mozilla.org/fr/kb/activer-desactiver-cookies-preferences">
+            <a className="underline" href="https://support.mozilla.org/fr/kb/activer-desactiver-cookies-preferences">
               https://support.mozilla.org/fr/kb/activer-desactiver-cookies-preferences
             </a>
           </li>
           <li>
             Opera{" "}
-            <a href="http://help.opera.com/Windows/10.20/fr/cookies.html">
+            <a className="underline" href="http://help.opera.com/Windows/10.20/fr/cookies.html">
               http://help.opera.com/Windows/10.20/fr/cookies.html
             </a>
           </li>

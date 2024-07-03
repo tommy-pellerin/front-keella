@@ -15,8 +15,8 @@ const Success = () => {
       const session_id = urlParams.get('session_id');
       const session_token = urlParams.get('session_token');
       try {
-        const url = "https://back-keella.fly.dev/checkout/success"
-      // const url = "http://localhost:3000/checkout/success"
+        // const url = "https://back-keella.fly.dev/checkout/success"
+      const url = "http://localhost:3000/checkout/success"
         const response = await fetch(url, {
           method: "PATCH",
           headers: {
