@@ -17,6 +17,7 @@ function ProfileReservation() {
         const profileData = async () => {
             try {
                 const data = await getData(`/users/${user_id}`);
+                console.log(data);
                 setProfile(data);
             } catch (error) {
                 console.error(error);
@@ -94,6 +95,16 @@ function ProfileReservation() {
                                     <p><strong>Date</strong> : {formatDate(workout.start_date)} à {formatTime(workout.start_date)}</p>
                                     <p><strong>Ville</strong>  : {workout.city}</p>
                                     <p><strong>Durée</strong>  : {formatDuration(workout.duration)}</p>
+                                    <button 
+                                        onClick={() => {
+                                            const email = "client@example.com"; // Replace this with the client's email address
+                                            const subject = encodeURIComponent("Keella: contact au sujet de votre workout");
+                                            const body = encodeURIComponent("Bonjour, \n\nVotre message ici.");
+                                            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+                                        }}
+                                        className='button-primary-small mt-2'>
+                                            Contacter l&apos;hote
+                                    </button>
                                 </div>
                                 {reservation && (
                                     <div className="w-1/2 p-4 text-end">
