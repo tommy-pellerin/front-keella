@@ -38,6 +38,7 @@ function HostedWorkoutHistory() {
                             throw error; // Re-lancer l'erreur pour la gestion par le bloc catch externe si nécessaire
                         }
                     }));
+                    console.log(fetchedWorkoutData);
                     setWorkoutData(fetchedWorkoutData); // Mettre à jour l'état avec les données récupérées
                 }
             } catch (error) {
@@ -185,7 +186,7 @@ function HostedWorkoutHistory() {
                                 </button>
                                 <button
                                     onClick={() => {
-                                      const email = "client@example.com"; // Replace this with the client's email address
+                                      const email = reservation.email;
                                       const subject = encodeURIComponent("Keella: contact au sujet de votre réservation");
                                       const body = encodeURIComponent("Bonjour, \n\nVotre message ici.");
                                       window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;

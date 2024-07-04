@@ -17,7 +17,6 @@ function ProfileReservation() {
         const profileData = async () => {
             try {
                 const data = await getData(`/users/${user_id}`);
-                console.log(data);
                 setProfile(data);
             } catch (error) {
                 console.error(error);
@@ -42,7 +41,7 @@ function ProfileReservation() {
     };
 
     const handleCancel = async (reservationId) => {
-        if (window.confirm("Are you sure you want to delete this reservation?")) {
+        if (window.confirm("Etes vous sure de vouloir annuler cette réservation ?")) {
             try {
                 const newStatus = "user_cancelled";
                 await updateData(`/reservations/${reservationId}`, { status: newStatus });
@@ -95,9 +94,10 @@ function ProfileReservation() {
                                     <p><strong>Date</strong> : {formatDate(workout.start_date)} à {formatTime(workout.start_date)}</p>
                                     <p><strong>Ville</strong>  : {workout.city}</p>
                                     <p><strong>Durée</strong>  : {formatDuration(workout.duration)}</p>
+                                    <p><strong>Hote</strong>  : {workout.host.username}</p>
                                     <button 
                                         onClick={() => {
-                                            const email = "client@example.com"; // Replace this with the client's email address
+                                            const email = workout.host.email;
                                             const subject = encodeURIComponent("Keella: contact au sujet de votre workout");
                                             const body = encodeURIComponent("Bonjour, \n\nVotre message ici.");
                                             window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
