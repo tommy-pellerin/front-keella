@@ -15,7 +15,6 @@ const ExplanatoryBanner = () => {
 
         {/* Cartes responsives */}
         <div className="w-full md:w-1/2 space-y-4">
-
           
           {/* Carte pour les sportifs */}
           <div className="border rounded-lg p-4">
