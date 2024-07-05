@@ -5,6 +5,7 @@ import { userAtom } from '../../store/user';
 import { getData, deleteData, updateData } from '../../services/data-fetch';
 import { formatDate, formatTime, formatDuration, formatTimeToLocalTime } from '../../services/time-fixes';
 import {toast} from 'react-toastify';
+import { Helmet } from 'react-helmet';
 
 function HostedWorkoutHistory() {
     const [user] = useAtom(userAtom);
@@ -37,6 +38,7 @@ function HostedWorkoutHistory() {
                             throw error; // Re-lancer l'erreur pour la gestion par le bloc catch externe si nécessaire
                         }
                     }));
+                    console.log(fetchedWorkoutData);
                     setWorkoutData(fetchedWorkoutData); // Mettre à jour l'état avec les données récupérées
                 }
             } catch (error) {
@@ -137,6 +139,11 @@ function HostedWorkoutHistory() {
 
   return (
     <>
+      <Helmet>
+          <title>Keella | Mes annonces</title>
+          <meta name="description" content="Page mes annnonces où je peux voir mes annonces et accepter ou refuser une demande de réservation" />
+      </Helmet>
+      
       <div className="background-blue-500">
         <h1 className="text-4xl">Mes Annonces</h1>
       </div>
@@ -146,8 +153,8 @@ function HostedWorkoutHistory() {
             <div className="p-5">
               <button onClick={() => toggleAccordion(workout.id)} className="text-xl font-semibold mb-2 w-full text-left">
                 {workout.title}
-                <br/>
-                Crée le: {formatDate(workout.created_at) +" à "+ formatTimeToLocalTime(workout.created_at)} 
+                <br/>                
+                Date et heure de début: {formatDate(workout.start_date) +" à "+ formatTime(workout.start_date)}
                 <br/>
                 Nombre de réservation : {workout.reservations.length}, dont {workout.reservations.filter(reservation => reservation.status === "pending").length} en attente de réponse
               </button>
@@ -172,7 +179,7 @@ function HostedWorkoutHistory() {
                   
                   <ul className="mb-4">
                       {workout.reservations && workout.reservations.map(reservation => (
-                          <li key={reservation.id} className="flex justify-between items-center mb-2">
+                          <li key={reservation.reservationId} className="flex justify-between items-center mb-2">
                           <span>Client: 
                               <Link to={`/profile/${reservation.id}`} className="text-blue-600 hover:text-blue-800 ml-2">
                                   {reservation.username}
@@ -195,9 +202,14 @@ function HostedWorkoutHistory() {
                                 >
                                     Refuser
                                 </button>
-                                <button 
-                                    className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${['closed', 'host_cancelled', 'user_cancelled'].includes(reservation.status) ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`} 
-                                    disabled={['closed', 'host_cancelled', 'user_cancelled'].includes(reservation.status)}
+                                <button
+                                    onClick={() => {
+                                      const email = reservation.email;
+                                      const subject = encodeURIComponent("Keella: contact au sujet de votre réservation");
+                                      const body = encodeURIComponent("Bonjour, \n\nVotre message ici.");
+                                      window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+                                  }}
+                                    className={'text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 bg-blue-600 hover:bg-blue-700'} 
                                 >
                                     Contacter client
                                 </button>

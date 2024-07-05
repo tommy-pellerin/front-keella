@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="flex justify-around border-t-2 py-5">
       <div>
-        <p>© 2024 Keella, all right reserved.</p>
+        <p>© {currentYear} Keella, all right reserved.</p>
       </div>
       <div>
         <ul>
