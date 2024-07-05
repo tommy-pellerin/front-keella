@@ -3,7 +3,10 @@ import LoadingSpinner from "../static/LoadingSpinner";
 import { useEffect, useState } from 'react';
 import Cookies from "js-cookie";
 import { toast } from 'react-toastify';
+
+import { BASE_URL } from "../../services/config-fetch";
 import { Helmet } from "react-helmet";
+
 
 const Success = () => {
   const [session, setSession] = useState(null);
@@ -16,8 +19,11 @@ const Success = () => {
       const session_id = urlParams.get('session_id');
       const session_token = urlParams.get('session_token');
       try {
+
+        const url = BASE_URL + "/checkout/success";
         // const url = "https://back-keella.fly.dev/checkout/success"
-      const url = "http://localhost:3000/checkout/success"
+      // const url = "http://localhost:3000/checkout/success"
+
         const response = await fetch(url, {
           method: "PATCH",
           headers: {
