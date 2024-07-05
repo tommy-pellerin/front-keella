@@ -11,6 +11,7 @@ const Faq = () => {
   };
 
   return (
+    <>
     <div className='w-full px-4'>
       <div className='mx-auto w-full max-w-md md:max-w-3xl'>
         <h2 className='text-2xl font-bold text-center mb-8'>FAQs</h2>
@@ -43,6 +44,7 @@ const Faq = () => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 

@@ -32,6 +32,7 @@ const Checkout = ({creditToBuy}) => {
       return; // Exit the function if the user cancels
     }
     try {
+
       // Use Vite environment variable for BASE_URL
       const url = BASE_URL + "/checkout/create";
       // const url = "https://back-keella.fly.dev/checkout/create"

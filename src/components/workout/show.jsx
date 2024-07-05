@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { getData, postData } from "../../services/data-fetch";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
+import { Helmet } from "react-helmet";
 //atom
 import { useAtom } from "jotai";
 import { userAtom } from "../../store/user";
@@ -110,6 +111,11 @@ const WorkoutShow = () => {
 
   return(
     <>
+      <Helmet>
+          <title>Keella | {workout.title || "Detail d'un workout"}</title>
+          <meta name="description" content="page de détails du workout avec des boutons pour choisir la quantité et réserver le workout" />
+      </Helmet>
+
       <div className="border-y border-black bg-gray-200 my-10 h-2/5">
       {workout_images && workout_images.length > 0 ? 
         <ImageCarrousel images={workout_images}/>

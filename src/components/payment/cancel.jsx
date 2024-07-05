@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom"
-
+import { Helmet } from "react-helmet"
 const Cancel = () => {
   return(
     <>
+      <Helmet>
+        <title>Keella | Echec de paiement</title>
+        <meta name="description" content="Echec de paiement" />
+      </Helmet>
       <section className="bg-red-500 py-5 text-center">
         <h1 className="text-light">Echec</h1>
       </section>

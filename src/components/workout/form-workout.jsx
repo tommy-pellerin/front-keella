@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { UsersIcon, CurrencyDollarIcon, CalendarIcon, ClockIcon, RocketLaunchIcon, MapPinIcon, MapIcon, IdentificationIcon, PencilSquareIcon } from '@heroicons/react/24/solid';
 import { postData, getData, updateData } from '../../services/data-fetch';
 import { toast } from 'react-toastify';
-
+import { Helmet } from 'react-helmet';
 
 
 const FormWorkout = () => {
@@ -257,6 +257,10 @@ const FormWorkout = () => {
 
     return (
         <>
+          <Helmet>
+            <title>Keella | Création d&apos;un workout</title>
+            <meta name="description" content="Création d'un workout" />
+          </Helmet>
 
       {/* Bandeau bleu avec un titre */}
         <div className="background-blue-500">

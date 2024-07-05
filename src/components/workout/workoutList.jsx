@@ -43,7 +43,7 @@ function WorkoutList() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-5">
                 {workouts.map(workout => (
                     <Link key={workout.id} className="flex flex-col bg-slate border shadow-sm rounded-xl" to={`/workouts/${workout.id}`}>
-                        <img className="w-full h-auto rounded-t-xl" src={workout.image_url || "https://images.unsplash.com/photo-1599058917212-d750089bc07e?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D"} alt={workout.title} />
+                        <img className="w-full h-60 rounded-t-xl object-cover" src={workout.image_url || "https://images.unsplash.com/photo-1599058917212-d750089bc07e?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D"} alt={workout.title} />
                         <div className="p-4 md:p-5">
                             <h3 className="text-lg font-bold text-gray-800">{workout.title}</h3>
                             <p className="mt-1 text-gray-500 text-description">{workout.description}</p>
@@ -55,8 +55,8 @@ function WorkoutList() {
                                 <li className="mt-1 text-gray-500">Heure : {formatTime(workout.start_date)}</li>
                             </ul>
                             {workout.available_places > 0
-                                ? <button className='button-primary-small'>{workout.available_places} places disponible</button>
-                                : <button className='button-red-small'> Plus de places disponible</button>}
+                                ? <button className='button-primary-small mt-3'>{workout.available_places} places disponible</button>
+                                : <button className='button-red-small mt-3'> Plus de places disponible</button>}
                         </div>
                     </Link>
                 ))}
