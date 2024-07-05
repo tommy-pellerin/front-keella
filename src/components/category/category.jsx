@@ -3,6 +3,7 @@ import { getData, deleteData } from '../../services/data-fetch'
 import CategoryForm from './catagory-form';
 import LoadingSpinner from '../static/LoadingSpinner.jsx'
 import { toast } from 'react-toastify';
+import { Helmet } from "react-helmet";
 
 const Category = () => {
   const [categories,setCategories] = useState([])
@@ -57,6 +58,11 @@ const Category = () => {
   }
 
   return(
+    <>
+    <Helmet>
+      <title>Keella | Categories</title>
+      <meta name="description" content="Les catégories de sport" />
+    </Helmet>
     <div className='container my-5 mx-10'>
       <h1>Categories</h1>
       <button className='button-green-small my-3' onClick={()=>{setShowForm(!showForm)}}>Create</button>
@@ -83,6 +89,7 @@ const Category = () => {
       </div>
     ))}
     </div>
+    </>
   )
 }
 
