@@ -1,6 +1,7 @@
 import Cookies from "js-cookie";
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../../services/config-fetch";
 //atom
 import { useAtom } from "jotai";
 import { userAtom } from "../../store/user";
@@ -31,7 +32,9 @@ const Checkout = ({creditToBuy}) => {
       return; // Exit the function if the user cancels
     }
     try {
-      const url = "https://back-keella.fly.dev/checkout/create"
+      // Use Vite environment variable for BASE_URL
+      const url = BASE_URL + "/checkout/create";
+      // const url = "https://back-keella.fly.dev/checkout/create"
       // const url = "http://localhost:3000/checkout/create"
       const response = await fetch(url, {
         method: "POST",
