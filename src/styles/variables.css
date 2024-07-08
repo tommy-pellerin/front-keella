@@ -50,7 +50,7 @@ p {
   font-weight: 600; /* font-semibold */
   border-radius: 0.5rem; /* rounded-lg */
   border: none; /* border border-transparent */
-  background-color: rgb(59 130 246); /* bg-purple-500 */
+  background-color: rgb(59 130 246); /* bg-blue-500 */
   color: white; /* text-white */
   width: 100%; /* new line */
 }
