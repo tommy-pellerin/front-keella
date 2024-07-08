@@ -19,7 +19,7 @@ const ExplanatoryBanner = () => {
           {/* Carte pour les sportifs */}
           <div className="border rounded-lg p-4">
             <button
-              className="font-bold text-lg"
+              className="font-bold text-lg w-full"
               onClick={() => setIsEquipmentOpen(!isEquipmentOpen)}
             >
               Pour les sportifs
@@ -40,7 +40,7 @@ const ExplanatoryBanner = () => {
           {/* Carte pour les hôtes */}
           <div className="border rounded-lg p-4">
             <button
-              className="font-bold text-lg"
+              className="font-bold text-lg w-full"
               onClick={() => setIsUsageOpen(!isUsageOpen)}
             >
               Pour les hôtes

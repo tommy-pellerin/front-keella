@@ -29,33 +29,35 @@ const UserFeedback = () => {
     <div className='relative flex flex-col items-center'>
       <h2 className='text-3xl text-center font-bold text-gray-800 my-6'>
         Ce que nos utilisateurs pensent de nous
-        </h2>
+      </h2>
       <div className='flex justify-center items-center'>
-        <ChevronLeftIcon className='h-12 w-12 absolute top-1/2 left-10 text-gray-800 cursor-pointer' onClick={prevSlide} />
-        <ChevronRightIcon className='h-12 w-12 absolute top-1/2 right-10 text-gray-800 cursor-pointer' onClick={nextSlide} />
+        {/* Chevron Icons */}
         {feedbacks.map((feedback, index) => {
           return (
             <div className={index === current ? 'slide active' : 'slide'} key={feedback.id}>
               {index === current && (
-              <div className='p-8 max-w-3xl mx-auto bg-white rounded-xl shadow-md space-x-4'>
-              {/* Avatar de l'utilisateur */}
-              <div className='flex items-center space-x-4'>
-                <img
-                  className="h-8 w-8 rounded-full"
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                  alt=""
-                />
-                <div className=' font-medium text-black'>{feedback.text}</div>
+              <div className='p-8 max-w-3xl mx-auto bg-white rounded-xl shadow-md space-x-4 relative'>
+                {/* ChevronLeftIcon */}
+                <ChevronLeftIcon className='h-12 w-12 absolute top-1/2 left-0 transform -translate-x-full -translate-y-1/2 text-gray-800 cursor-pointer' onClick={prevSlide} />
+                {/*  Avatar */}
+                <div className='flex items-center space-x-4'>
+                  <img
+                    className="h-8 w-8 rounded-full"
+                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    alt=""
+                  />
+                  <div className='font-medium text-black'>{feedback.text}</div>
+                </div>
+                {/* Rating Stars */}
+                <div className='text-yellow-400 text-lg'>
+                  {'★'.repeat(feedback.rating)}
+                  {'☆'.repeat(5 - feedback.rating)}
+                </div>
+                {/* ChevronRightIcon */}
+                <ChevronRightIcon className='h-12 w-12 absolute top-1/2 right-0 transform translate-x-full -translate-y-1/2 text-gray-800 cursor-pointer' onClick={nextSlide} />
               </div>
-              {/* Étoiles pour la note */}
-              <div className='text-yellow-400 text-lg'>
-                {'★'.repeat(feedback.rating)}
-                {'☆'.repeat(5 - feedback.rating)}
-              </div>
-              
+              )}
             </div>
-          )}
-        </div>
           );
         })}
       </div>
