@@ -216,7 +216,7 @@ function HostedWorkoutHistory() {
                                       const body = encodeURIComponent("Bonjour, \n\nVotre message ici.");
                                       window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
                                   }}
-                                    className={'text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 bg-blue-600 hover:bg-blue-700'} 
+                                    className={'text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 bg-blue-500 hover:bg-blue-700'} 
                                 >
                                     Contacter client
                                 </button>

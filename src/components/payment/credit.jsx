@@ -45,7 +45,7 @@ const Credit = () => {
       <section className="container bg-gray-200 border border-gray rounded-lg mx-auto lg:w-3/5 my-5 text-center">
         <h1>Vos crédits et paiements</h1>
         <div className="p-5">
-          <h3 className="text-purple-500">
+          <h3 className="text-blue-500">
             Votre crédit actuel: {profile.credit} €
           </h3>
           <div className="flex flex-col items-center space-y-5 my-5">
@@ -57,7 +57,7 @@ const Credit = () => {
               placeholder="Entrer un minimum de 1€"
               value={creditToBuy}
               onChange={handleCreditInput}
-              className="w-full h-10 px-2 border rounded-md focus:border-purple-500 focus:outline-none"
+              className="w-full h-10 px-2 border rounded-md focus:border-blue-500 focus:outline-none"
               required
             />
             <Checkout creditToBuy={creditToBuy} />

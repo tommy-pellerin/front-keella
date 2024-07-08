@@ -40,7 +40,7 @@ function Profile() {
             </Helmet>
             <div className="">
             <div className='background-blue-500'>
-                <h2 className='md-4'>Profil</h2>
+            <h2 className='text-4xl'>Profil</h2>
             </div>
             <div className="container mx-auto p-4">
 
