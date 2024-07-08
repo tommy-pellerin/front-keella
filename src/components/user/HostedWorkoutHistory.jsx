@@ -231,8 +231,8 @@ function HostedWorkoutHistory() {
                     <Link to={`/workouts/${workout.id}/edit`}>
                       <button 
                         title={!workout.reservations.some(reservation => reservation.status === 'pending' || reservation.status === 'accepted' || reservation.status === 'closed') ? "Modifier cette séance" : "Vous ne pouvez pas modifier un workout ayant des réservations en cours, si vous souhaiter supprimer le workout, veuillez annuler toutes les réservations en cours"}
-                        // className={`text-white font-medium rounded-lg text-sm px-3 py-1 mx-1 ${!workout.reservations.some(reservation => reservation.status === 'pending' || reservation.status === 'accepted' || reservation.status === 'closed') ? 'bg-yellow-500 hover:bg-yellow-700' : 'bg-gray-500 cursor-not-allowed'}`}
-                        // disabled={workout.reservations.some(reservation => reservation.status === 'pending' || reservation.status === 'accepted' || reservation.status === 'closed')}
+                        className={`text-white font-medium rounded-lg text-sm px-3 py-1 mx-1 ${!workout.reservations.some(reservation => reservation.status === 'pending' || reservation.status === 'accepted' || reservation.status === 'closed') ? 'bg-yellow-500 hover:bg-yellow-700' : 'bg-gray-500 cursor-not-allowed'}`}
+                        disabled={workout.reservations.some(reservation => reservation.status === 'pending' || reservation.status === 'accepted' || reservation.status === 'closed')}
                       >
                         Modifier votre annonce
                       </button>
