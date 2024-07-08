@@ -8,7 +8,7 @@ const ExplanatoryBanner = () => {
 
   return (
     <div className='py-5'>
-      <h2 className="text-center font-bold text-2xl">Avec Keella, tout le monde y gagne !</h2>
+      <h2 className="text-center font-bold text-3xl">Avec Keella, tout le monde y gagne !</h2>
       <div className="flex flex-col md:flex-row justify-between items-center max-w-screen-lg mx-auto pb-4'">
         {/* Image responsive */}
         <img src={banner} alt="activity" className="w-full md:w-1/2" />
