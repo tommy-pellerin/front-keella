@@ -238,7 +238,7 @@ const FormWorkout = () => {
             <span className="text-gray-500">Ajouter une image</span>
             <button
               onClick={() => document.getElementById(`imageUpload${i}`).click()}
-              className="absolute bottom-0 right-0 bg-blue-400 text-white p-2 rounded-full"
+              className="absolute bottom-0 right-0 bg-blue-500 text-white p-2 rounded-full"
             >
               +
             </button>
