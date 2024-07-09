@@ -33,7 +33,7 @@ p {
   color: white; /* text-white */
 }
 .button-primary-small:hover{
-  background-color: #553C9A; /* hover:bg-purple-700 */
+  background-color: rgb(29 78 216); /* hover:bg-blue-700 */
 }
 .button-primary-small:disabled{
   opacity: 0.5; /* disabled:opacity-50 */
@@ -56,7 +56,7 @@ p {
 }
 
 .button-primary-large:hover {
-  background-color: rgb(85, 60, 154); /* hover:bg-purple-700 */
+  background-color: rgb(29 78 216); /* hover:bg-blue-700 */
 }
 
 .button-primary-large:disabled {
@@ -75,11 +75,11 @@ p {
   font-weight: 600; /* font-semibold */
   border-radius: 0.5rem; /* rounded-lg */
   border: none; /* border border-transparent */
-  background-color: #28A745; /* bg-purple-600 */
+  background-color: #28A745; /* bg-blue-600 */
   color: white; /* text-white */
 }
 .button-green-small:hover{
-  background-color: #24863b; /* hover:bg-purple-700 */
+  background-color: #24863b; /* hover:bg-blue-700 */
 }
 .button-green-small:disabled{
   opacity: 0.5; /* disabled:opacity-50 */
@@ -96,13 +96,13 @@ p {
   font-weight: 600; /* font-semibold */
   border-radius: 0.5rem; /* rounded-lg */
   border: none; /* border border-transparent */
-  background-color: #28A745; /* bg-purple-600 */
+  background-color: #28A745; /* bg-blue-600 */
   color: white; /* text-white */
   width: 100%; /* new line */
 }
 
 .button-green-large:hover {
-  background-color: #24863b; /* hover:bg-purple-700 */
+  background-color: #24863b; /* hover:bg-blue-700 */
 }
 
 .button-green-large:disabled {
@@ -121,11 +121,11 @@ p {
   font-weight: 600; /* font-semibold */
   border-radius: 0.5rem; /* rounded-lg */
   border: none; /* border border-transparent */
-  background-color: #DC3545; /* bg-purple-600 */
+  background-color: #DC3545; /* bg-blue-600 */
   color: white; /* text-white */
 }
 .button-red-small:hover{
-  background-color: #ac313e; /* hover:bg-purple-700 */
+  background-color: #ac313e; /* hover:bg-blue-700 */
 }
 .button-red-small:disabled{
   opacity: 0.5; /* disabled:opacity-50 */
@@ -142,13 +142,13 @@ p {
   font-weight: 600; /* font-semibold */
   border-radius: 0.5rem; /* rounded-lg */
   border: none; /* border border-transparent */
-  background-color: #DC3545; /* bg-purple-600 */
+  background-color: #DC3545; /* bg-blue-600 */
   color: white; /* text-white */
   width: 100%; /* new line */
 }
 
 .button-red-large:hover {
-  background-color: #ac313e; /* hover:bg-purple-700 */
+  background-color: #ac313e; /* hover:bg-blue-700 */
 }
 
 .button-red-large:disabled {
@@ -185,3 +185,33 @@ p {
   word-wrap: break-word;
 }
 
+
+
+
+/*ouvrir et fermer une carte*/
+.expendableButton {
+  transition: 0.3s ease-in-out;
+}
+
+.expendableBox-content {
+  transition: max-height 0.5s ease-out, opacity 0.5s ease;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+}
+.expendableBox-expended {
+  max-height: 500px;
+  opacity: 1;
+  overflow: visible;
+  transition: max-height 0.4s ease-in, opacity 0.4s ease-in;
+}
+
+/*animation feedback HOME*/
+.fadeIn {
+  animation: fadeInAnimation 0.5s ease-out forwards;
+}
+
+@keyframes fadeInAnimation {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}

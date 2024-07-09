@@ -5,12 +5,15 @@ const TermsOfUse = () => {
     <>
       <Helmet>
         <title>Keella | Conditions d&apos;utilisation</title>
-        <meta name="description" content="Conditions d'utilisation de l'application" />
+        <meta
+          name="description"
+          content="Conditions d'utilisation de l'application"
+        />
       </Helmet>
-      <div className="container mx-auto my-5">
-        <div className="background-blue-500">
-          <h1 className="text-center">Conditions d&apos;utilisation</h1>
-        </div>
+      <div className="background-blue-500">
+        <h1 className="text-center">Conditions d&apos;utilisation</h1>
+      </div>
+      <div className="mx-5">
         <section className="my-3">
           <h1>Conditions Générales de Keella</h1>
           <p>Version à jour au 26 juin 2024</p>

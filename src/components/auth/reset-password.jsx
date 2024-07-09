@@ -51,7 +51,7 @@ export default function ResetPassword() {
               placeholder="Votre nouveau mot de passe"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full h-10 px-2 border rounded-md focus:border-purple-500 focus:outline-none"
+              className="w-full h-10 px-2 border rounded-md focus:border-blue-500 focus:outline-none"
               required
             />
           </div>
@@ -63,7 +63,7 @@ export default function ResetPassword() {
               placeholder="Confirmez votre nouveau mot de passe"
               value={passwordConfirmation}
               onChange={(e) => setPasswordConfirmation(e.target.value)}
-              className="w-full h-10 px-2 border rounded-md focus:border-purple-500 focus:outline-none"
+              className="w-full h-10 px-2 border rounded-md focus:border-blue-500 focus:outline-none"
               required
             />
           </div>

@@ -92,7 +92,7 @@ export default function EditProfile({}) {
             <input
               type="file"
               onChange={(e) => handleImageUpload(e)}
-              className="w-full h-10 px-2 border rounded-md focus:border-purple-500 focus:outline-none"
+              className="w-full h-10 px-2 border rounded-md focus:border-blue-500 focus:outline-none"
             />
           </div>
           <div className="sm:w-full lg:w-3/5">
@@ -103,7 +103,7 @@ export default function EditProfile({}) {
               placeholder="Votre nom utilisateur"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full h-10 px-2 border rounded-md focus:border-purple-500 focus:outline-none"
+              className="w-full h-10 px-2 border rounded-md focus:border-blue-500 focus:outline-none"
             ></input>
           </div>
 
@@ -115,7 +115,7 @@ export default function EditProfile({}) {
               placeholder="Votre email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full h-10 px-2 border rounded-md focus:border-purple-500 focus:outline-none"
+              className="w-full h-10 px-2 border rounded-md focus:border-blue-500 focus:outline-none"
             ></input>
           </div>
           <div className="w-3/5">

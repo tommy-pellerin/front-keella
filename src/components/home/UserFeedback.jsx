@@ -11,14 +11,19 @@ const feedbacks = [
 
 const UserFeedback = () => {
   const [current, setCurrent] = useState(0);
+  const [animate, setAnimate] = useState(false);
   const length = feedbacks.length;
 
   const nextSlide = () => {
-    setCurrent(current === length - 1 ? 0 : current + 1);
+    setAnimate(false); // Réinitialiser l'animation
+    setCurrent(current === feedbacks.length - 1 ? 0 : current + 1);
+    requestAnimationFrame(() => setAnimate(true)); // Redéclencher l'animation
   };
 
   const prevSlide = () => {
-    setCurrent(current === 0 ? length - 1 : current - 1);
+    setAnimate(false); // Réinitialiser l'animation
+    setCurrent(current === 0 ? feedbacks.length - 1 : current - 1);
+    requestAnimationFrame(() => setAnimate(true)); // Redéclencher l'animation
   };
 
   if (!Array.isArray(feedbacks) || feedbacks.length <= 0) {
@@ -38,23 +43,25 @@ const UserFeedback = () => {
               {index === current && (
               <div className='p-8 max-w-3xl mx-auto bg-white rounded-xl shadow-md space-x-4 relative'>
                 {/* ChevronLeftIcon */}
-                <ChevronLeftIcon className='h-12 w-12 absolute top-1/2 left-0 transform -translate-x-full -translate-y-1/2 text-gray-800 cursor-pointer' onClick={prevSlide} />
+                <ChevronLeftIcon className='h-12 w-12 absolute top-1/2 left-0 transform md:-translate-x-full -translate-y-1/2 text-gray-800 cursor-pointer' onClick={prevSlide} />
                 {/*  Avatar */}
-                <div className='flex items-center space-x-4'>
-                  <img
-                    className="h-8 w-8 rounded-full"
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                    alt=""
-                  />
-                  <div className='font-medium text-black'>{feedback.text}</div>
-                </div>
-                {/* Rating Stars */}
-                <div className='text-yellow-400 text-lg'>
-                  {'★'.repeat(feedback.rating)}
-                  {'☆'.repeat(5 - feedback.rating)}
+                <div className={`${animate ? 'fadeIn' : ''}`}>
+                  <div className="flex items-center space-x-4">
+                    <img
+                      className="h-8 w-8 rounded-full"
+                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                      alt=""
+                    />
+                    <div className='font-medium text-black'>{feedback.text}</div>
+                    {/* Rating Stars */}
+                  </div>
+                  <div className='text-yellow-400 text-lg'>
+                    {'★'.repeat(feedback.rating)}
+                    {'☆'.repeat(5 - feedback.rating)}
+                  </div>
                 </div>
                 {/* ChevronRightIcon */}
-                <ChevronRightIcon className='h-12 w-12 absolute top-1/2 right-0 transform translate-x-full -translate-y-1/2 text-gray-800 cursor-pointer' onClick={nextSlide} />
+                <ChevronRightIcon className='h-12 w-12 absolute top-1/2 right-0 transform md:translate-x-full -translate-y-1/2 text-gray-800 cursor-pointer' onClick={nextSlide} />
               </div>
               )}
             </div>

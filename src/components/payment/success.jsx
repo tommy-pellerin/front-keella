@@ -80,7 +80,7 @@ const Success = () => {
         <h2>Le paiement c&apos;est bien déroulé </h2> 
         <p>Nous avons bien reçu votre paiement de {session.credit_amount}€</p> 
         <p>Le statut de votre paiement est : {session.payment_intent_status}</p> 
-          <Link to="/workouts" className="button-green-small">Réservez un Entrainement</Link>
+          <Link to="/workouts" className="button-green-small">Réservez un entrainement</Link>
           <Link to="/" className="button-primary-small">Retourner a l&apos;accueil</Link>
       </div>
     </>

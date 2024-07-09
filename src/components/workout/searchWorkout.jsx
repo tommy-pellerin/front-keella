@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { getData } from '../../services/data-fetch';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
@@ -48,7 +48,7 @@ function SearchWorkout() {
     };
 
     return (
-        <div className='pt-8'>
+        <div className='pt-8 mx-2'>
             <form className="max-w-2xl mx-auto" onSubmit={handleSubmit}>
                 <div className="relative flex flex-col md:flex-row gap-4">
                 {/* Colonne 1 */}

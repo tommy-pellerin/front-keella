@@ -28,9 +28,7 @@ export default function Navbar() {
   const [profile, setProfile] = useState(null);
 
   let navigation = [
-    { name: 'Trouver une séance', href: '/workouts', current: false },
-    // { name: 'Kit UI', href: '/kit-ui', current: false },
-    // { name: 'Gérer les categories', href: '/categories', current: false },
+    { name: '🔍 Trouver une séance', href: '/workouts', current: false },
   ]
   // navbar available only if is admin
   if (profile && profile.isAdmin) {
@@ -64,14 +62,14 @@ export default function Navbar() {
   }, [user]);
 
   return (
-    <Disclosure as="nav" className="bg-gray-800">
+    <Disclosure as="nav" className="shadow-lg">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
-                <DisclosureButton className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                <DisclosureButton className="relative inline-flex items-center justify-center rounded-md p-2 text-blue-400 hover:bg-blue-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                   <span className="absolute -inset-0.5" />
                   <span className="sr-only">Open main menu</span>
                   {open ? (
@@ -86,7 +84,7 @@ export default function Navbar() {
                   <img
                     className="h-8 w-auto"
                     src={logoKeella}
-                    alt="Your Company"
+                    alt="keella"
                   />
                 </Link>
                 <div className="hidden sm:ml-6 sm:block">
@@ -96,7 +94,7 @@ export default function Navbar() {
                         key={item.name}
                         to={item.href}
                         className={classNames(
-                          item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                          item.current ? 'bg-blue-900 text-blue-500' : 'text-blue-500 text-xl hover:bg-blue-700 hover:text-white',
                           'rounded-md px-3 py-2 text-sm font-medium',
                         )}
                         aria-current={item.current ? 'page' : undefined}
@@ -110,7 +108,7 @@ export default function Navbar() {
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <Link to="/help"
                   type="button"
-                  className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                  className="relative p-1 text-blue-500  hover:bg-blue-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                 >
                   Aide
                   
@@ -120,7 +118,7 @@ export default function Navbar() {
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div>
-                    <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                    <MenuButton className="relative flex rounded-full bg-blue-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-800">
                       <span className="absolute -inset-1.5" />
                       <span className="sr-only">Open user menu</span>
                       {profile ?
@@ -156,12 +154,12 @@ export default function Navbar() {
                     <>
                       <MenuItem>
                         {({ focus }) => (
-                          <Link to="/sign-in" className={classNames(focus ? 'bg-gray-100' : '', 'block text-center px-4 py-2 text-sm text-gray-700')}>Se connecter</Link>
+                          <Link to="/sign-in" className={classNames(focus ? 'bg-blue-100' : '', 'block text-center px-4 py-2 text-sm text-blue-700')}>Se connecter</Link>
                         )}
                       </MenuItem>
                       <MenuItem>
                         {({ focus }) => (
-                          <Link to="/sign-up" className={classNames(focus ? 'bg-gray-100' : '', 'block text-center px-4 py-2 text-sm text-gray-700')}>S&apos;inscrire</Link>
+                          <Link to="/sign-up" className={classNames(focus ? 'bg-blue-100' : '', 'block text-center px-4 py-2 text-sm text-blue-700')}>S&apos;inscrire</Link>
                         )}
                       </MenuItem>
                     </> 
@@ -169,24 +167,24 @@ export default function Navbar() {
                     <>
                       <MenuItem>
                         {({ focus }) => (
-                          <Link to="/my-account" className={classNames(focus ? 'bg-gray-100' : '', 'block text-center px-4 py-2 text-sm text-gray-700')}>Mon compte</Link>
+                          <Link to="/my-account" className={classNames(focus ? 'bg-blue-100' : '', 'block text-center px-4 py-2 text-sm text-blue-700')}>Mon compte</Link>
                         )}
                       </MenuItem>
                       <MenuItem>
                         {({ focus }) => (
-                          <Link to={`/profile/${user.id}`} className={classNames(focus ? 'bg-gray-100' : '', 'block text-center px-4 py-2 text-sm text-gray-700')}>Mon profil</Link>
+                          <Link to={`/profile/${user.id}`} className={classNames(focus ? 'bg-blue-100' : '', 'block text-center px-4 py-2 text-sm text-blue-700')}>Mon profil</Link>
                         )}
                       </MenuItem>
                       <MenuItem>
                         {({ focus }) => (
-                          <div className={classNames(focus ? 'bg-gray-100' : '', 'block text-center px-4 py-2 text-sm text-gray-700')}>
+                          <div className={classNames(focus ? 'bg-blue-100' : '', 'block text-center px-4 py-2 text-sm text-blue-700')}>
                             <SignOut />
                           </div>
                         )}
                       </MenuItem>
                       <MenuItem>
                         {({ focus }) => (
-                          <Link to="/workouts/create" className={classNames(focus ? 'bg-gray-100' : '', 'block text-center px-4 py-2 text-sm text-gray-700')}>Créer une annonce</Link>
+                          <Link to="/workouts/create" className={classNames(focus ? 'bg-blue-100' : '', 'block text-center px-4 py-2 text-sm text-blue-700')}>Créer une annonce</Link>
                         )}
                       </MenuItem>
                       
@@ -207,7 +205,7 @@ export default function Navbar() {
                   as="a"
                   href={item.href}
                   className={classNames(
-                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                    item.current ? 'bg-blue-900 text-white' : 'text-blue-500 text-xl hover:bg-blue-700 hover:text-white',
                     'block rounded-md px-3 py-2 text-base font-medium',
                   )}
                   aria-current={item.current ? 'page' : undefined}
