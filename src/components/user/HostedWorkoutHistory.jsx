@@ -6,7 +6,7 @@ import { getData, deleteData, updateData } from '../../services/data-fetch';
 import CreateUserRatings from '../rating/CreateUserRatingsForHostedWorkouts.jsx';
 import { formatDate, formatTime, formatDuration, formatTimeToLocalTime } from '../../services/time-fixes';
 import { toast } from 'react-toastify';
-import {toast} from 'react-toastify';
+
 import { Helmet } from 'react-helmet';
 
 function HostedWorkoutHistory() {
@@ -118,36 +118,7 @@ function HostedWorkoutHistory() {
     <div>Loading...</div>
   }
 
-  // Fonction pour marquer le workout comme fermé
-const closeWorkout = async (workoutId) => {
-  try {
-    const response = await updateData(`/workouts/${workoutId}`, { is_closed: true });
-    console.log(response);
-    if (response) {
-      // Mettre à jour l'état local pour refléter la fermeture du workout
-      setWorkoutData(workoutData.map(workout => {
-        if (workout.id === workoutId) {
-          return { ...workout, is_closed: true };
-        }
-        return workout;
-      }));
-      toast.success('La séance a été marquée comme terminée');
-    }
-  } catch (error) {
-    console.error('Erreur lors de la fermeture de la séance:', error);
-    toast.error('Erreur lors de la fermeture de la séance');
-  }
-};
-
-                  return workout;
-                }));
-                toast.success("Statut de réservation mis à jour avec succès");
-            }
-        } catch (error) {
-          // console.error('Erreur lors de la mise à jour du statut de la réservation:', error);
-          toast.error("Erreur lors de la mise à jour du statut de la réservation");
-        }
-    };
+  
 
     // on ne peut annuler une réservation que si la réservation n'est pas closed
     const handleReservationCancel = (workout) => {

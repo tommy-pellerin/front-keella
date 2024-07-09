@@ -119,7 +119,8 @@ function Profile() {
             <RatingStars ratings={profile.ratings_received} />
         
 
-        </div>
+            </div>
+        </>
     );
 }
 
