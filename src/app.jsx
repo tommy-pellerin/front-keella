@@ -35,6 +35,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      <div className="flex flex-col min-h-screen">
       <header>
         <Navbar />
         <ToastContainer/>
@@ -45,13 +46,14 @@ export default function App() {
           type={alert.alertType} 
         />
       </header>
-      <main>
+      <main className="flex-grow">
         <AppRoutes />
       </main>
-      <footer>
+      <footer className="py-4">
         <AskCookiesConsent/>
         <Footer />
       </footer>
+      </div>
     </BrowserRouter>
   );
 }

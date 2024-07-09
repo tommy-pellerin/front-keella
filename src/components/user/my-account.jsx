@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
-
+import { Helmet } from "react-helmet";
 
 
 const MyAccount = () => {
@@ -9,6 +9,10 @@ const MyAccount = () => {
 
   return (
     <>
+      <Helmet>
+          <title>Keella | Mon compte</title>
+          <meta name="description" content="page mon compte proposante des liens vers mon profil, mes réservations, mes annonces et mes crédits" />
+      </Helmet>
       <div className="background-blue-500">
         <h1 className="text-4xl">Mon compte</h1>
       </div>

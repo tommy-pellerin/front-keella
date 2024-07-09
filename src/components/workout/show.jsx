@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { getData, postData } from "../../services/data-fetch";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
+import { Helmet } from "react-helmet";
 //atom
 import { useAtom } from "jotai";
 import { userAtom } from "../../store/user";
@@ -31,7 +32,6 @@ const WorkoutShow = () => {
     const getWorkouts = async () => {
       try {
         const data = await getData(`/workouts/${workout_id}`);
-        console.log(data);
         setWorkout(data);
         if(data.image_urls){
           setWorkout_images(data.image_urls)
@@ -78,7 +78,6 @@ const WorkoutShow = () => {
       return;
     }
     
-    console.log(workout);
     const body = 
     {
       "reservation":{
@@ -90,7 +89,6 @@ const WorkoutShow = () => {
       if(window.confirm("Vous allez etre débité du montant indiqué, etes vous sure de vouloir continuer ?")) {
         try {
           const data = await postData(`/reservations`, body);
-          console.log(data);
           if(data){
             toast.success("Votre demande a bien été envoyée !");
             setWorkout(prevWorkout => ({
@@ -100,11 +98,10 @@ const WorkoutShow = () => {
             setQuantity(1) //reset quantity to 1 in the browser
           }
         } catch (error) {
-          console.error('Error caught in calling function:', error);
+          // console.error('Error caught in calling function:', error);
           if (error.response) {
-            console.log(error.response);
             error.response.json().then((body) => {
-              console.error('Erreur du serveur:', body.error);
+              // console.error('Erreur du serveur:', body.error);
               toast.error(`${body.error}`);
             });
           }
@@ -117,6 +114,11 @@ const WorkoutShow = () => {
 
   return(
     <>
+      <Helmet>
+          <title>Keella | {workout.title || "Detail d'un workout"}</title>
+          <meta name="description" content="page de détails du workout avec des boutons pour choisir la quantité et réserver le workout" />
+      </Helmet>
+
       <div className="border-y border-black bg-gray-200 my-10 h-2/5">
       {workout_images && workout_images.length > 0 ? 
         <ImageCarrousel images={workout_images}/>

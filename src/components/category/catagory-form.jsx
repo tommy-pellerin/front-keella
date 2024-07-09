@@ -19,7 +19,6 @@ const CategoryForm = (props) => {
   const handleImageUpload = (e) => {
     if (e.target.files[0]) {
       const imageFile = e.target.files[0];
-      console.log(imageFile);
       setImage(imageFile)
       const url = URL.createObjectURL(imageFile);
       setPreviewUrl(url);
@@ -58,11 +57,10 @@ const CategoryForm = (props) => {
         }
         
       } catch (error) {
-        console.error('Error caught in calling function:', error);
+        // console.error('Error caught in calling function:', error);
         if (error.response) {
-          console.log(error.response);
           error.response.json().then((body) => {
-            console.error('Erreur du serveur:', body.errors);
+            // console.error('Erreur du serveur:', body.errors);
             toast.error(`${body.errors.join(', ')}`);
           });
         }

@@ -16,7 +16,7 @@ h3 {
 }
 
 p {
-  color: #718096; /* colors.text-gray-500 */
+  color: #22272c; /* colors.text-gray-500 */
 }
 
 .button-primary-small{
@@ -29,7 +29,7 @@ p {
   font-weight: 600; /* font-semibold */
   border-radius: 0.5rem; /* rounded-lg */
   border: none; /* border border-transparent */
-  background-color: #6B46C1; /* bg-purple-600 */
+  background-color: rgb(59 130 246); /* bg-blue-500 */
   color: white; /* text-white */
 }
 .button-primary-small:hover{
@@ -50,7 +50,7 @@ p {
   font-weight: 600; /* font-semibold */
   border-radius: 0.5rem; /* rounded-lg */
   border: none; /* border border-transparent */
-  background-color: rgb(107, 70, 193); /* bg-purple-600 */
+  background-color: rgb(59 130 246); /* bg-blue-500 */
   color: white; /* text-white */
   width: 100%; /* new line */
 }
@@ -172,7 +172,7 @@ p {
 
 /*bandeau bleu*/
 .background-blue-500 {
-  background-color: #4299e1; /* Cette couleur correspond à la classe bg-blue-500 de Tailwind */
+  background-color: rgb(59 130 246); /* Cette couleur correspond à la classe bg-blue-500 de Tailwind */
   color: white; /* text-white */
   text-align: center; /* text-center */
   padding-top: 2.5rem; /* py-10 (1 rem = 4) */

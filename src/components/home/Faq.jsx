@@ -11,9 +11,10 @@ const Faq = () => {
   };
 
   return (
-    <div className='w-full px-4'>
+    <>
+    <div className='w-full px-4 my-10'>
       <div className='mx-auto w-full max-w-md md:max-w-3xl'>
-        <h2 className='text-2xl font-bold text-center mb-8'>FAQs</h2>
+        <h2 className='text-3xl font-bold text-center mb-12'>Questions Fréquentes</h2>
         {[
           {
             title: 'Concept',
@@ -43,6 +44,7 @@ const Faq = () => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 

@@ -10,7 +10,6 @@ const PrivateRoute = ({ children }) => {
   const currentUser = useAtomValue(userAtom);
   const location = useLocation();
   
-  console.log("isloged?", currentUser.isLogged);
   useEffect(() => {
     if (!currentUser.isLogged) {
       toast.warning("Vous devez etre connecté pour pouvoir poursuivre");

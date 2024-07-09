@@ -7,7 +7,6 @@ import { userAtom } from "../../store/user";
 import { useEffect, useState } from "react";
 
 function checkOwner(currentUser, objectToCompare) {
-  console.log("object à comparer:",objectToCompare, currentUser);
   //flash
   return currentUser.id === objectToCompare.id;
 }
@@ -24,7 +23,6 @@ const OwnerRoute = ({ children }) => {
       const getWorkout = async () => {
         try {
           const data = await getData(`/workouts/${workout_id}`);
-          console.log(data);
           setIsOwner(checkOwner(currentUser, data.host));
         } catch (error) {
           console.error(error);
@@ -37,7 +35,6 @@ const OwnerRoute = ({ children }) => {
       const getUser = async () => {
         try {
           const data = await getData(`/users/${user_id}`);
-          // console.log(data);
           setIsOwner(checkOwner(currentUser, data));
         } catch (error) {
           console.error(error);
@@ -64,7 +61,6 @@ const OwnerRoute = ({ children }) => {
   
   return (
     <>
-      {console.log("you are owner")}
       {children}
     </>      
   )

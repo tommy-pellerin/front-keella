@@ -3,6 +3,7 @@ import { getData, deleteData } from '../../services/data-fetch'
 import CategoryForm from './catagory-form';
 import LoadingSpinner from '../static/LoadingSpinner.jsx'
 import { toast } from 'react-toastify';
+import { Helmet } from "react-helmet";
 
 const Category = () => {
   const [categories,setCategories] = useState([])
@@ -15,7 +16,6 @@ const Category = () => {
     setIsLoading(true);
     try {
       const data = await getData(`/categories?sort=name`);
-      console.log(data);
       setCategories(data);
       setIsWorkoutsLoading(false);
       setSelectedCategory(null); // Reset selected category
@@ -30,20 +30,17 @@ const Category = () => {
   }, []);
 
   const handleDelete = (id) => {
-    console.log("delete", id);
     const deleteCategory = async () => {
     try {
       const data = await deleteData(`/categories/${id}`);
-      console.log(data);
       toast.success("Catégorie supprimée");
       getCategories();
     } catch (error) {
-      console.error('Error caught in calling function:', error);
+      // console.error('Error caught in calling function:', error);
         if (error.response) {
-          console.log(error.response);
           error.response.json().then((body) => {
-            console.error('Erreur du serveur:', body.errors);
-            toast.success(`${body.errors.join(', ')}`);
+            // console.error('Erreur du serveur:', body.errors);
+            toast.error(`${body.errors.join(', ')}`);
           });
         }
     }
@@ -61,6 +58,11 @@ const Category = () => {
   }
 
   return(
+    <>
+    <Helmet>
+      <title>Keella | Categories</title>
+      <meta name="description" content="Les catégories de sport" />
+    </Helmet>
     <div className='container my-5 mx-10'>
       <h1>Categories</h1>
       <button className='button-green-small my-3' onClick={()=>{setShowForm(!showForm)}}>Create</button>
@@ -87,6 +89,7 @@ const Category = () => {
       </div>
     ))}
     </div>
+    </>
   )
 }
 

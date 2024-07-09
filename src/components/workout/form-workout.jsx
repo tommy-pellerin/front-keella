@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { UsersIcon, CurrencyDollarIcon, CalendarIcon, ClockIcon, RocketLaunchIcon, MapPinIcon, MapIcon, IdentificationIcon, PencilSquareIcon } from '@heroicons/react/24/solid';
 import { postData, getData, updateData } from '../../services/data-fetch';
 import { toast } from 'react-toastify';
+import { Helmet } from 'react-helmet';
+
 
 const FormWorkout = () => {
     
@@ -28,7 +30,6 @@ const FormWorkout = () => {
     });
 
     useEffect(() => {
-        console.log(workout_id);
         const loadCategories = async () => {
           const data = await getData('/categories');
           setCategories(data);
@@ -55,8 +56,7 @@ const FormWorkout = () => {
                   // ... autres champs si nécessaire ...
                 });
                 setCategoryId(workoutData.category_id.toString());
-                setPreviewImages(workoutData.image_urls || []);
-                console.log(workoutData.image_urls);
+                // setPreviewImages(workoutData.image_urls || []);
               }
             } catch (error) {
               console.error("Erreur lors du chargement des données du workout :", error);
@@ -85,10 +85,12 @@ const FormWorkout = () => {
         // Validation de la description
           if (!workout.description) {
             errors.push('La description est requise.');
+            toast.error('La description est requise.');
           } else {
             const letterCount = workout.description.replace(/\s/g, '').length;
             if (letterCount < 10 || letterCount > 1000) {
                 errors.push('La description doit contenir entre 10 et 1000 charactères.');
+                toast.error('La description doit contenir entre 10 et 1000 charactères.');
             }
           }
         // if (!workout.city) errors.push('La ville est requise.');
@@ -97,27 +99,32 @@ const FormWorkout = () => {
         const price = parseFloat(workout.price);
         if (isNaN(price) || price < 0 || price > 100) {
             errors.push('Le prix doit être compris entre 0 et 100€.');
+            toast.error('Le prix doit être compris entre 0 et 100€.');
         }
         // Validation de la date de début
             const workoutStartDate = new Date(workoutData.start_date);
-            const now = new Date();
+            const now = new Date(Date.now());
             const fourHoursLater = new Date(now.getTime() + 4 * 60 * 60 * 1000); // 4 heures plus tard
             if (workoutStartDate < fourHoursLater) {
-                errors.push('La date de début doit être supérieure à 4h avant le début du workout.');
+                errors.push('La date de début ne peut être anterieur à la date du jour.');
+                toast.error('La date de début ne peut être anterieur à la date du jour.');
             }
         // Validation du code postal
           if (!/^\d{5}$/.test(workout.zip_code)) {
             errors.push('Le code postal doit contenir exactement 5 chiffres.');
+            toast.error('Vérifiez votre code postal .');
   }
         // Validation de la ville
             if (workout.city.length < 3 || workout.city.length > 50) {
               errors.push('La ville doit contenir entre 3 et 50 charactères.');
+              toast.error('La ville doit contenir entre 3 et 50 charactères.');
           }
 
           // Validation du titre
           const letterCount = workout.title.replace(/\s/g, '').length;
           if (letterCount < 3 || letterCount > 50) {
               errors.push('Le titre doit contenir entre 3 et 50 charactères.');
+              toast.error('Le titre doit contenir entre 3 et 50 charactères.');
           }
         
 
@@ -159,14 +166,15 @@ const FormWorkout = () => {
                   toast.success("Success");
                   navigate('/'); 
                 } else {
-                  toast.error("Erreur");
+                  toast.error("Erreur lors de la soumission des données.");
+
                   setValidationErrors(['Une erreur est survenue lors de la soumission des données.']);
                 }
               } catch (error) {
                 // Gérez les erreurs ici
                 toast.error("Erreur");
                 setValidationErrors(['Une erreur est survenue lors de la soumission des données.']);
-                console.error("Erreur lors de la soumission du formulaire :", error);
+                // console.error("Erreur lors de la soumission du formulaire :", error);
               }
             };
 
@@ -191,63 +199,68 @@ const FormWorkout = () => {
             setFilesToUpload(newFilesToUpload);
           }
         } else {
-          console.log("Le fichier sélectionné n'est pas une image.");
-          toast.error("Veuillez sélectionner un fichier image.");
+          toast.warning("Vous ne pouvez pas ajouter plus de 3 images.");
         }
       };
 
-    const renderImagesPreview = () => {
-        return previewImages.map((imageUrl, index) => {
-            return (
-                <div key={index} className="border border-gray-300 shadow-lg p-2 relative">
-                    <img src={imageUrl} alt={`Aperçu ${index}`} className="max-w-xs" />
-                    <button
-                        onClick={() => handleRemoveImage(index)}
-                        className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full"
-                    >
-                        &times;
-                    </button>
-                </div>
-            );
-        });
-    };
+      const renderImagesPreview = () => {
+        return (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {previewImages.map((imageUrl, index) => (
+              <div key={index} className="relative">
+                <img src={imageUrl} alt={`Aperçu ${index}`} className="w-full h-auto" />
+                <button
+                  onClick={() => handleRemoveImage(index)}
+                  className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full"
+                >
+                  &times;
+                </button>
+              </div>
+            ))}
+            {renderEmptySlots()}
+          </div>
+        );
+      };
 
     const handleRemoveImage = (index) => {
         const updatedPreviewImages = previewImages.filter((_, i) => i !== index);
         const updatedFilesToUpload = filesToUpload.filter((_, i) => i !== index);
-        console.log(`Image à l'index ${index} supprimée`);
         setPreviewImages(updatedPreviewImages);
         setFilesToUpload(updatedFilesToUpload);
     };
 
     const renderEmptySlots = () => {
-        const emptySlots = [];
-        for (let i = previewImages.length; i < 3; i++) {
-            emptySlots.push(
-                <div key={i} className="border border-gray-300 shadow-lg p-2 h-32 flex justify-center items-center relative">
-                    <span className="text-gray-500">Ajouter une image</span>
-                    <button
-                        onClick={() => document.getElementById(`imageUpload${i}`).click()}
-                        className="absolute bottom-0 right-0 bg-blue-400 text-white p-2 rounded-full"
-                    >
-                        +
-                    </button>
-                    <input
-                        type="file"
-                        id={`imageUpload${i}`}
-                        style={{ display: 'none' }}
-                        onChange={handleImageChange}
-                    />
-                </div>
-            );
-        }
-        return emptySlots;
+      const emptySlots = [];
+      const emptySlotsNeeded = 3 - previewImages.length;
+      for (let i = 0; i < emptySlotsNeeded; i++) {
+        emptySlots.push(
+          <div key={`empty-${i}`} className="border border-gray-300 shadow-lg p-2 h-32 flex justify-center items-center relative">
+            <span className="text-gray-500">Ajouter une image</span>
+            <button
+              onClick={() => document.getElementById(`imageUpload${i}`).click()}
+              className="absolute bottom-0 right-0 bg-blue-500 text-white p-2 rounded-full"
+            >
+              +
+            </button>
+            <input
+              type="file"
+              id={`imageUpload${i}`}
+              style={{ display: 'none' }}
+              onChange={handleImageChange}
+            />
+          </div>
+        );
+      }
+      return emptySlots;
     };
-    
   
 
     return (
         <>
+          <Helmet>
+            <title>Keella | Création d&apos;un workout</title>
+            <meta name="description" content="Création d'un workout" />
+          </Helmet>
 
       {/* Bandeau bleu avec un titre */}
         <div className="background-blue-500">
@@ -255,11 +268,11 @@ const FormWorkout = () => {
             {workout_id ? 'Éditer votre séance' : 'Proposer une nouvelle séance'}
         </h1>
         </div>
-  
+        <div className="flex flex-col items-center mt-8 mb-16">
             <div className="flex flex-col items-center mt-8 mb-16">
-                <div className="grid grid-cols-3 gap-4 mb-16">
+                <div className="w-full max-w-4xl">
                     {renderImagesPreview()}
-                    {renderEmptySlots()}
+                    
                 </div>
 
                 <div className="w-full max-w-4xl mb-8 border p-4 rounded">
@@ -280,33 +293,33 @@ const FormWorkout = () => {
                     </div>
                 </div>
 
-                <form onSubmit={handleSubmit} className="w-full max-w-4xl mb-8">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-  <div className="mb-6">
-    <label htmlFor="max_participants" className="text-blue-500 font-semibold mb-2">Nombre de participants</label>
-    <div className="flex items-center mb-4 border p-2 rounded">
-      <UsersIcon className="h-6 text-blue-500 mr-2" />
-      <input type="number" id="max_participants" name="max_participants" value={workout.max_participants} placeholder="Entre 1 et 1000" onChange={handleChange} required className="w-full" />
-    </div>
+                                        <form onSubmit={handleSubmit} className="w-full max-w-4xl mb-8">
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                          <div className="mb-6">
+                            <label htmlFor="max_participants" className="text-blue-500 font-semibold mb-2">Nombre de participants</label>
+                            <div className="flex items-center mb-4 border p-2 rounded">
+                              <UsersIcon className="h-6 text-blue-500 mr-2" />
+                              <input type="number" id="max_participants" name="max_participants" value={workout.max_participants} placeholder="Entre 1 et 1000" onChange={handleChange} required className="w-full" />
+                            </div>
 
-    <label htmlFor="zip_code" className="text-blue-500 font-semibold mb-2">Code postal</label>
-    <div className="flex items-center mb-4 border p-2 rounded">
-      <MapPinIcon className="h-6 text-blue-500 mr-2" />
-      <input type="text" id="zip_code" name="zip_code" placeholder="5 chiffres" value={workout.zip_code} onChange={handleChange} required className="w-full" />
-    </div>
-    <label htmlFor="city" className="text-blue-500 font-semibold mb-2">Ville</label>
-    <div className="flex items-center mb-4 border p-2 rounded">
-      <MapIcon className="h-6 text-blue-500 mr-2" />
-      <input type="text" id="city" name="city" placeholder="Ville" value={workout.city} onChange={handleChange} required className="w-full" />
-    </div>
-  </div>
+                            <label htmlFor="zip_code" className="text-blue-500 font-semibold mb-2">Code postal</label>
+                            <div className="flex items-center mb-4 border p-2 rounded">
+                              <MapPinIcon className="h-6 text-blue-500 mr-2" />
+                              <input type="text" id="zip_code" name="zip_code" placeholder="5 chiffres" value={workout.zip_code} onChange={handleChange} required className="w-full" />
+                            </div>
+                            <label htmlFor="city" className="text-blue-500 font-semibold mb-2">Ville</label>
+                            <div className="flex items-center mb-4 border p-2 rounded">
+                              <MapIcon className="h-6 text-blue-500 mr-2" />
+                              <input type="text" id="city" name="city" placeholder="Ville" value={workout.city} onChange={handleChange} required className="w-full" />
+                            </div>
+                          </div>
 
-  <div className="mb-6">
-    <label htmlFor="title" className="text-blue-500 font-semibold mb-2">Titre</label>
-    <div className="flex items-center mb-4 border p-2 rounded">
-      <IdentificationIcon className="h-6 text-blue-500 mr-2" />
-      <input type="text" id="title" name="title" placeholder="3 à 50 charactères" value={workout.title} onChange={handleChange} required className="w-full" />
-    </div>
+                          <div className="mb-6">
+                            <label htmlFor="title" className="text-blue-500 font-semibold mb-2">Titre</label>
+                            <div className="flex items-center mb-4 border p-2 rounded">
+                              <IdentificationIcon className="h-6 text-blue-500 mr-2" />
+                              <input type="text" id="title" name="title" placeholder="3 à 50 charactères" value={workout.title} onChange={handleChange} required className="w-full" />
+                            </div>
 
                             <div className="flex flex-col mb-4 ">
                               <label htmlFor="price" className="text-blue-500 font-semibold mb-2">
@@ -394,7 +407,9 @@ const FormWorkout = () => {
                     </div>
                 </form>
             </div>
+        </div>
         </>
+
     );
 };
 
