@@ -18,37 +18,40 @@ function HostedWorkoutHistory() {
     const [workoutData, setWorkoutData] = useState([]); // État pour stocker les données des workouts
 
     useEffect(() => {
-         
       const fetchHostedWorkouts = async () => {
-        try {
-          const data = await getData(`/users/${user_id}`);
-          if (data && data.hosted_workouts) {
-            const fetchedWorkoutData = await Promise.all(data.hosted_workouts.map(async (workout) => {
-              const workoutDetails = await getData(`/workouts/${workout.id}`);
-              console.log(workoutDetails);
-              return {
-                ...workout,
-                category: workoutDetails.category,
-                available_places: workoutDetails.available_places,
-                reservations: workoutDetails.reservations.map(reservation => ({
-                  ...reservation.user,
-                  reservationId: reservation.id,
-                  status: reservation.status
-                }))
-              };
-            }));
-            setWorkoutData(fetchedWorkoutData); // Mettre à jour l'état avec les données récupérées
+          try {
+              const userData = await getData(`/users/${user_id}`);
+              if (userData && userData.hosted_workouts) {
+                  const fetchedWorkoutData = await Promise.all(userData.hosted_workouts.map(async (workout) => {
+                      try {
+                          const workoutDetails = await getData(`/workouts/${workout.id}`);
+                          return {
+                              ...workout,
+                              category: workoutDetails.category,
+                              available_places: workoutDetails.available_places,
+                              reservations: workoutDetails.reservations.map(reservation => ({
+                                  ...reservation.user,
+                                  reservationId: reservation.id,
+                                  status: reservation.status
+                              }))
+                          };
+                      } catch (error) {
+                          console.error('Erreur lors de la récupération des détails de l\'entraînement:', error);
+                          throw error; // Re-lancer l'erreur pour la gestion par le bloc catch externe si nécessaire
+                      }
+                  }));
+                  console.log(fetchedWorkoutData);
+                  setWorkoutData(fetchedWorkoutData); // Mettre à jour l'état avec les données récupérées
+              }
+          } catch (error) {
+              // console.error('Erreur lors de la récupération des données de l\'utilisateur:', error);
+              toast.error("Erreur lors de la récupération des données");
           }
-        } catch (error) {
-          console.error('Erreur lors de la récupération des données:', error);
-          toast.error("Erreur lors de la récupération des données");
-        }
       };
   
-      if (user.isLogged) {
-        fetchHostedWorkouts();
-      }
-    }, [user, user_id]);
+      fetchHostedWorkouts(); // Appeler la fonction de récupération des entraînements hébergés
+  
+  }, [user, user_id]);
     
 
     useEffect(() => {
