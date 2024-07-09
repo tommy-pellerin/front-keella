@@ -43,14 +43,14 @@ function Profile() {
             </Helmet>
             <div className="">
             <div className='background-blue-500'>
-            <h2 className='text-4xl'>Profil</h2>
+            <h2 className='text-4xl'>Mon Profil</h2>
             </div>
             <div className="container mx-auto p-4">
 
                 <div className="flex justify-center">
                     <div className="bg-white rounded-lg shadow-lg p-6 w-full lg:w-2/5">
                         <h1 className="mb-4 text-center">Compte de {profile.username}</h1>
-                        <UserAverageRating averageRating={parseFloat(profile.average_rating)} />
+                        
                     <p className="text-center">Actif depuis : {formatDate(profile.created_at)}</p>
                         {profile.avatar?
                             <img src={profile.avatar}
@@ -72,6 +72,7 @@ function Profile() {
                             :
                         <p className="text-center">Nombre de Scéances proposé : 0</p>
                         }
+                        <UserAverageRating averageRating={parseFloat(profile.average_rating)} totalRatings={profile.ratings_received.length} />
                         {user.email === profile.email ?
                         <div>
                             <Link to={`/profile/${user.id}/edit`} className='button-green-large'>Éditer le profil</Link>
