@@ -8,7 +8,7 @@ import { useAtom } from "jotai";
 import { userAtom } from '../../store/user'
 
 //Styles
-import logoKeella from '../../assets/images/logokeella.webp';
+import logoKeella from '../../assets/images/logo_keella.png';
 import {
   Disclosure,
   DisclosureButton,
@@ -82,7 +82,7 @@ export default function Navbar() {
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <Link to="/" className="flex flex-shrink-0 items-center">
                   <img
-                    className="h-8 w-auto"
+                    className="h-12 w-auto"
                     src={logoKeella}
                     alt="keella"
                   />
@@ -95,7 +95,7 @@ export default function Navbar() {
                         to={item.href}
                         className={classNames(
                           item.current ? 'bg-blue-900 text-blue-500' : 'text-blue-500 text-xl hover:bg-blue-700 hover:text-white',
-                          'rounded-md px-3 py-2 text-sm font-medium',
+                          'rounded-md px-3 py-2 font-medium',
                         )}
                         aria-current={item.current ? 'page' : undefined}
                       >
