@@ -84,7 +84,7 @@ const CategoryForm = (props) => {
             <input
               type="file"
               onChange={(e) => handleImageUpload(e)}
-              className="w-full h-10 px-2 border rounded-md focus:border-purple-500 focus:outline-none"
+              className="w-full h-10 px-2 border rounded-md focus:border-blue-500 focus:outline-none"
             />
           </div>
 
@@ -96,7 +96,7 @@ const CategoryForm = (props) => {
               placeholder="nom"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full h-10 px-2 border rounded-md focus:border-purple-500 focus:outline-none"
+              className="w-full h-10 px-2 border rounded-md focus:border-blue-500 focus:outline-none"
             ></input>
           </div>
           

@@ -164,43 +164,45 @@ function HostedWorkoutHistory() {
         {workoutData && workoutData.map((workout) => (
           <div key={workout.id} className="bg-white rounded-lg shadow-md overflow-hidden">
             <div className="p-5">
-              <button onClick={() => toggleAccordion(workout.id)} className="text-xl font-semibold mb-2 w-full text-left">
-                {workout.title}
-                <br/>                
-                Date et heure de début: {formatDate(workout.start_date) +" à "+ formatTime(workout.start_date)}
-                <br/>
-                Nombre de réservation : {workout.reservations.length}, dont {workout.reservations.filter(reservation => reservation.status === "pending").length} en attente de réponse
+              <button onClick={() => toggleAccordion(workout.id)} className="mb-2 w-full text-left">
+                <h2>{workout.title}</h2>
+                <p>             
+                Date et heure de début: <strong>{formatDate(workout.start_date) +" à "+ formatTime(workout.start_date)}</strong>
+                </p>  
+                <p>
+                Nombre de réservation : <strong>{workout.reservations.length}</strong>, dont <strong>{workout.reservations.filter(reservation => reservation.status === "pending").length}</strong> en attente de réponse
+                </p>
               </button>
         
           
         {openWorkoutId === workout.id && (
                 <>
                   
-                  <p className="text-gray-600 mb-4">
+                  <p className="text-gray-600 mb-1">
                   Date et heure de création du workout: {formatDate(workout.created_at) +" à "+ formatTime(workout.created_at)}
                   </p>
-                  <p className="text-gray-600 mb-4">Prix: {parseFloat(workout.price).toFixed(2)}€</p>
-                  <p className="text-gray-600 mb-4">Ville: {(workout.city)}</p>
-                  <p className="text-gray-600 mb-4">Code Postal: {(workout.zip_code)}</p>
-                  <p className="text-gray-600 mb-4">Nombre de participants maximum: {(workout.max_participants)}</p>
-                  <p className="text-gray-600 mb-4">Durée: {formatDuration(workout.duration)}</p>
-                  <p className="text-gray-600 mb-4">Date et heure de début: {formatDate(workout.start_date) +" à "+ formatTime(workout.start_date)}
+                  <p className="text-gray-600 mb-1">Prix: {parseFloat(workout.price).toFixed(2)}€</p>
+                  <p className="text-gray-600 mb-1">Ville: {(workout.city)}</p>
+                  <p className="text-gray-600 mb-1">Code Postal: {(workout.zip_code)}</p>
+                  <p className="text-gray-600 mb-1">Nombre de participants maximum: {(workout.max_participants)}</p>
+                  <p className="text-gray-600 mb-1">Durée: {formatDuration(workout.duration)}</p>
+                  <p className="text-gray-600 mb-1">Date et heure de début: {formatDate(workout.start_date) +" à "+ formatTime(workout.start_date)}
                   </p>
-                  <p className="text-gray-600 mb-4">Places disponibles: {workout.available_places}</p>
-                  <p className="text-gray-600 mb-4">Catégorie: {workout.category.name}</p>
+                  <p className="text-gray-600 mb-1">Places disponibles: {workout.available_places}</p>
+                  <p className="text-gray-600 mb-1">Catégorie: {workout.category.name}</p>
                   
                   
-                  <ul className="mb-4">
+                  <div className="mb-4">
                       {workout.reservations && workout.reservations.map(reservation => (
-                          <li key={reservation.reservationId} className="flex justify-between items-center mb-2">
-                          <span>Client: 
-                              <Link to={`/profile/${reservation.id}`} className="text-blue-600 hover:text-blue-800 ml-2">
-                                  {reservation.username}
-                              </Link>
-                          </span>
-                          <span>Statut: {reservation.status}</span>
+                          <div key={reservation.reservationId} className="flex flex-col md:flex-row justify-between items-center mb-2">
+                            <div className='py-1'>Client: 
+                                <Link to={`/profile/${reservation.id}`} className="text-blue-600 hover:text-blue-800 ml-2">
+                                    {reservation.username}
+                                </Link>
+                            </div>
+                            <div className='py-1'>Statut: {reservation.status}</div>
                                                 
-                            <div>
+                            <div className='py-1'>
                                 <button 
                                     onClick={() => updateReservationStatus(workout.id, reservation.reservationId, 'accepted')}
                                     className={`text-white font-medium rounded-lg text-sm px-3 py-1 mr-2 ${['pending', 'relaunched'].includes(reservation.status) ? 'bg-green-500 hover:bg-green-700' : 'bg-gray-500 cursor-not-allowed'}`} 
@@ -227,9 +229,9 @@ function HostedWorkoutHistory() {
                                     Contacter client
                                 </button>
                             </div>
-                          </li>
+                          </div>
                       ))}
-                      </ul>
+                      </div>
                     </>
                   )}
                   <div>
@@ -237,7 +239,7 @@ function HostedWorkoutHistory() {
                     <Link to={`/workouts/${workout.id}/edit`}>
                       <button 
                         title={!workout.reservations.some(reservation => reservation.status === 'pending' || reservation.status === 'accepted' || reservation.status === 'closed') ? "Modifier cette séance" : "Vous ne pouvez pas modifier un workout ayant des réservations en cours, si vous souhaiter supprimer le workout, veuillez annuler toutes les réservations en cours"}
-                        className={`text-white font-medium rounded-lg text-sm px-3 py-1 mx-1 ${!workout.reservations.some(reservation => reservation.status === 'pending' || reservation.status === 'accepted' || reservation.status === 'closed') ? 'bg-yellow-500 hover:bg-yellow-700' : 'bg-gray-500 cursor-not-allowed'}`}
+                        className={`text-white font-medium rounded-lg text-sm px-3 py-1 my-1 mx-1 ${!workout.reservations.some(reservation => reservation.status === 'pending' || reservation.status === 'accepted' || reservation.status === 'closed') ? 'bg-yellow-500 hover:bg-yellow-700' : 'bg-gray-500 cursor-not-allowed'}`}
                         disabled={workout.reservations.some(reservation => reservation.status === 'pending' || reservation.status === 'accepted' || reservation.status === 'closed')}
                       >
                         Modifier votre annonce
@@ -246,7 +248,7 @@ function HostedWorkoutHistory() {
                     <button 
                       title={!workout.reservations.some(reservation => reservation.status === 'pending' || reservation.status === 'accepted') ? "Supprimer cette séance" : "Vous ne pouvez pas supprimer un workout ayant des réservations en cours, si vous souhaiter supprimer le workout, veuillez annuler toutes les réservations en cours"}
                       onClick={() => handleDeleteWorkout(workout.id)}
-                      className={`text-white font-medium rounded-lg text-sm px-3 mx-1 py-1 ${!workout.reservations.some(reservation => reservation.status === 'pending' || reservation.status === 'accepted') ? 'bg-red-500 hover:bg-red-700' : 'bg-gray-500 cursor-not-allowed'}`}
+                      className={`text-white font-medium rounded-lg text-sm px-3 mx-1 my-1 py-1 ${!workout.reservations.some(reservation => reservation.status === 'pending' || reservation.status === 'accepted') ? 'bg-red-500 hover:bg-red-700' : 'bg-gray-500 cursor-not-allowed'}`}
                       disabled={workout.reservations.some(reservation => reservation.status === 'pending' || reservation.status === 'accepted')}
                     >
                       Supprimer l&apos;annonce
@@ -255,7 +257,7 @@ function HostedWorkoutHistory() {
                     <button 
                       title={workout.reservations.length < 1 || workout.is_closed || !workout.reservations.some(reservation => reservation.status === 'pending' || reservation.status === 'accepted') ? "Vous ne pouvez pas annuler les réservations de ce workout" : "Annuler toutes les réservations"}
                       onClick={() => handleReservationCancel(workout)}
-                      className={`text-white font-medium rounded-lg text-sm px-3 mx-1 py-1 ${workout.reservations.length < 1 || workout.is_closed || !workout.reservations.some(reservation => reservation.status === 'pending' || reservation.status === 'accepted') ? 'bg-gray-500 cursor-not-allowed' : 'bg-red-500 hover:bg-red-700' }`}
+                      className={`text-white font-medium rounded-lg text-sm px-3 mx-1 my-1 py-1 ${workout.reservations.length < 1 || workout.is_closed || !workout.reservations.some(reservation => reservation.status === 'pending' || reservation.status === 'accepted') ? 'bg-gray-500 cursor-not-allowed' : 'bg-red-500 hover:bg-red-700' }`}
                       disabled={
                         workout.reservations.length < 1 || workout.is_closed || !workout.reservations.some(reservation => reservation.status === 'pending' || reservation.status === 'accepted')
                       }

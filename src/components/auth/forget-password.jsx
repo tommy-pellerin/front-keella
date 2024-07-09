@@ -40,7 +40,7 @@ export default function ForgetPassword() {
               placeholder="Votre email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full h-10 px-2 border rounded-md focus:border-purple-500 focus:outline-none"
+              className="w-full h-10 px-2 border rounded-md focus:border-blue-500 focus:outline-none"
               required
             />
           </div>

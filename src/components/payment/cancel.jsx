@@ -13,8 +13,8 @@ const Cancel = () => {
       <div className="container mx-auto text-center my-5"> 
         <h2>Le paiement n&apos;a pas abouti.</h2> 
         <p>Aucun prélèvement ne sera fait sur votre compte</p> 
-        <Link to="/payment/credit" className="button-green-small">Retourner au panier</Link>
-        <Link to="/" className="button-primary-small">Retourner a l&apos;accueil</Link>
+        <Link to="/payment/credit" className="button-green-small">Retourner à paiement/credit</Link>
+        <Link to="/" className="button-primary-small">Retourner à l&apos;accueil</Link>
       </div>
     </>
   )
