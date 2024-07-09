@@ -17,7 +17,13 @@ export async function getData(objectUrl) {
 // Fonction pour envoyer les données
 export async function postData(objectUrl, body, filesToUpload) {
   const formData = new FormData();
-  if(body.price) {
+  console.log(body);
+  // Ajout de la logique pour les évaluations
+  if (body.rating) {
+    for (const key in body.rating) {
+      formData.append(`rating[${key}]`, body.rating[key]);
+    }
+  } else if(body.price) {
     for (const key in body) {
       if (body.hasOwnProperty(key) && key !== 'workout_images') {
         formData.append(`workout[${key}]`, body[key]);
@@ -68,24 +74,19 @@ export async function deleteData(objectUrl) {
 // Fonction pour update les donnees
 export async function updateData(objectUrl, body, filesToUpload) {
   const formData = new FormData();
-  // Wrap the body in the 'reservation' key
-  for (const key in body) {
-    if (body.hasOwnProperty(key)) {
-        formData.append(`reservation[${key}]`, body[key]);
-    }
-  }
+    
   if(body.price) {
     for (const key in body) {
       if (body.hasOwnProperty(key)) {
         formData.append(`workout[${key}]`, body[key]);
       }
     }
-    // Vérifiez que filesToUpload est défini et est un tableau avant d'utiliser forEach
-    if (Array.isArray(filesToUpload)) {
-      filesToUpload.forEach((file, index) => {
-        formData.append('workout[workout_images][]', file);
-      });
-    }
+      // Vérifiez que filesToUpload est défini et est un tableau avant d'utiliser forEach
+      if (Array.isArray(filesToUpload)) {
+        filesToUpload.forEach((file, index) => {
+          formData.append('workout[workout_images][]', file);
+        });
+      }
   } else if(body.category) {
     for (const key in body.category) {
       if (body.category.hasOwnProperty(key) && key !== 'category_image') {

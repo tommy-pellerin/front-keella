@@ -190,7 +190,7 @@ const FormWorkout = () => {
     const handleImageChange = (event) => {
         if (filesToUpload.length < 3) {
           const file = event.target.files[0];
-          if (file) {
+          if (file) { 
             const newPreviewImage = URL.createObjectURL(file);
             const newFilesToUpload = [...filesToUpload, file];
       

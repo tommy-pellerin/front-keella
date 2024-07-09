@@ -1,0 +1,92 @@
+
+.rating .stars {
+  font-size: 18px;
+}
+
+.stars {
+  display: flex;
+  cursor: pointer;
+}
+
+.star {
+  font-size: 1.5rem;
+  color: grey;
+  transition: color 0.2s;
+}
+
+.star.selected {
+  color: rgb(212, 190, 64);
+}
+
+.create-rating {
+  max-width: 200px;
+  margin: 0 auto;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.create-rating .form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.ratings-container {
+  display: flex;
+  justify-content: flex-end; /* Aligner les éléments à droite */
+  margin-top: 1rem;
+}
+
+.rating-component {
+  margin-left: auto; /* Cela poussera le composant vers la droite */
+}
+
+.create-rating h2 {
+  text-align: center;
+  font-size: 0.7rem;
+}
+
+.create-rating .error {
+  color: #d9534f;
+}
+
+.create-rating .success {
+  color: #5cb85c;
+}
+
+.create-rating form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.create-rating textarea {
+  width: 100%;
+  height: 80px;
+  padding: 0.4rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.create-rating button {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #0275d8;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.create-rating button:hover {
+  background-color: #025aa5;
+}
+
+/* Ajoutez cette règle pour effacer les flottements précédents */
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+

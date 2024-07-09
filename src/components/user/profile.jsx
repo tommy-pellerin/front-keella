@@ -6,7 +6,10 @@ import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
 import { Link } from 'react-router-dom';
 import DeleteAccount from "./delete-account";
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet';import RatingStars from '../rating/ProfilHostRatings';
+import UserAverageRating from '../rating/UserAverageRating';
+
+
 import { formatDate, formatTime, formatDuration } from '../../services/time-fixes';
 
 function Profile() {
@@ -47,7 +50,8 @@ function Profile() {
                 <div className="flex justify-center">
                     <div className="bg-white rounded-lg shadow-lg p-6 w-full lg:w-2/5">
                         <h1 className="mb-4 text-center">Compte de {profile.username}</h1>
-                        <p className="text-center">Actif depuis le {formatDate(profile.created_at)}</p>
+                        <UserAverageRating averageRating={parseFloat(profile.average_rating)} />
+                    <p className="text-center">Actif depuis : {formatDate(profile.created_at)}</p>
                         {profile.avatar?
                             <img src={profile.avatar}
                             alt="avatar" 
@@ -61,6 +65,7 @@ function Profile() {
                         :
                             <p className="text-center">Nombre de Scéances passés : 0</p>
                         }
+                    
 
                         {profile.hosted_workouts ?
                         <p className="text-center">Nombre de Scéances proposé : {profile.hosted_workouts.length}</p>
@@ -109,8 +114,11 @@ function Profile() {
                         }
                     </div>
 
-                        </div>
-                </div>
+                    </div>
+            </div>
+            <RatingStars ratings={profile.ratings_received} />
+        
+
             </div>
         </>
     );

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import LoadingSpinner from '../static/LoadingSpinner';
+import CreateWorkoutRatings from '../rating/CreateWorkoutRatings'
 import { useParams } from 'react-router-dom';
 import { getData, updateData } from '../../services/data-fetch';
 import { useAtom } from 'jotai';
@@ -105,6 +106,9 @@ function ProfileReservation() {
                                         className='button-primary-small mt-2'>
                                             Contacter l&apos;hote
                                     </button>
+                                    {reservation.status === "closed" && (
+                                    <CreateWorkoutRatings workoutId={workout.id} />
+                                    )}
                                 </div>
                                 {reservation && (
                                     <div className="w-1/2 p-4 text-end">

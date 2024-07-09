@@ -10,6 +10,9 @@ import ImageCarrousel from "./ImageCarrousel";
 import { formatDate, formatTime, formatDuration } from '../../services/time-fixes';
 //security
 import checkTokenAndLocalStorage from "../../services/checkTokenAndLocalStorage";
+//rating
+import WorkoutRating from "../rating/WorkoutRating";
+import WorkoutAverageRating from "../rating/WorkoutAverageRating";
 
 const WorkoutShow = () => {
   const [quantity,setQuantity] = useState(1)
@@ -144,7 +147,10 @@ const WorkoutShow = () => {
                 :
                 "Loading..."
                 }
-                <p>Notes :</p>
+                <div className="my-5">
+                     <WorkoutAverageRating averageRating={workout.average_rating} />
+                </div>
+                
               </div>
               <div>
                 {workout.host ?
@@ -211,7 +217,7 @@ const WorkoutShow = () => {
         </div>
 
         <div className="my-5">
-          Commentaires
+        <WorkoutRating workoutId={workout.id}/>
         </div>
       </div>
 

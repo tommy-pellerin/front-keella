@@ -3,8 +3,10 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
 import { getData, deleteData, updateData } from '../../services/data-fetch';
+import CreateUserRatings from '../rating/CreateUserRatingsForHostedWorkouts.jsx';
 import { formatDate, formatTime, formatDuration, formatTimeToLocalTime } from '../../services/time-fixes';
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
+
 import { Helmet } from 'react-helmet';
 
 function HostedWorkoutHistory() {
@@ -16,40 +18,40 @@ function HostedWorkoutHistory() {
     const [workoutData, setWorkoutData] = useState([]); // État pour stocker les données des workouts
 
     useEffect(() => {
-        const fetchHostedWorkouts = async () => {
-            try {
-                const userData = await getData(`/users/${user_id}`);
-                if (userData && userData.hosted_workouts) {
-                    const fetchedWorkoutData = await Promise.all(userData.hosted_workouts.map(async (workout) => {
-                        try {
-                            const workoutDetails = await getData(`/workouts/${workout.id}`);
-                            return {
-                                ...workout,
-                                category: workoutDetails.category,
-                                available_places: workoutDetails.available_places,
-                                reservations: workoutDetails.reservations.map(reservation => ({
-                                    ...reservation.user,
-                                    reservationId: reservation.id,
-                                    status: reservation.status
-                                }))
-                            };
-                        } catch (error) {
-                            console.error('Erreur lors de la récupération des détails de l\'entraînement:', error);
-                            throw error; // Re-lancer l'erreur pour la gestion par le bloc catch externe si nécessaire
-                        }
-                    }));
-                    console.log(fetchedWorkoutData);
-                    setWorkoutData(fetchedWorkoutData); // Mettre à jour l'état avec les données récupérées
-                }
-            } catch (error) {
-                // console.error('Erreur lors de la récupération des données de l\'utilisateur:', error);
-                toast.error("Erreur lors de la récupération des données");
-            }
-        };
-    
-        fetchHostedWorkouts(); // Appeler la fonction de récupération des entraînements hébergés
-    
-    }, [user, user_id]);
+      const fetchHostedWorkouts = async () => {
+          try {
+              const userData = await getData(`/users/${user_id}`);
+              if (userData && userData.hosted_workouts) {
+                  const fetchedWorkoutData = await Promise.all(userData.hosted_workouts.map(async (workout) => {
+                      try {
+                          const workoutDetails = await getData(`/workouts/${workout.id}`);
+                          return {
+                              ...workout,
+                              category: workoutDetails.category,
+                              available_places: workoutDetails.available_places,
+                              reservations: workoutDetails.reservations.map(reservation => ({
+                                  ...reservation.user,
+                                  reservationId: reservation.id,
+                                  status: reservation.status
+                              }))
+                          };
+                      } catch (error) {
+                          console.error('Erreur lors de la récupération des détails de l\'entraînement:', error);
+                          throw error; // Re-lancer l'erreur pour la gestion par le bloc catch externe si nécessaire
+                      }
+                  }));
+                  console.log(fetchedWorkoutData);
+                  setWorkoutData(fetchedWorkoutData); // Mettre à jour l'état avec les données récupérées
+              }
+          } catch (error) {
+              // console.error('Erreur lors de la récupération des données de l\'utilisateur:', error);
+              toast.error("Erreur lors de la récupération des données");
+          }
+      };
+  
+      fetchHostedWorkouts(); // Appeler la fonction de récupération des entraînements hébergés
+  
+  }, [user, user_id]);
     
 
     useEffect(() => {
@@ -105,15 +107,21 @@ function HostedWorkoutHistory() {
                             })
                         };
                     }
-                  return workout;
-                }));
-                toast.success("Statut de réservation mis à jour avec succès");
-            }
-        } catch (error) {
-          // console.error('Erreur lors de la mise à jour du statut de la réservation:', error);
-          toast.error("Erreur lors de la mise à jour du statut de la réservation");
-        }
-    };
+        return workout;
+      }));
+      toast.success("Statut de réservation mis à jour avec succès");
+    }
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour du statut de la réservation:', error);
+    toast.error("Erreur lors de la mise à jour du statut de la réservation");
+  }
+};
+
+  if(!workoutData){
+    <div>Loading...</div>
+  }
+
+  
 
     // on ne peut annuler une réservation que si la réservation n'est pas closed
     const handleReservationCancel = (workout) => {
@@ -154,6 +162,7 @@ function HostedWorkoutHistory() {
       <div className="background-blue-500">
         <h1 className="text-4xl">Mes Annonces</h1>
       </div>
+      {workoutData && workoutData.length > 0 ? (
       <div className="flex flex-col gap-4 p-4">
         {workoutData && workoutData.map((workout) => (
           <div key={workout.id} className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -195,6 +204,12 @@ function HostedWorkoutHistory() {
                                 </Link>
                             </div>
                             <div className='py-1'>Statut: {reservation.status}</div>
+                            
+        
+                                {reservation.status === 'closed' && (
+                                  <CreateUserRatings workoutId={workout.id} participantId={reservation.id} />
+                                )}
+      
                                                 
                             <div className='py-1'>
                                 <button 
@@ -264,8 +279,15 @@ function HostedWorkoutHistory() {
               </div>
             ))}
           </div>
-        </>
-    );
-}
-
-export default HostedWorkoutHistory;
+             ) : (
+              <div className="bg-gray-100 flex items-center justify-center min-h-screen">
+              <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+                  <h3 className="text-2xl font-bold text-red-600 mb-4">Vous n'avez pas encore d'Annonce</h3>
+              </div>
+          </div>
+            )}
+          </>
+        );
+      }
+       
+    export default HostedWorkoutHistory;
