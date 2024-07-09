@@ -95,7 +95,7 @@ function ProfileReservation() {
                                     <p><strong>Date</strong> : {formatDate(workout.start_date)} à {formatTime(workout.start_date)}</p>
                                     <p><strong>Ville</strong>  : {workout.city}</p>
                                     <p><strong>Durée</strong>  : {formatDuration(workout.duration)}</p>
-                                    <p><strong>Hote</strong>  : <Link to={`/profile/${workout.host_id}`} className='hover:underline'>{workout.host.username}</Link></p>
+                                    <p><strong>Hote</strong>  : <Link to={`/profile/${workout.host_id}`} className="text-blue-600 hover:text-blue-800 ml-2 hover:underline">{workout.host.username}</Link></p>
                                     
                                     <button 
                                         onClick={() => {

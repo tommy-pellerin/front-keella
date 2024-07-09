@@ -213,7 +213,7 @@ function HostedWorkoutHistory() {
                       {workout.reservations && workout.reservations.map(reservation => (
                           <div key={reservation.reservationId} className="flex flex-col md:flex-row justify-between items-center mb-2">
                             <div className='py-1'>Client: 
-                                <Link to={`/profile/${reservation.id}`} className="text-blue-600 hover:text-blue-800 ml-2">
+                                <Link to={`/profile/${reservation.id}`} className="text-blue-600 hover:text-blue-800 ml-2 hover:underline">
                                     {reservation.username}
                                 </Link>
                             </div>
