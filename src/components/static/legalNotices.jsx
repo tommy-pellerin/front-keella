@@ -7,10 +7,10 @@ const LegalNotices = () => {
         <title>Keella | Mentions légales</title>
         <meta name="description" content="Mentions légales" />
       </Helmet>
-      <div className="container mx-auto my-5">
-        <div className="background-blue-500">
-          <h1 className="text-center">Conditions d&apos;utilisation</h1>
-        </div>
+      <div className="background-blue-500">
+        <h1 className="text-center">Conditions d&apos;utilisation</h1>
+      </div>
+      <div className="mx-5">
         <p>
           Le site Internet{" "}
           <a href="https://www.front-keella.vercel.app" target="_blank">

@@ -6,10 +6,10 @@ const PrivacyPolicy = () => {
         <title>Keella | Politique de confidentialité</title>
         <meta name="description" content="Politique de confidentialité" />
       </Helmet>
-      <div className="container mx-auto my-5">
-        <div className="background-blue-500">
-          <h1>Politique de confidentialité</h1>
-        </div>
+      <div className="background-blue-500">
+        <h1>Politique de confidentialité</h1>
+      </div>
+      <div className="mx-5">
         <section>
           <p>
             <em>Dernière mise à jour le 26 juin 2024</em>
@@ -444,7 +444,7 @@ const PrivacyPolicy = () => {
           </p>
 
           <ul className="list-disc pl-5 space-y-2">
-            <li>
+            <li className="break-words">
               Microsoft Internet Explorer{" "}
               <a
                 className="underline"
@@ -453,7 +453,7 @@ const PrivacyPolicy = () => {
                 http://windows.microsoft.com/fr-FR/windows-vista/Block-or-allow-cookies
               </a>
             </li>
-            <li>
+            <li className="break-words">
               Microsoft Edge{" "}
               <a
                 className="underline"
@@ -462,7 +462,7 @@ const PrivacyPolicy = () => {
                 https://privacy.microsoft.com/fr-fr/windows-10-microsoft-edge-and-privacy
               </a>
             </li>
-            <li>
+            <li className="break-words">
               Apple Safari{" "}
               <a
                 className="underline"
@@ -471,7 +471,7 @@ const PrivacyPolicy = () => {
                 http://docs.info.apple.com/article.html?path=Safari/3.0/fr/9277.html
               </a>
             </li>
-            <li>
+            <li className="break-words">
               Google Chrome{" "}
               <a
                 className="underline"
@@ -480,7 +480,7 @@ const PrivacyPolicy = () => {
                 http://support.google.com/chrome/bin/answer.py?hl=fr&hlrm=en&answer=95647
               </a>
             </li>
-            <li>
+            <li className="break-words">
               Mozilla Firefox{" "}
               <a
                 className="underline"
@@ -489,7 +489,7 @@ const PrivacyPolicy = () => {
                 https://support.mozilla.org/fr/kb/activer-desactiver-cookies-preferences
               </a>
             </li>
-            <li>
+            <li className="break-words">
               Opera{" "}
               <a
                 className="underline"
