@@ -201,6 +201,12 @@ function HostedWorkoutHistory() {
                                 </Link>
                             </div>
                             <div className='py-1'>Statut: {reservation.status}</div>
+                            
+        
+                                {reservation.status === 'closed' && (
+                                  <CreateUserRatings workoutId={workout.id} participantId={reservation.id} />
+                                )}
+      
                                                 
                             <div className='py-1'>
                                 <button 

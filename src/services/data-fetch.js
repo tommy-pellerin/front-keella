@@ -75,12 +75,7 @@ export async function deleteData(objectUrl) {
 export async function updateData(objectUrl, body, filesToUpload) {
   const formData = new FormData();
   // Wrap the body in the 'reservation' key
-  for (const key in body) {
-    if (body.hasOwnProperty(key)) {
-      const formKey = isWorkoutUpdate ? `workout[${key}]` : `reservation[${key}]`;
-      formData.append(formKey, body[key]);
-    }
-  }
+  
   if(body.price) {
     for (const key in body) {
       if (body.hasOwnProperty(key)) {
