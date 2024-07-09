@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { postData, getData } from '../../services/data-fetch';
 import './RatingStars.css';
 import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
+import RatingModal from './RatingModal';
 
 export default function CreateWorkoutRatings({ workoutId }) {
   const [rating, setRating] = useState(0);
@@ -69,7 +70,7 @@ export default function CreateWorkoutRatings({ workoutId }) {
           const response = await getData(`/ratings?workoutId=${workoutId}`);
           console.log('Response:', response); // Affiche la réponse complète
           const userHasCommented = response.some(rating => {
-            console.log('Rating:', rating); // Affiche les détails du rating
+            // console.log('Rating:', rating); // Affiche les détails du rating
             return rating.rateable_id === workoutId && rating.user_id === user.id;
           });
           console.log('Has the user already commented:', userHasCommented); // Affiche si l'utilisateur a déjà commenté
@@ -92,17 +93,18 @@ export default function CreateWorkoutRatings({ workoutId }) {
   };
 
   return (
-    <div className="create-rating">
+    <>
       
-      <h2 onClick={toggleAccordion} style={{ cursor: 'pointer' }}>
+      <button onClick={toggleAccordion} className='button-primary-small'>
         Note et commente ta séance !
-      </h2>
-      {isOpen && (
-        <>
-          {error && <p className="error">{error}</p>}
-          {success && <p className="success">Commentaire crée avec succès!</p>}
-          {!hasCommented ? (
-            <form onSubmit={handleSubmit} className="form-container">
+      </button>
+
+      <RatingModal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        {error && <p className="error">{error}</p>}
+        {success && <p className="success">Commentaire crée avec succès!</p>}
+        {!hasCommented ? (
+          <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+            <div className='text-left'>
               <div className="stars">
                 {Array.from({ length: 5 }, (_, i) => (
                   <span
@@ -114,21 +116,23 @@ export default function CreateWorkoutRatings({ workoutId }) {
                   </span>
                 ))}
               </div>
-              <textarea
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-                maxLength="500"
-                placeholder="Leave a comment (max 500 characters)"
-              />
-              <button type="submit">Envoyer</button>
-            </form>
-            ) : (
-              <p className="error">Vous avez déjà noté cette séance.</p>
-            )}
-            
-            
-        </>
-      )}
-    </div>
+            </div>
+            <textarea
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              maxLength="500"
+              placeholder="Laissez un commentaire (500 caracteres max)"
+              className="w-full h-36"
+            />
+            <div>
+              <button type="submit" className='button-green-large'>Envoyer</button>
+            </div>
+          </form>
+        ) : (
+          <p className="error">Vous avez déjà noté cette séance.</p>
+        )}
+          
+      </RatingModal>
+    </>
   );
 }
