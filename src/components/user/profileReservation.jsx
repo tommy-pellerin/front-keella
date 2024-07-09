@@ -106,6 +106,9 @@ function ProfileReservation() {
                                         className='button-primary-small mt-2'>
                                             Contacter l&apos;hote
                                     </button>
+                                    {reservation.status === "closed" && (
+                                    <CreateWorkoutRatings workoutId={workout.id} />
+                                    )}
                                 </div>
                                 {reservation && (
                                     <div className="w-1/2 p-4 text-end">
