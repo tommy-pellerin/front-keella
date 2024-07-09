@@ -74,8 +74,7 @@ export async function deleteData(objectUrl) {
 // Fonction pour update les donnees
 export async function updateData(objectUrl, body, filesToUpload) {
   const formData = new FormData();
-  // Wrap the body in the 'reservation' key
-  
+    
   if(body.price) {
     for (const key in body) {
       if (body.hasOwnProperty(key)) {
