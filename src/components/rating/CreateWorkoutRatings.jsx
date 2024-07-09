@@ -122,7 +122,7 @@ export default function CreateWorkoutRatings({ workoutId }) {
               onChange={(e) => setComment(e.target.value)}
               maxLength="500"
               placeholder="Laissez un commentaire (500 caracteres max)"
-              className="w-full h-36"
+              className="w-full h-36 border rounded-md border-gray-500 p-1"
             />
             <div>
               <button type="submit" className='button-green-large'>Envoyer</button>
