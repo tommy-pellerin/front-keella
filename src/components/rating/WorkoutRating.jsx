@@ -3,6 +3,7 @@ import { getData } from '../../services/data-fetch';
 import { Link } from 'react-router-dom';
 import './RatingStars.css';
 
+
 export default function WorkoutRating({ workoutId }) {
   const [ratings, setRatings] = useState([]);
 
@@ -32,8 +33,8 @@ export default function WorkoutRating({ workoutId }) {
   };
 
   return (
-    <div className="w-full flex flex-col items-center">
-      <h2 className="text-xl font-semibold my-4">Les utilisateurs ont donné leurs avis</h2>
+    <div className="w-full flex flex-col items-start px-5">
+      <h2 className="text-xl font-semibold my-4 text-center">Les utilisateurs ont donné leurs avis</h2>
       {ratings.length > 0 ? (
         ratings.map((rating) => (
           <div key={rating.id} className="w-full max-w-md p-4 mb-4">
