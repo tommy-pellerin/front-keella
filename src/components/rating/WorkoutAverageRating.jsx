@@ -1,13 +1,13 @@
 import React from 'react';
-import './RatingStars.css'; // Assurez-vous que le chemin d'accès est correct
+import './RatingStars.css'; 
 
-const WorkoutAverageRating = ({ averageRating }) => {
-  const renderStars = (averageRating) => {
+const WorkoutAverageRating = ({ averageRating, totalRatings }) => {
+  const renderStars = (average) => {
     let stars = [];
     for (let i = 0; i < 5; i++) {
       stars.push(
-        <span key={i} className={i < Math.round(averageRating) ? "star selected" : "star"}>
-          {i < Math.round(averageRating) ? '★' : '☆'}
+        <span key={i} className={i < Math.round(average) ? "star selected text-yellow-600" : "star"}>
+          {i < Math.round(average) ? '★' : '☆'}
         </span>
       );
     }
@@ -15,9 +15,12 @@ const WorkoutAverageRating = ({ averageRating }) => {
   };
 
   return (
-    <div className="create-rating">
-      <h2>Note Moyenne du Workout</h2>
-      {renderStars(averageRating)}
+    <div className="create-rating" style={{ textAlign: 'center', marginBottom: '1rem' }}>
+      
+      <div style={{ display: 'inline-block' }}>
+        {renderStars(averageRating)}
+        <span>{` (${totalRatings})`}</span>
+      </div>
     </div>
   );
 };
