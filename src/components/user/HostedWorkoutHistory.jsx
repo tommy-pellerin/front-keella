@@ -121,7 +121,22 @@ function HostedWorkoutHistory() {
     <div>Loading...</div>
   }
 
-  
+  function frenchStatut(statut){
+    switch(statut) {
+    case "pending":
+      return "en attente";
+    case "accepted":
+      return "accepté";
+    case "refused":
+      return "refusé"
+    case "user_cancelled":
+      return "annulé par le client"
+    case "host_cancelled":
+      return "annulé par l'hote";
+    case "closed":
+      return "cloturé";
+    }
+  }
 
     // on ne peut annuler une réservation que si la réservation n'est pas closed
     const handleReservationCancel = (workout) => {
@@ -163,22 +178,21 @@ function HostedWorkoutHistory() {
         <h1 className="text-4xl">Mes Annonces</h1>
       </div>
       {workoutData && workoutData.length > 0 ? (
-      <div className="flex flex-col gap-4 p-4">
-        {workoutData && workoutData.map((workout) => (
-          <div key={workout.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="p-5">
-              <button onClick={() => toggleAccordion(workout.id)} className="mb-2 w-full text-left">
-                <h2>{workout.title}</h2>
-                <p>             
-                Date et heure de début: <strong>{formatDate(workout.start_date) +" à "+ formatTime(workout.start_date)}</strong>
-                </p>  
-                <p>
-                Nombre de réservation : <strong>{workout.reservations.length}</strong>, dont <strong>{workout.reservations.filter(reservation => reservation.status === "pending").length}</strong> en attente de réponse
-                </p>
-              </button>
-        
+        <div className="flex flex-col gap-4 p-4">
+          {workoutData && workoutData.map((workout) => (
+            <div key={workout.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div className="p-5">
+                <button onClick={() => toggleAccordion(workout.id)} className="mb-2 w-full text-left">
+                  <h2>{workout.title}</h2>
+                  <p>             
+                  Date et heure de début: <strong>{formatDate(workout.start_date) +" à "+ formatTime(workout.start_date)}</strong>
+                  </p>  
+                  <p>
+                  Nombre de réservation : <strong>{workout.reservations.length}</strong>, dont <strong>{workout.reservations.filter(reservation => reservation.status === "pending").length}</strong> en attente de réponse
+                  </p>
+                </button>
           
-        {openWorkoutId === workout.id && (
+          {openWorkoutId === workout.id && (
                 <>
                   
                   <p className="text-gray-600 mb-1">
@@ -199,17 +213,11 @@ function HostedWorkoutHistory() {
                       {workout.reservations && workout.reservations.map(reservation => (
                           <div key={reservation.reservationId} className="flex flex-col md:flex-row justify-between items-center mb-2">
                             <div className='py-1'>Client: 
-                                <Link to={`/profile/${reservation.id}`} className="text-blue-600 hover:text-blue-800 ml-2">
+                                <Link to={`/profile/${reservation.id}`} className="text-blue-600 hover:text-blue-800 ml-2 hover:underline">
                                     {reservation.username}
                                 </Link>
                             </div>
-                            <div className='py-1'>Statut: {reservation.status}</div>
-                            
-        
-                                {reservation.status === 'closed' && (
-                                  <CreateUserRatings workoutId={workout.id} participantId={reservation.id} />
-                                )}
-      
+                            <div className='py-1'>Statut: <strong>{frenchStatut(reservation.status)}</strong></div>
                                                 
                             <div className='py-1'>
                                 <button 
@@ -237,6 +245,12 @@ function HostedWorkoutHistory() {
                                 >
                                     Contacter client
                                 </button>
+                                
+                                <div className='py-1'>
+                                  {reservation.status === 'closed' && (
+                                      <CreateUserRatings workoutId={workout.id} participantId={reservation.id} />
+                                  )}
+                                </div>
                             </div>
                           </div>
                       ))}
@@ -273,21 +287,21 @@ function HostedWorkoutHistory() {
                     >
                       Annuler toutes les réservations
                     </button>
-
+                      
                   </div>
                 </div>
               </div>
             ))}
           </div>
-             ) : (
-              <div className="bg-gray-100 flex items-center justify-center min-h-screen">
-              <div className="bg-white p-8 rounded-lg shadow-lg text-center">
-                  <h3 className="text-2xl font-bold text-red-600 mb-4">Vous n'avez pas encore d'Annonce</h3>
-              </div>
+        ) : (
+          <div className="bg-gray-100 flex items-center justify-center min-h-screen">
+            <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+                <h3 className="text-2xl font-bold text-red-600 mb-4">Vous n'avez pas encore d'annonce</h3>
+            </div>
           </div>
-            )}
-          </>
-        );
-      }
-       
+        )}
+    </>
+  );
+}
+
     export default HostedWorkoutHistory;
