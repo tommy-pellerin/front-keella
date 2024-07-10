@@ -216,7 +216,7 @@ const WorkoutShow = () => {
 
           </div>
           <div className="lg:col-span-1 flex items-start">
-        <WorkoutRating workoutId={workout.id}/>
+        <WorkoutRating workoutId={workout.id} ratingsReceivedUserAvatars={workout.ratings_received_user_avatars}/>
         </div>
         </div>
 
