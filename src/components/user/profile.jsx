@@ -43,7 +43,7 @@ function Profile() {
             </Helmet>
             <div className="">
             <div className='background-blue-500'>
-            <h2 className='text-4xl'>Mon Profil</h2>
+            <h2 className='text-4xl'>{user.email === profile.email ? 'Mon Profil' : 'Profil'}</h2>
             </div>
             <div className="container mx-auto p-4">
 
