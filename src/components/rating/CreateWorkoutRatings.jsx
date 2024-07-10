@@ -4,6 +4,8 @@ import './RatingStars.css';
 import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
 import RatingModal from './RatingModal';
+import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 export default function CreateWorkoutRatings({ workoutId }) {
   const [rating, setRating] = useState(0);
@@ -13,7 +15,7 @@ export default function CreateWorkoutRatings({ workoutId }) {
   const [isOpen, setIsOpen] = useState(false);
   const [hasCommented, setHasCommented] = useState(false);
   const [user] = useAtom(userAtom);
-
+  const navigate = useNavigate();
   
   
   
@@ -55,6 +57,8 @@ export default function CreateWorkoutRatings({ workoutId }) {
       setRating(0);
       setComment('');
       setHasCommented(true);
+      navigate(`/my-account/${user.id}/my-reservation`);
+      toast.success("Merci pour votre commentaire");
     } catch (err) {
       console.error('Error creating rating:', err);
       const errorMsg = err.response ? await err.response.json() : 'Error creating rating.';
