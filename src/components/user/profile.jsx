@@ -23,6 +23,7 @@ function Profile() {
             try {
                 const data = await getData(`/users/${user_id}`);
                 setProfile(data);
+                console.log(data);
             } catch (error) {
                 console.error(error);
             }
