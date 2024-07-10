@@ -118,7 +118,7 @@ function Profile() {
 
                     </div>
             </div>
-            <RatingStars ratings={profile.ratings_received} />
+            <RatingStars ratings={profile.ratings_received} ratingsReceivedUserAvatars={profile.ratings_received_user_avatars} />
         
 
             </div>
