@@ -3,8 +3,9 @@ import { postData, getData } from '../../services/data-fetch';
 import './RatingStars.css';
 import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
-
-
+import RatingModal from './RatingModal';
+import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 export default function CreateUserRatings({ workoutId, participantId }) {
   const [rating, setRating] = useState(0);
@@ -14,6 +15,7 @@ export default function CreateUserRatings({ workoutId, participantId }) {
   const [isOpen, setIsOpen] = useState(false);
   const [hasCommented, setHasCommented] = useState(false);
   const [user] = useAtom(userAtom);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -46,6 +48,8 @@ export default function CreateUserRatings({ workoutId, participantId }) {
       setSuccess(true);
       setRating(0);
       setComment('');
+      navigate(`/my-account/${user.id}/hosted_workouts`);
+      toast.success("Merci pour votre commentaire");
     } catch (err) {
       console.error('Error creating rating:', err);
       const errorMsg = err.response ? await err.response.json() : 'Vous avez déjà laisser une note ou un commentaire'
@@ -81,40 +85,44 @@ export default function CreateUserRatings({ workoutId, participantId }) {
 
 
   return (
-    <div className="create-rating">
-      <h2 onClick={toggleAccordion} style={{ cursor: 'pointer' }}>
+    <>
+      <button onClick={toggleAccordion} className='button-primary-small'>
         Note et commente le participant
-      </h2>
-      {isOpen && (
-        <>
+      </button>
+
+      <RatingModal isOpen={isOpen} onClose={() => setIsOpen(false)}>
           {error && <p className="error">{error}</p>}
           {success && <p className="success">Commentaire crée avec succès!</p>}
           {!hasCommented ? (
-            <form onSubmit={handleSubmit} className="form-container">
-              <div className="stars">
-                {Array.from({ length: 5 }, (_, i) => (
-                  <span
-                    key={i}
-                    className={`star ${i < rating ? 'selected' : ''}`}
-                    onClick={() => setRating(i + 1)}
-                  >
-                    ★
-                  </span>
-                ))}
+            <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+              <div className='text-left'>
+                <div className="stars">
+                  {Array.from({ length: 5 }, (_, i) => (
+                    <span
+                      key={i}
+                      className={`star ${i < rating ? 'selected' : ''}`}
+                      onClick={() => setRating(i + 1)}
+                    >
+                      ★
+                    </span>
+                  ))}
+                </div>
               </div>
               <textarea
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 maxLength="500"
                 placeholder="Leave a comment (max 500 characters)"
+                className="w-full h-36 border rounded-md border-gray-500 p-1"
               />
-              <button type="submit">Envoyer</button>
+              <div>
+                <button type="submit" className='button-green-large'>Envoyer</button>
+              </div>
             </form>
           ) : (
             <p className="error">Vous avez déjà noté ce participant.</p>
           )}
-        </>
-      )}
-    </div>
+      </RatingModal>
+    </>
   );
 }
