@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import LoadingSpinner from '../static/LoadingSpinner';
 import CreateWorkoutRatings from '../rating/CreateWorkoutRatings'
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { getData, updateData } from '../../services/data-fetch';
 import { useAtom } from 'jotai';
 import { userAtom } from '../../store/user';
@@ -19,6 +19,7 @@ function ProfileReservation() {
             try {
                 const data = await getData(`/users/${user_id}`);
                 setProfile(data);
+                console.log(data);
             } catch (error) {
                 console.error(error);
             }
@@ -95,7 +96,8 @@ function ProfileReservation() {
                                     <p><strong>Date</strong> : {formatDate(workout.start_date)} à {formatTime(workout.start_date)}</p>
                                     <p><strong>Ville</strong>  : {workout.city}</p>
                                     <p><strong>Durée</strong>  : {formatDuration(workout.duration)}</p>
-                                    <p><strong>Hote</strong>  : {workout.host.username}</p>
+                                    <p><strong>Hote</strong>  : <Link to={`/profile/${workout.host_id}`} className="text-blue-600 hover:text-blue-800 ml-2 hover:underline">{workout.host.username}</Link></p>
+                                    
                                     <button 
                                         onClick={() => {
                                             const email = workout.host.email;
@@ -106,9 +108,7 @@ function ProfileReservation() {
                                         className='button-primary-small mt-2'>
                                             Contacter l&apos;hote
                                     </button>
-                                    {reservation.status === "closed" && (
-                                    <CreateWorkoutRatings workoutId={workout.id} />
-                                    )}
+                                    
                                 </div>
                                 {reservation && (
                                     <div className="w-1/2 p-4 text-end">
@@ -131,19 +131,29 @@ function ProfileReservation() {
                                             </>
                                         )}
                                         {reservation.status === "refused" && (
-                                            <button className='button-red-small'>L'hote n'a pas accepté votre réservation</button>
+                                            <p className="inline-flex justify-center items-center gap-x-2 py-2 px-3 text-sm font-semibold rounded-lg border-0 bg-gray-400">
+                                                L'hote a refusé votre demande de réservation
+                                            </p>
                                         )}
                                         {reservation.status === "host_cancelled" && (
-                                            <button className='button-red-small'>L'hote a annulé sa réservation</button>
+                                            <p className="inline-flex justify-center items-center gap-x-2 py-2 px-3 text-sm font-semibold rounded-lg border-0 bg-gray-400">
+                                                L'hote a annulé la séance
+                                            </p>
                                         )}
                                         {reservation.status === "user_cancelled" && (
-                                            <button className='button-red-small disable'>Vous avez annulé votre réservation</button>
+                                            <p className="inline-flex justify-center items-center gap-x-2 py-2 px-3 text-sm font-semibold rounded-lg border-0 bg-gray-400">
+                                                Vous avez annulé votre réservation
+                                            </p>
                                         )}
                                         {reservation.status === "closed" && (
-                                            <button className='button-red-small'>L'évènement est fini</button>
+                                            <p className="inline-flex justify-center items-center gap-x-2 py-2 px-3 text-sm font-semibold rounded-lg border-0 bg-gray-400">
+                                                L'évènement est fini
+                                            </p>
                                         )}
-                                        {reservation.status === "relaunched" && (
-                                            <button className='button-red-small'>L'évènement est relancé</button>
+                                        {reservation.status === "closed" && (
+                                            <div className='mt-1'>
+                                                <CreateWorkoutRatings workoutId={workout.id} />
+                                            </div>
                                         )}
                                     </div>
                                 )}
