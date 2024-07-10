@@ -216,7 +216,7 @@ const WorkoutShow = () => {
           </div>
         </div>
 
-        <div className="my-5">
+        <div className="my-5 flex items-start">
         <WorkoutRating workoutId={workout.id}/>
         </div>
       </div>
