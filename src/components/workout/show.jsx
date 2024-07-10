@@ -148,7 +148,7 @@ const WorkoutShow = () => {
                 "Loading..."
                 }
                 <div className="my-5">
-                     <WorkoutAverageRating averageRating={workout.average_rating} />
+                     <WorkoutAverageRating averageRating={workout.average_rating} totalRatings={workout.ratings_received.length} />
                 </div>
                 
               </div>
