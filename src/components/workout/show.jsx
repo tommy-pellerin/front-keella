@@ -137,6 +137,7 @@ const WorkoutShow = () => {
 
       <div className="container mx-auto">
         <div className="grid sm:grid-cols-1 lg:grid-cols-3 gap-4 my-5">
+        
 
           <div className="lg:col-span-2 px-5">
             <div className="flex justify-between my-3 border-b-2">
@@ -147,8 +148,8 @@ const WorkoutShow = () => {
                 :
                 "Loading..."
                 }
-                <div className="my-5">
-                     <WorkoutAverageRating averageRating={workout.average_rating} />
+                <div className="my-5 flex justify-start">
+                     <WorkoutAverageRating averageRating={workout.average_rating} totalRatings={workout.ratings_received ? workout.ratings_received.length : 0} />
                 </div>
                 
               </div>
@@ -214,11 +215,12 @@ const WorkoutShow = () => {
             }
 
           </div>
+          <div className="lg:col-span-1 flex items-start">
+        <WorkoutRating workoutId={workout.id} ratingsReceivedUserAvatars={workout.ratings_received_user_avatars}/>
+        </div>
         </div>
 
-        <div className="my-5">
-        <WorkoutRating workoutId={workout.id}/>
-        </div>
+        
       </div>
 
       
