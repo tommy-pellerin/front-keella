@@ -6,6 +6,7 @@
 .stars {
   display: inline-flex;
   cursor: pointer;
+  color: rgb(197, 197, 43);
 }
 
 .star {
@@ -14,18 +15,6 @@
   transition: color 0.2s;
 }
 
-.star.selected {
-  color: rgb(212, 190, 64);
-}
-
-.create-rating {
-  max-width: 200px;
-  margin: 0 auto;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-}
 
 .create-rating .form-container {
   display: flex;
