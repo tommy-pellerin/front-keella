@@ -23,6 +23,7 @@ function Profile() {
             try {
                 const data = await getData(`/users/${user_id}`);
                 setProfile(data);
+                console.log(data);
             } catch (error) {
                 console.error(error);
             }
@@ -117,7 +118,7 @@ function Profile() {
 
                     </div>
             </div>
-            <RatingStars ratings={profile.ratings_received} />
+            <RatingStars ratings={profile.ratings_received} ratingsReceivedUserAvatars={profile.ratings_received_user_avatars} />
         
 
             </div>
