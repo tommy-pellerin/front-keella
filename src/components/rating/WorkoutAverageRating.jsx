@@ -14,19 +14,12 @@ const WorkoutAverageRating = ({ averageRating, totalRatings }) => {
 
   return (
     <div className="create-rating" style={{ textAlign: 'center', marginBottom: '1rem' }}>
-      
       <div style={{ display: 'inline-block' }}>
-      {totalRatings > 0 ? (
-        <>
-          {renderStar(averageRating)}
-          <span> ({totalRatings})</span>
-        </>
-      ) : (
-        <p>Il n'y a pas de commentaires.</p>
-      )}
+        {renderStar(averageRating)}
+        <span> ({totalRatings})</span>
+      </div>
     </div>
-  </div>
-);
+  );
 };
 
 export default WorkoutAverageRating;
