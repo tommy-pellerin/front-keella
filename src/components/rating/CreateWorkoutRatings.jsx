@@ -57,7 +57,7 @@ export default function CreateWorkoutRatings({ workoutId }) {
       setRating(0);
       setComment('');
       setHasCommented(true);
-      navigate(`/my-account/${user.id}/my-reservation`);
+      window.location.reload(); //refresh the page
       toast.success("Merci pour votre commentaire");
     } catch (err) {
       console.error('Error creating rating:', err);
@@ -133,7 +133,7 @@ export default function CreateWorkoutRatings({ workoutId }) {
             </div>
           </form>
         ) : (
-          <p className="error">Vous avez déjà noté cette séance.</p>
+          <p className="error px-3">Vous avez déjà noté cette séance.</p>
         )}
           
       </RatingModal>

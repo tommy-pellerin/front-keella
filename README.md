@@ -30,14 +30,11 @@ En somme, votre application offre une solution pratique et économique pour les 
 - Accepter, refuser ou annuler les réservations
 - Gagner de l'argent (l'argent sera automatiquement crediter sur mon compte lorsque l'utilisateur aura confirmé la fin de la séance)
 
-#### - Contact
+## Contact
 
-Lien du projet : [Repo GitHub](https://github.com/tommy-pellerin/front-keella)
-
-- [Tommy Pellerin](https://github.com/tommy-pellerin)
 - [Alexis Brevier](https://github.com/BrvAlexis)
 - [Loïc Le Crosnier-Terrancle](https://github.com/splmloic)
 - [Winny Drancourt](https://github.com/WinnyDrancourt)
-
+- [Tommy Pellerin](https://github.com/tommy-pellerin)
 
 ## Production environment : https://front-keella.vercel.app/

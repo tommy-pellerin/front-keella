@@ -45,7 +45,7 @@ export default function ForgetPassword() {
             />
           </div>
           <div className="w-3/5">
-            <button type="submit" className="button-primary-large">Submit</button>
+            <button type="submit" className="button-primary-large">Soumettre</button>
           </div>
         </form>
         <Link to="/sign-in" className="underline hover:no-underline">Je me connect</Link>

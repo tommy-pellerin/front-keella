@@ -8,19 +8,21 @@ export default function WorkoutRating({ workoutId, ratingsReceivedUserAvatars })
   const [ratings, setRatings] = useState([]);
 
   useEffect(() => {
-    const fetchRatings = async () => {
-      console.log(`Fetching ratings for workout ID: ${workoutId}`); // Log before fetching data
-      const data = await getData(`/workouts/${workoutId}`);
-      console.log('Data received:', data); // Log after receiving data
-      
-      // Utilisez 'ratings_received' pour accéder aux évaluations
-      const workoutRatings = data.ratings_received || [];
-      console.log('Workout Ratings:', workoutRatings); // Log after accessing ratings
-      
-      setRatings(workoutRatings);
-    };
+    if (workoutId){ //fetch only when workout is available, that means when the page finished loading
+      const fetchRatings = async () => {
+        console.log(`Fetching ratings for workout ID: ${workoutId}`); // Log before fetching data
+        const data = await getData(`/workouts/${workoutId}`);
+        console.log('Data received:', data); // Log after receiving data
+        
+        // Utilisez 'ratings_received' pour accéder aux évaluations
+        const workoutRatings = data.ratings_received || [];
+        console.log('Workout Ratings:', workoutRatings); // Log after accessing ratings
+        
+        setRatings(workoutRatings);
+      };
 
-    fetchRatings();
+      fetchRatings();
+    }
   }, [workoutId]);
 
 
@@ -43,7 +45,7 @@ export default function WorkoutRating({ workoutId, ratingsReceivedUserAvatars })
               <div className="flex items-center space-x-4">
               <div className="h-8 w-8 border rounded-full flex justify-center items-center overflow-hidden">
                   {userAvatar ? (
-                    <img src={userAvatar} alt="User avatar" className="object-cover" />
+                    <img src={userAvatar} alt="User avatar" className="w-full h-full object-cover" />
                   ) : (
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="black" className="size-6">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />

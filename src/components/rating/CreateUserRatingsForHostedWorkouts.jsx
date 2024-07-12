@@ -48,7 +48,7 @@ export default function CreateUserRatings({ workoutId, participantId }) {
       setSuccess(true);
       setRating(0);
       setComment('');
-      navigate(`/my-account/${user.id}/hosted_workouts`);
+      window.location.reload(); //refresh the page
       toast.success("Merci pour votre commentaire");
     } catch (err) {
       console.error('Error creating rating:', err);
@@ -92,7 +92,7 @@ export default function CreateUserRatings({ workoutId, participantId }) {
 
       <RatingModal isOpen={isOpen} onClose={() => setIsOpen(false)}>
           {error && <p className="error">{error}</p>}
-          {success && <p className="success">Commentaire crée avec succès!</p>}
+          {success && <p className="success px-3">Commentaire crée avec succès!</p>}
           {!hasCommented ? (
             <form onSubmit={handleSubmit} className="flex flex-col gap-2">
               <div className='text-left'>
@@ -120,7 +120,7 @@ export default function CreateUserRatings({ workoutId, participantId }) {
               </div>
             </form>
           ) : (
-            <p className="error">Vous avez déjà noté ce participant.</p>
+            <p className="error px-3">Vous avez déjà noté ce participant.</p>
           )}
       </RatingModal>
     </>

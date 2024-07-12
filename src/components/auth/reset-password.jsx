@@ -22,9 +22,7 @@ export default function ResetPassword() {
           password_confirmation: passwordConfirmation,
         },
       });
-      if(data){
-        toast.success("Votre mot de passe a été enregistré avec success !");
-      }
+      toast.success("Votre mot de passe a été enregistré avec success !");
       navigate("/sign-in");
     } catch (error) {
       // console.error("Error:", error);
@@ -68,7 +66,7 @@ export default function ResetPassword() {
             />
           </div>
           <div className="w-3/5">
-            <button type="submit" className="button-primary-large">Submit</button>
+            <button type="submit" className="button-primary-large">Soumettre</button>
           </div>
         </form>
       </div>
