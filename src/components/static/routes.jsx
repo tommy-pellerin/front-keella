@@ -57,7 +57,7 @@ export default function AppRoutes() {
       <Route path="/profile/:user_id/edit" element={<PrivateRoute><OwnerRoute><EditProfile/></OwnerRoute></PrivateRoute>} />
       <Route path="/my-account" element={<PrivateRoute><MyAccount /></PrivateRoute>} />
       <Route path="/my-account/:user_id/my-reservation" element={<PrivateRoute><OwnerRoute><ProfileReservation /></OwnerRoute></PrivateRoute>} />
-      <Route path="/my-account/:user_id/hosted_workouts" element={<PrivateRoute><HostedWorkoutHistory/></PrivateRoute>} />
+      <Route path="/my-account/:user_id/hosted_workouts" element={<PrivateRoute><OwnerRoute><HostedWorkoutHistory/></OwnerRoute></PrivateRoute>} />
 
       <Route path="/workouts" element={<WorkoutIndex />} />
       <Route path="/workouts/:workout_id" element={<WorkoutShow />} />

@@ -6,7 +6,7 @@ import { getData, deleteData, updateData } from '../../services/data-fetch';
 import CreateUserRatings from '../rating/CreateUserRatingsForHostedWorkouts.jsx';
 import { formatDate, formatTime, formatDuration, formatTimeToLocalTime } from '../../services/time-fixes';
 import { toast } from 'react-toastify';
-
+import LoadingSpinner from '../static/LoadingSpinner.jsx';
 import { Helmet } from 'react-helmet';
 
 function HostedWorkoutHistory() {
@@ -16,6 +16,7 @@ function HostedWorkoutHistory() {
     const [workoutIdToDelete, setWorkoutIdToDelete] = useState(null);
     const [openWorkoutId, setOpenWorkoutId] = useState(null);
     const [workoutData, setWorkoutData] = useState([]); // État pour stocker les données des workouts
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
       const fetchHostedWorkouts = async () => {
@@ -95,76 +96,88 @@ function HostedWorkoutHistory() {
         try {
             const response = await updateData(`/reservations/${reservationId}`, { status: newStatus });
             if (response) {
-                setWorkoutData(workoutData.map(workout => {
-                    if (workout.id === workoutId) {
-                        return {
-                            ...workout,
-                            reservations: workout.reservations.map(reservation => {
-                                if (reservation.reservationId === reservationId) {
-                                    return { ...reservation, status: newStatus };
-                                }
-                                return reservation;
-                            })
-                        };
-                    }
-        return workout;
-      }));
-      toast.success("Statut de réservation mis à jour avec succès");
-    }
-  } catch (error) {
-    console.error('Erreur lors de la mise à jour du statut de la réservation:', error);
-    toast.error("Erreur lors de la mise à jour du statut de la réservation");
-  }
-};
+              setWorkoutData(workoutData.map(workout => {
+                if (workout.id === workoutId) {
+                    // Create a new array of reservations with the updated status
+                    const updatedReservations = workout.reservations.map(reservation => {
+                        if (reservation.reservationId === reservationId) {
+                            return { ...reservation, status: newStatus };
+                        }
+                        return reservation;
+                    });
+                    // Return a new workout object with the updated reservations array
+                    return { ...workout, reservations: updatedReservations };
+                }
+                return workout;
+              }));
+              toast.success("Statut de réservation mis à jour avec succès");
+            }
+        } catch (error) {
+          console.error('Erreur lors de la mise à jour du statut de la réservation:', error);
+          toast.error("Erreur lors de la mise à jour du statut de la réservation");
+        }
+    };
 
-  if(!workoutData){
-    <div>Loading...</div>
-  }
-
-  function frenchStatut(statut){
-    switch(statut) {
-    case "pending":
-      return "en attente";
-    case "accepted":
-      return "accepté";
-    case "refused":
-      return "refusé"
-    case "user_cancelled":
-      return "annulé par le client"
-    case "host_cancelled":
-      return "annulé par l'hote";
-    case "closed":
-      return "cloturé";
+    if(!workoutData){
+      <div>Loading...</div>
     }
-  }
+
+    function frenchStatut(statut){
+      switch(statut) {
+      case "pending":
+        return "en attente";
+      case "accepted":
+        return "accepté";
+      case "refused":
+        return "refusé"
+      case "user_cancelled":
+        return "annulé par le client"
+      case "host_cancelled":
+        return "annulé par l'hote";
+      case "closed":
+        return "cloturé";
+      }
+    }
 
     // on ne peut annuler une réservation que si la réservation n'est pas closed
-    const handleReservationCancel = (workout) => {
+    const handleReservationCancel = async (workout) => {
       // Demander confirmation
       const isConfirmed = window.confirm("Êtes-vous sûr de vouloir annuler toutes les réservations ?");
       if (isConfirmed) {
-        //itérer sur chaque réservation afin de procéder à l'annulation de toutes les réservations
-        workout.reservations.map(reservation => {
-          console.log(reservation.status);
-          if(reservation.status === "closed"){
-            // on ne peut pas annuler une reservation dont le status est cloturé
-            console.log("status closed");
-            return;
-          } else if (reservation.status === "user_cancelled" || reservation.status === "host_cancelled"){
-            console.log("status user ou host cancelled");
-            // on ne peut pas annuler une reservation dont le client ou l'hote a déja annulé
-            return;
-          } else if (reservation.status === "refused"){
-            console.log("status refused");
-            // on ne peut pas annuler une reservation dont la resservation a été refusée
-            return;
+        setIsLoading(true);
+        const updatePromises = workout.reservations.map(reservation => {
+          if (["closed", "user_cancelled", "host_cancelled", "refused"].includes(reservation.status)) {
+            // Skip updating reservations that cannot or should not be cancelled.
+            return Promise.resolve();
           }
-          updateReservationStatus(workout.id, reservation.reservationId, "host_cancelled");
+          return updateReservationStatus(workout.id, reservation.reservationId, "host_cancelled");
         });
-      } else {
-        // Si l'utilisateur n'a pas confirmé, ne rien faire
-        return;
+    
+        // Assuming updateReservationStatus updates the backend successfully
+        // Update the local state to reflect these changes and trigger a re-render
+        try {
+          await Promise.all(updatePromises);
+          // Update the local component state with the new statuses
+          const updatedWorkouts = { ...workout, reservations: workout.reservations.map(reservation => {
+            if (["closed", "user_cancelled", "host_cancelled", "refused"].includes(reservation.status)) {
+              return reservation; // Return as is if no update needed
+            }
+            return { ...reservation, status: "host_cancelled" }; // Update status for others
+          })};
+          // Now update the state that holds your workouts data to trigger a re-render
+          // This is a placeholder, replace with your actual state update logic
+          setWorkoutData(currentData => currentData.map(w => w.id === workout.id ? updatedWorkouts : w));
+        } catch (error) {
+          console.error('Error cancelling reservations:', error);
+          toast.error("Erreur lors de l'annulation des réservations");
+        } finally {
+          setIsLoading(false);
+        }
       }
+    }
+
+    if (isLoading){
+      return <div><LoadingSpinner /></div>;
     }
 
   return (
