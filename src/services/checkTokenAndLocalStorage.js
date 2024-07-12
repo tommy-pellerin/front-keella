@@ -12,7 +12,7 @@ const checkTokenAndLocalStorage = (user, setUser, navigate) =>{
       if (user.id) {
         // as token does not exist, we reset only local storage
         setUser({ id: "", email: "", isLogged: false });
-        toast.info("Votre connection a expiré, veuillez vous reconnecter");
+        toast.info("Votre connexion a expiré, veuillez vous reconnecter");
         navigate("/sign-in");
         return false
       }
@@ -21,7 +21,7 @@ const checkTokenAndLocalStorage = (user, setUser, navigate) =>{
       // reset local storage and cookies
       setUser({ id: "", email: "", isLogged: false });
       Cookies.remove("keellauth");
-      toast.info("Votre connection a expiré, veuillez vous reconnecter");
+      toast.info("Votre connexion a expiré, veuillez vous reconnecter");
       navigate("/sign-in");
       return false
     }

@@ -35,12 +35,12 @@ export default function SignIn() {
   return (
     <>
     <Helmet>
-      <title>Keella | Connection</title>
-      <meta name="description" content="Connection" />
+      <title>Keella | connexion</title>
+      <meta name="description" content="connexion" />
     </Helmet>
     
     <div className="text-center my-5">
-      <h1>Connection</h1>
+      <h1>connexion</h1>
       <AuthForm onSubmit={handleLogin} buttonText="Login" />
     </div>
     </>
