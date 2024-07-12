@@ -47,7 +47,7 @@ const FormWorkout = () => {
                   title: workoutData.title || '',
                   description: workoutData.description || '',
                   start_date: date,
-                  start_time: time,               
+                  start_time: time,
                   
                   duration: workoutData.duration.toString() || '',
                   city: workoutData.city || '',
