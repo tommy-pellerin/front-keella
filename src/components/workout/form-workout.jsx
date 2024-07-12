@@ -107,8 +107,8 @@ const FormWorkout = () => {
             const now = new Date(Date.now());
             const fourHoursLater = new Date(now.getTime() + 4 * 60 * 60 * 1000); // 4 heures plus tard
             if (workoutStartDate < fourHoursLater) {
-              errors.push('La date de début ne peut être anterieur à la date du jour.');
-              toast.error('La date de début ne peut être anterieur à la date du jour.');
+              errors.push('L’heure de début de la séance doit être fixée au minimum 4 heures après l’heure actuelle.');
+              toast.error('L’heure de début de la séance doit être fixée au minimum 4 heures après l’heure actuelle.');
             }
         // Validation du code postal
           if (!/^\d{5}$/.test(workout.zip_code)) {
