@@ -1,6 +1,7 @@
 import { Navigate, useParams } from "react-router-dom";
 import { getData } from "../../services/data-fetch";
 import { toast } from 'react-toastify';
+import LoadingSpinner from '../static/LoadingSpinner.jsx';
 //Atom
 import { useAtomValue } from 'jotai';
 import { userAtom } from "../../store/user";
@@ -52,7 +53,7 @@ const OwnerRoute = ({ children }) => {
   }, [isOwner]);
   
   if (isOwner === null) {
-    return <div>Loading...</div>; // Or your loading spinner
+    return <div><LoadingSpinner /></div>; // Or your loading spinner
   }
   
   if (!isOwner) {
