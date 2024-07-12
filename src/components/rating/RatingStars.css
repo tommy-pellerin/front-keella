@@ -79,3 +79,6 @@
   clear: both;
 }
 
+.star.selected {
+  color: rgb(212, 190, 64);
+}

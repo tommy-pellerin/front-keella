@@ -4,6 +4,7 @@ import { UsersIcon, CurrencyDollarIcon, CalendarIcon, ClockIcon, RocketLaunchIco
 import { postData, getData, updateData } from '../../services/data-fetch';
 import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet';
+import { formatTime } from '../../services/time-fixes';
 
 
 const FormWorkout = () => {
@@ -41,7 +42,7 @@ const FormWorkout = () => {
               if (workoutData) {
                 const startDate = new Date(workoutData.start_date);
                 const date = startDate.toISOString().split('T')[0];
-                const time = startDate.toTimeString().slice(0, 5);
+                const time = formatTime(startDate);
                 setWorkout({
                   title: workoutData.title || '',
                   description: workoutData.description || '',
