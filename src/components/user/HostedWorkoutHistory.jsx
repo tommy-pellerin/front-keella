@@ -20,6 +20,7 @@ function HostedWorkoutHistory() {
 
     useEffect(() => {
       const fetchHostedWorkouts = async () => {
+          setIsLoading(true)
           try {
               const userData = await getData(`/users/${user_id}`);
               if (userData && userData.hosted_workouts) {
@@ -41,15 +42,15 @@ function HostedWorkoutHistory() {
                           throw error; // Re-lancer l'erreur pour la gestion par le bloc catch externe si nécessaire
                       }
                   }));
-                  console.log(fetchedWorkoutData);
+                  setIsLoading(false)
                   setWorkoutData(fetchedWorkoutData); // Mettre à jour l'état avec les données récupérées
               }
           } catch (error) {
               // console.error('Erreur lors de la récupération des données de l\'utilisateur:', error);
+              setIsLoading(false)
               toast.error("Erreur lors de la récupération des données");
           }
-      };
-  
+      }; 
       fetchHostedWorkouts(); // Appeler la fonction de récupération des entraînements hébergés
   
   }, [user, user_id]);
@@ -118,9 +119,9 @@ function HostedWorkoutHistory() {
         }
     };
 
-    if(!workoutData){
-      <div>Loading...</div>
-    }
+    // if(!workoutData){
+    //   <div>Loading...</div>
+    // }
 
     function frenchStatut(statut){
       switch(statut) {
