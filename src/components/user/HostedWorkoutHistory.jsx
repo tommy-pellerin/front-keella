@@ -308,7 +308,7 @@ function HostedWorkoutHistory() {
             ))}
           </div>
         ) : (
-          <div className="bg-gray-100 flex items-center justify-center min-h-screen">
+          <div className="flex flex-col items-center">
             <div className="bg-white p-8 rounded-lg shadow-lg text-center">
                 <h3 className="text-2xl font-bold text-red-600 mb-4">Vous n'avez pas encore d'annonce</h3>
             </div>

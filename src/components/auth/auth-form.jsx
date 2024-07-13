@@ -63,7 +63,7 @@ export default function AuthForm({ onSubmit, buttonText }) {
         </div>
         {isSigningUp ?
           <div>
-            <Link to="/sign-in" className="underline hover:no-underline">Connection</Link>
+            <Link to="/sign-in" className="underline hover:no-underline">connexion</Link>
             
           </div>
           :

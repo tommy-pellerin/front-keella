@@ -33,7 +33,7 @@ const TokenExpirationCheck = ({ children }) => {
 
   useEffect(() => {
     if (isTokenExpired) {
-      toast.warning("Votre connection a expiré, veuillez vous reconnecter");
+      toast.warning("Votre connexion a expiré, veuillez vous reconnecter");
       setUser({ id: "", email: "", isLogged: false });
       Cookies.remove("keellauth");
       setRedirectToSignIn(true);
