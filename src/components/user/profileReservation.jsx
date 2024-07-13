@@ -161,7 +161,7 @@ function ProfileReservation() {
                         ))
                     ) : (
                         <div className="bg-white p-8 rounded-lg shadow-lg text-center">
-                            <h3 className="text-2xl font-bold text-red-600 mb-4">Vous n'avez pas de Réservation</h3>
+                            <h3 className="text-2xl font-bold text-red-600 mb-4">Vous n'avez pas de réservation</h3>
                         </div>
                     )}
                 </div>
