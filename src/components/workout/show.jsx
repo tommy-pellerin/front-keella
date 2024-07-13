@@ -144,7 +144,7 @@ const WorkoutShow = () => {
               <div>
                 <h1>{workout.title}</h1>
                 {workout.category ?
-                <p>Category : <strong>{workout.category.name}</strong></p>
+                <p>Catégorie : <strong>{workout.category.name}</strong></p>
                 :
                 "Loading..."
                 }
@@ -157,7 +157,7 @@ const WorkoutShow = () => {
                 {workout.host ?
                   
                   <Link to={`/profile/${workout.host.id}`} className="flex gap-2 items-center">
-                    <p>Hote : {workout.host.username}</p>
+                    <p>Hôte : {workout.host.username}</p>
                     {workout.host && 
                           <div className="h-8 w-8 border rounded-full flex justify-center items-center overflow-hidden">
                             {workout.host_avatar ? <img src={workout.host_avatar} className="w-full h-full object-cover" alt="User avatar"/>
@@ -175,7 +175,7 @@ const WorkoutShow = () => {
               </div>
             </div>
             <div className="my-3 border-b-2">
-              <p>Description:</p>
+              <p>Description :</p>
               <p>{workout.description}</p>
             </div>
           </div>
