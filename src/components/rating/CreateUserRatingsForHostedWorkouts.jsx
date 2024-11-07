@@ -40,11 +40,8 @@ export default function CreateUserRatings({ workoutId, participantId }) {
       }
     };
 
-    console.log('Submitting rating:', newRating);
-
     try {
       const response = await postData('/ratings', newRating);
-      console.log('Rating response:', response); // Log the response for debugging
       setSuccess(true);
       setRating(0);
       setComment('');

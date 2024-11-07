@@ -49,8 +49,6 @@ export default function CreateWorkoutRatings({ workoutId }) {
       }
     };
 
-    console.log('Submitting rating:', newRating);
-
     try {
       const response = await postData('/ratings', newRating);
       setSuccess(true);
@@ -72,12 +70,9 @@ export default function CreateWorkoutRatings({ workoutId }) {
       if (user.isLogged) {
         try {
           const response = await getData(`/ratings?workoutId=${workoutId}`);
-          console.log('Response:', response); // Affiche la réponse complète
           const userHasCommented = response.some(rating => {
-            // console.log('Rating:', rating); // Affiche les détails du rating
             return rating.rateable_id === workoutId && rating.user_id === user.id;
           });
-          console.log('Has the user already commented:', userHasCommented); // Affiche si l'utilisateur a déjà commenté
           setHasCommented(userHasCommented);
         } catch (err) {
           console.error('Error fetching ratings:', err);

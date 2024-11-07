@@ -17,7 +17,6 @@ export async function getData(objectUrl) {
 // Fonction pour envoyer les données
 export async function postData(objectUrl, body, filesToUpload) {
   const formData = new FormData();
-  console.log(body);
   // Ajout de la logique pour les évaluations
   if (body.rating) {
     for (const key in body.rating) {
