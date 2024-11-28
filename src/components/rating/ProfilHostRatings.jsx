@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './RatingStars.css';
 
 export default function RatingStars({ ratings, ratingsReceivedUserAvatars }) {
-  console.log('Évaluations reçues:', ratings);
+  
   const renderStars = (rating) => {
     let stars = '';
     for (let i = 0; i < 5; i++) {
