@@ -18,7 +18,7 @@ export default function Footer() {
       <div className="my-2">
         <ul>
           <li><Link to="/help" className="hover:underline">Questions fréquentes</Link></li>
-          <li><a href="mailto:contact@keella.fr?subject=Contact depuis le site web Keella" className="hover:underline">Contact</a></li>
+          <li><a href="mailto:tommytp@hotmail.fr?subject=Contact depuis le site web Keella" className="hover:underline">Contact</a></li>
         </ul>
       </div>
       <div className="flex flex-row my-2">
