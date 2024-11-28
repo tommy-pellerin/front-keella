@@ -10,13 +10,13 @@ export default function WorkoutRating({ workoutId, ratingsReceivedUserAvatars })
   useEffect(() => {
     if (workoutId){ //fetch only when workout is available, that means when the page finished loading
       const fetchRatings = async () => {
-        console.log(`Fetching ratings for workout ID: ${workoutId}`); // Log before fetching data
+        
         const data = await getData(`/workouts/${workoutId}`);
-        console.log('Data received:', data); // Log after receiving data
+        
         
         // Utilisez 'ratings_received' pour accéder aux évaluations
         const workoutRatings = data.ratings_received || [];
-        console.log('Workout Ratings:', workoutRatings); // Log after accessing ratings
+        
         
         setRatings(workoutRatings);
       };
